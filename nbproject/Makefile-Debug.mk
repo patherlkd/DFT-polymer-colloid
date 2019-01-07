@@ -41,7 +41,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/colDFT.o \
 	${OBJECTDIR}/colDFTSetters.o \
 	${OBJECTDIR}/colDFTfreeenergy.o \
-	${OBJECTDIR}/colDFTfuncs.o
+	${OBJECTDIR}/colDFTfuncs.o \
+	${OBJECTDIR}/colDFTpolymerdensity.o \
+	${OBJECTDIR}/colDFTweights.o
 
 
 # C Compiler Flags
@@ -102,6 +104,16 @@ ${OBJECTDIR}/colDFTfuncs.o: colDFTfuncs.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfuncs.o colDFTfuncs.cpp
+
+${OBJECTDIR}/colDFTpolymerdensity.o: colDFTpolymerdensity.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpolymerdensity.o colDFTpolymerdensity.cpp
+
+${OBJECTDIR}/colDFTweights.o: colDFTweights.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTweights.o colDFTweights.cpp
 
 # Subprojects
 .build-subprojects:

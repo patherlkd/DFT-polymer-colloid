@@ -9,6 +9,32 @@
 #include "string"
 #include "fstream"
 
+using namespace std;
+
+db DFT::WBF(unsigned int z) {
+
+    db t1, t2, t3, logn3;
+    logn3 = log(1.0 - n3(z));
+    t1 = -n0(z) * logn3;
+    t2 = frac(n1(z) * n2(z) - nv1(z) * nv2(z), 1.0 - n3(z));
+    t3 = (n2(z) * n2(z) * n2(z) - 3.0 * n2(z) * nv2(z) * nv2(z));
+    t3 *= frac(n3(z)+(1.0 - n3(z))*(1.0 - n3(z)) * logn3, 36.0 * pi * n3(z) * n3(z)*(1.0 - n3(z)*(1.0 - n3(z))));
+
+    return t1 + t2 + t3;
+}
+
+db DFT::CHF(unsigned int z) {
+
+    db f_, logy, eta;
+    eta = 1.0 - frac(nv2(z) * nv2(z), n2(z) * n2(z));
+    logy = frac(1.0, (1.0 - n3(z)));
+    logy += frac(n2(z) * r*eta, 2.0 * (1.0 - n3(z))*(1.0 - n3(z)));
+    logy += frac(n2(z) * n2(z) * r * r*eta, 18.0 * (1.0 - n3(z))*(1.0 - n3(z))*(1.0 - n3(z)));
+    logy = log(logy);
+    f_ = frac(1.0 - (db) Nm, (db) Nm) * n0(z) * eta*logy;
+    return f_;
+}
+
 db DFT::comp_free_energy() {
 
     ifstream math_att("attract_energy_term.txt");

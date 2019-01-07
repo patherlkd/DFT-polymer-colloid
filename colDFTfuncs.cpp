@@ -265,6 +265,26 @@ void DFT::comp_FMT_col() {
 
 }
 
+void DFT::CS(int place) {
+
+    db n; // packing fraction
+    db pi = 3.141592653589793238;
+    db t1 = 0, t2 = 0, t3 = 0, ts1 = 0, ts2 = 0, ts3 = 0; // split computation into smaller terms
+    n = (density(place)*(cube_d(dia)) * pi) / 6.0;
+    t1 = (4.0 * n - 3 * sqr_d(n)) / sqr_d(1.0 - n);
+
+    ts1 = (4.0 - 6.0 * n) / sqr_d(1.0 - n);
+    ts2 = 2.0 * (4.0 * n - 3.0 * sqr_d(n) / cube_d(1.0 - n));
+    ts3 = -2.0 * (-(1.0 / (2 * cube_d(1.0 - n))) + (3.0 / 2.0)*(2.0 - n) / sqr_d(sqr_d(1.0 - n))) * cube_d(1.0 - n)*(1.0 - (1.0 / (db) Nm));
+    ts3 *= (1.0 / (2.0 - n));
+
+    t2 = n * (ts1 + ts2 + ts3);
+
+    t3 = -(1.0 - (1.0 / (db) Nm)) * log((2.0 - n) / (2.0 * cube_d(1.0 - n)));
+
+    hs = t1 + t2 + t3;
+
+}
 
 
 

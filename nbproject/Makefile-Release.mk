@@ -39,8 +39,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/b2c86978/random.o \
 	${OBJECTDIR}/_ext/b2c86978/useful.o \
 	${OBJECTDIR}/colDFT.o \
-	${OBJECTDIR}/colDFTComps.o \
-	${OBJECTDIR}/colDFTSetters.o
+	${OBJECTDIR}/colDFTSetters.o \
+	${OBJECTDIR}/colDFTfreeenergy.o \
+	${OBJECTDIR}/colDFTfuncs.o
 
 
 # C Compiler Flags
@@ -87,15 +88,20 @@ ${OBJECTDIR}/colDFT.o: colDFT.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFT.o colDFT.cpp
 
-${OBJECTDIR}/colDFTComps.o: colDFTComps.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTComps.o colDFTComps.cpp
-
 ${OBJECTDIR}/colDFTSetters.o: colDFTSetters.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTSetters.o colDFTSetters.cpp
+
+${OBJECTDIR}/colDFTfreeenergy.o: colDFTfreeenergy.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfreeenergy.o colDFTfreeenergy.cpp
+
+${OBJECTDIR}/colDFTfuncs.o: colDFTfuncs.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfuncs.o colDFTfuncs.cpp
 
 # Subprojects
 .build-subprojects:

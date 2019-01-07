@@ -19,8 +19,9 @@
                    projectFiles="true">
       <itemPath>../../Downloads/ColloidDFT/DFTmain.cpp</itemPath>
       <itemPath>colDFT.cpp</itemPath>
-      <itemPath>colDFTComps.cpp</itemPath>
       <itemPath>colDFTSetters.cpp</itemPath>
+      <itemPath>colDFTfreeenergy.cpp</itemPath>
+      <itemPath>colDFTfuncs.cpp</itemPath>
       <itemPath>../../Downloads/ColloidDFT/random.C</itemPath>
       <itemPath>../../Downloads/ColloidDFT/useful.cpp</itemPath>
     </logicalFolder>
@@ -85,9 +86,11 @@
       </item>
       <item path="colDFT.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="colDFTComps.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="colDFTSetters.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTfreeenergy.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTfuncs.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -149,9 +152,11 @@
       </item>
       <item path="colDFT.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="colDFTComps.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="colDFTSetters.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTfreeenergy.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTfuncs.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

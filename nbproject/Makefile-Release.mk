@@ -37,7 +37,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/b2c86978/DFTmain.o \
 	${OBJECTDIR}/_ext/b2c86978/random.o \
-	${OBJECTDIR}/_ext/b2c86978/useful.o
+	${OBJECTDIR}/_ext/b2c86978/useful.o \
+	${OBJECTDIR}/colDFT.o \
+	${OBJECTDIR}/colDFTComps.o \
+	${OBJECTDIR}/colDFTSetters.o
 
 
 # C Compiler Flags
@@ -78,6 +81,21 @@ ${OBJECTDIR}/_ext/b2c86978/useful.o: ../../Downloads/ColloidDFT/useful.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/b2c86978
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/b2c86978/useful.o ../../Downloads/ColloidDFT/useful.cpp
+
+${OBJECTDIR}/colDFT.o: colDFT.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFT.o colDFT.cpp
+
+${OBJECTDIR}/colDFTComps.o: colDFTComps.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTComps.o colDFTComps.cpp
+
+${OBJECTDIR}/colDFTSetters.o: colDFTSetters.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTSetters.o colDFTSetters.cpp
 
 # Subprojects
 .build-subprojects:

@@ -8,13 +8,13 @@ Luke Kristopher Davis:  ucapkda@ucl.ac.uk
 
 #ifndef DFT_H
 #define DFT_H
-//class piccard;
+
 
 class DFT {
-    //friend class piccard;
+   
 public:
     DFT(int);
-    
+
 
     void set_dia(db dia);
     void set_Np(unsigned int N);
@@ -33,7 +33,7 @@ public:
 
     void init_field(db);
     void init_coldensity1();
-    
+
     virtual void solveGs();
     virtual void comp_dens();
     void comp_POT();
@@ -62,9 +62,9 @@ public:
     db WBF(unsigned int);
     db CHF(unsigned int);
     db correct(db, db);
-    
+
     // geometric weights 
-    
+
     db w0(db, db);
     db w1(db, db);
     db w2(db, db);
@@ -84,7 +84,7 @@ private:
     unsigned int iter; // iteration tracker
 
     // for plotting purposes
-    
+
     gnuplot gnucol, gnudens, gnuw0, gnuw1, gnuw2, gnuw3, gnuwv1, gnuwv2, gnumf;
     gnuplot gnun0, gnun1, gnun2, gnun3, gnunv1, gnunv2;
     gnuplot gnup0, gnup1, gnup2, gnup3, gnupv1, gnupv2;
@@ -98,11 +98,13 @@ private:
     db graft; //grafting density
     db ds; //time slice size
     db dz; // space slice size
+ 
     db b; // kuhn length
     db dia; // diameter of monomer
     db r; // radius of monomer
-    db rc; // radius of colloid
-    //db md_dia; //Diameter used in MD sims
+    db rc1; // radius of colloid
+    
+    
     db gamma; // convergence criterion
     db hs; // one body direct correlation function
     db dt; // for steepest descent (pol)

@@ -62,7 +62,7 @@ void DFT::comp_dphi_pol() //d(WB)/dn
     db N0, N1, N2, N3, Nv1, Nv2;
     db R;
 
-    R = frac(r*rc, rc + r);
+    R = frac(r*rc11, rc11 + r);
 
     for (int i = 0; i < Nz; i++) {
 
@@ -127,7 +127,7 @@ void DFT::comp_FMT_pol() {
     // comp_n_tot(); // Compute the total weighted densities
     //RF(); (comment comp_dphi() out and uncomment this to use the previous Rosenfeld functional.) 
     comp_dphi_pol(); // White bear
-    //Zero_vec(c,Nz);
+
 
 
     for (int i = 0; i < Nz; i++) // Convolution in real space because lol. 
@@ -170,12 +170,12 @@ void DFT::comp_n_col1() {
         for (int j = 0; j < Nz; j++) {
             den = coldensity1(j);
 
-            cn0(i) += simp(j) * den * w0(rc, (db) i * dz - (db) j * dz) * dz;
-            cn1(i) += simp(j) * den * w1(rc, (db) i * dz - (db) j * dz) * dz;
-            cn2(i) += simp(j) * den * w2(rc, (db) i * dz - (db) j * dz) * dz;
-            cn3(i) += simp(j) * den * w3(rc, (db) i * dz - (db) j * dz) * dz;
-            cnv1(i) += simp(j) * den * wv1(rc, (db) i * dz - (db) j * dz) * dz;
-            cnv2(i) += simp(j) * den * wv2(rc, (db) i * dz - (db) j * dz) * dz;
+            cn0(i) += simp(j) * den * w0(rc1, (db) i * dz - (db) j * dz) * dz;
+            cn1(i) += simp(j) * den * w1(rc1, (db) i * dz - (db) j * dz) * dz;
+            cn2(i) += simp(j) * den * w2(rc1, (db) i * dz - (db) j * dz) * dz;
+            cn3(i) += simp(j) * den * w3(rc1, (db) i * dz - (db) j * dz) * dz;
+            cnv1(i) += simp(j) * den * wv1(rc1, (db) i * dz - (db) j * dz) * dz;
+            cnv2(i) += simp(j) * den * wv2(rc1, (db) i * dz - (db) j * dz) * dz;
 
         }
 
@@ -194,7 +194,7 @@ void DFT::comp_dphi_col1() // d(WB)/dn
     db N0, N1, N2, N3, Nv1, Nv2;
     db R;
 
-    R = frac(r*rc, rc + r);
+    R = frac(r*rc1, rc1 + r);
 
     for (int i = 0; i < Nz; i++) {
         N0 = cn0(i) + n0(i);
@@ -249,12 +249,12 @@ void DFT::comp_FMT_col1() {
         Wv1(i) = 0;
         Wv2(i) = 0;
         for (int j = 0; j < Nz; j++) {
-            W0(i) += simp(j)*(cdphi0(j)) * w0(rc, (db) i * dz - (db) j * dz) * dz;
-            W1(i) += simp(j)*(cdphi1(j)) * w1(rc, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(cdphi2(j)) * w2(rc, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(cdphi3(j)) * w3(rc, (db) i * dz - (db) j * dz) * dz;
-            Wv1(i) += simp(j)*(cdphiv1(j))*-wv1(rc, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
-            Wv2(i) += simp(j)*(cdphiv2(j))*-wv2(rc, ((db) i * dz - (db) j * dz)) * dz; // also here
+            W0(i) += simp(j)*(cdphi0(j)) * w0(rc1, (db) i * dz - (db) j * dz) * dz;
+            W1(i) += simp(j)*(cdphi1(j)) * w1(rc1, (db) i * dz - (db) j * dz) * dz;
+            W3(i) += simp(j)*(cdphi2(j)) * w2(rc1, (db) i * dz - (db) j * dz) * dz;
+            W3(i) += simp(j)*(cdphi3(j)) * w3(rc1, (db) i * dz - (db) j * dz) * dz;
+            Wv1(i) += simp(j)*(cdphiv1(j))*-wv1(rc1, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
+            Wv2(i) += simp(j)*(cdphiv2(j))*-wv2(rc1, ((db) i * dz - (db) j * dz)) * dz; // also here
         }
 
     }

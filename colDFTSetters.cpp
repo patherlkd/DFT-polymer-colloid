@@ -11,6 +11,7 @@ using namespace std;
 
 void DFT::set_dia(db dia) {
     this->dia = dia;
+    this->r = dia*0.5;
 }
 
 void DFT::set_Np(unsigned int N) {

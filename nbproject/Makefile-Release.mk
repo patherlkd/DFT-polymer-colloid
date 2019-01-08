@@ -35,17 +35,17 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/b2c86978/DFTmain.o \
-	${OBJECTDIR}/_ext/b2c86978/random.o \
-	${OBJECTDIR}/_ext/b2c86978/useful.o \
 	${OBJECTDIR}/colDFT.o \
 	${OBJECTDIR}/colDFTSetters.o \
 	${OBJECTDIR}/colDFTfreeenergy.o \
 	${OBJECTDIR}/colDFTfuncs.o \
 	${OBJECTDIR}/colDFTgetters.o \
+	${OBJECTDIR}/colDFTmain.o \
 	${OBJECTDIR}/colDFTpolymerdensity.o \
 	${OBJECTDIR}/colDFTpotentials.o \
-	${OBJECTDIR}/colDFTweights.o
+	${OBJECTDIR}/colDFTweights.o \
+	${OBJECTDIR}/random.o \
+	${OBJECTDIR}/useful.o
 
 
 # C Compiler Flags
@@ -72,21 +72,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dftpolymercolloid: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dftpolymercolloid ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/b2c86978/DFTmain.o: ../../Downloads/ColloidDFT/DFTmain.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/b2c86978
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/b2c86978/DFTmain.o ../../Downloads/ColloidDFT/DFTmain.cpp
-
-${OBJECTDIR}/_ext/b2c86978/random.o: ../../Downloads/ColloidDFT/random.C
-	${MKDIR} -p ${OBJECTDIR}/_ext/b2c86978
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/b2c86978/random.o ../../Downloads/ColloidDFT/random.C
-
-${OBJECTDIR}/_ext/b2c86978/useful.o: ../../Downloads/ColloidDFT/useful.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/b2c86978
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/b2c86978/useful.o ../../Downloads/ColloidDFT/useful.cpp
-
 ${OBJECTDIR}/colDFT.o: colDFT.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -112,6 +97,11 @@ ${OBJECTDIR}/colDFTgetters.o: colDFTgetters.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTgetters.o colDFTgetters.cpp
 
+${OBJECTDIR}/colDFTmain.o: colDFTmain.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTmain.o colDFTmain.cpp
+
 ${OBJECTDIR}/colDFTpolymerdensity.o: colDFTpolymerdensity.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -126,6 +116,16 @@ ${OBJECTDIR}/colDFTweights.o: colDFTweights.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTweights.o colDFTweights.cpp
+
+${OBJECTDIR}/random.o: random.C
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/random.o random.C
+
+${OBJECTDIR}/useful.o: useful.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/useful.o useful.cpp
 
 # Subprojects
 .build-subprojects:

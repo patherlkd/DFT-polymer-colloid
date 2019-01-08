@@ -7,12 +7,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFTSetters.cpp</file>
-            <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFTfuncs.cpp</file>
+            <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFTpotentials.cpp</file>
             <file>file:/homes/ldavis/Downloads/ColloidDFT/useful.h</file>
             <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFTpolymerdensity.cpp</file>
             <file>file:/homes/ldavis/Downloads/ColloidDFT/useful.cpp</file>
-            <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFTfreeenergy.cpp</file>
+            <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFTgetters.cpp</file>
             <file>file:/homes/ldavis/Downloads/ColloidDFT/colDFT.h</file>
             <file>file:/homes/ldavis/NetBeansProjects/DFTPolymerColloid/colDFT.cpp</file>
         </group>

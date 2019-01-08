@@ -153,3 +153,10 @@ void DFT::solveGs() {
 }
 
 
+db DFT::simp(int a) // trapezoidal atm
+{
+    if (a == 0 || a == Nz - 1)
+        return 1.0 * 0.5;
+    else
+        return 1.0;
+}

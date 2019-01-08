@@ -22,7 +22,9 @@
       <itemPath>colDFTSetters.cpp</itemPath>
       <itemPath>colDFTfreeenergy.cpp</itemPath>
       <itemPath>colDFTfuncs.cpp</itemPath>
+      <itemPath>colDFTgetters.cpp</itemPath>
       <itemPath>colDFTpolymerdensity.cpp</itemPath>
+      <itemPath>colDFTpotentials.cpp</itemPath>
       <itemPath>colDFTweights.cpp</itemPath>
       <itemPath>../../Downloads/ColloidDFT/random.C</itemPath>
       <itemPath>../../Downloads/ColloidDFT/useful.cpp</itemPath>
@@ -94,7 +96,11 @@
       </item>
       <item path="colDFTfuncs.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="colDFTgetters.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="colDFTpolymerdensity.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTpotentials.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTweights.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -164,7 +170,11 @@
       </item>
       <item path="colDFTfuncs.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="colDFTgetters.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="colDFTpolymerdensity.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTpotentials.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTweights.cpp" ex="false" tool="1" flavor2="0">
       </item>

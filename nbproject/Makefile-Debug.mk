@@ -42,7 +42,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/colDFTSetters.o \
 	${OBJECTDIR}/colDFTfreeenergy.o \
 	${OBJECTDIR}/colDFTfuncs.o \
+	${OBJECTDIR}/colDFTgetters.o \
 	${OBJECTDIR}/colDFTpolymerdensity.o \
+	${OBJECTDIR}/colDFTpotentials.o \
 	${OBJECTDIR}/colDFTweights.o
 
 
@@ -105,10 +107,20 @@ ${OBJECTDIR}/colDFTfuncs.o: colDFTfuncs.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfuncs.o colDFTfuncs.cpp
 
+${OBJECTDIR}/colDFTgetters.o: colDFTgetters.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTgetters.o colDFTgetters.cpp
+
 ${OBJECTDIR}/colDFTpolymerdensity.o: colDFTpolymerdensity.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpolymerdensity.o colDFTpolymerdensity.cpp
+
+${OBJECTDIR}/colDFTpotentials.o: colDFTpotentials.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpotentials.o colDFTpotentials.cpp
 
 ${OBJECTDIR}/colDFTweights.o: colDFTweights.cpp
 	${MKDIR} -p ${OBJECTDIR}

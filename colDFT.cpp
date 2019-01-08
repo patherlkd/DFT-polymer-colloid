@@ -8,9 +8,9 @@
 
 using namespace std;
 
+DFT::DFT(int deb) {
 
-DFT::DFT(int d) {
-
+    this->deb = deb;
 
     gnumf.makefile("NSP1_data/easter_data/TESTmf256_0.0.txt");
     // gnumf.makefile("NSP1_data/easter_data/DFT2048_ideal_mf.txt");
@@ -19,7 +19,8 @@ DFT::DFT(int d) {
     gnuV.makefile("NSP1_data/Vtest.txt");
     //gnuF.makefile("NSP1_data/easter_data/FE__0.0.txt");// Free energy file
     //gnuLEA.makefile("LEA_term_0.2.txt");
-    deb = d;
+
+
     if (deb == 1) {
         gnuc.makefile("FMT_field_contribution.txt");
         gnug1.makefile("uniform_greens_function.txt");
@@ -46,39 +47,7 @@ DFT::DFT(int d) {
         gnupv1.makefile("pv1.txt");
         gnupv2.makefile("pv2.txt");
     }
-
-    Nc = 1000;
-
-    h = 100.0;
-    e = 20.0;
-    set_b(1.0);
-    set_dia(1.0);
-    set_Np(25);
-    set_Nm(300);
-    set_D(0.16666 * sqr_d(b));
-    set_ds(8000);
-    set_dz(512, h);
-    set_A(757.575757576);
-    // set_A(500.0);
-    set_gamma(0.0001);
-    set_dt(0.01);
-    DT = 0.07;
-
-    conv_fact = 0.26424111765;
-    r = 0.5 * dia;
-    rc = r + r;
-    chem = 5;
-    colbulk = (db) Nc / (A * h);
-    sigma = 0.76;
-    cut = 2 * dia;
-    eps = 0.0;
-    lambda = 0.76;
-
-
-
-    graft = ((db) Np) / A;
-    tether = 4;
-
+    
     Gv1.resize(Nz);
     Gv2.resize(Nz);
     field.resize(Nz);
@@ -119,7 +88,7 @@ DFT::DFT(int d) {
 
 
     density.resize(Nz);
-    coldensity.resize(Nz);
+    coldensity1.resize(Nz);
     G1.resize(Nz, Ns);
     G2.resize(Nz, Ns);
 
@@ -128,7 +97,7 @@ DFT::DFT(int d) {
 
     Zero_vec(field, Nz);
     Zero_vec(density, Nz);
-    Zero_vec(coldensity, Nz);
+    Zero_vec(coldensity1, Nz);
 
 
 
@@ -156,17 +125,16 @@ DFT::DFT(int d) {
     Zero_mat(G2, Nz, Ns);
 
     H = (ds * D) / (2 * dz * dz);
-   cout << "H: " << H << endl;
+    cout << "H: " << H << endl;
     cout << "dz: " << dz << endl;
 }
-
 
 void DFT::evolve() {
 
     iter = 0;
     conver = 1;
     init_field(0.80); // Initialize mean field
-    init_coldensity(); // Initialize colloid density (bulk?)
+    init_coldensity1(); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
 
 
@@ -176,43 +144,40 @@ void DFT::evolve() {
         solveGs(); // Solve for the propagators
         comp_dens(); // Compute density(Z)
         if (conver == 1) {
-            comp_n_col();
+            comp_n_col1();
             comp_n_pol();
         }
         //  norm();
         update_mf(1); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
-        update_col(); // Update the colloid density
-
-        if (iter % 1 == 0) {
-            cout << "MF convergence: " << conver << endl;
-            cout << "Col density convergence: " << conver_col << endl;
-        }
+        update_col1(); // Update the colloid density
 
 
-        //     gnudens.plot('l'); // This plots the density real time (see gnuplot.h (A useful creation I made.. but needs improving) for how) 
-        //     gnucol.plot('p');
+        cout << "MF convergence: " << conver << endl;
+        cout << "Col density 1 convergence: " << conver_col1 << endl;
+        //        cout << "Col density 2 convergence: " << conver_col2 << endl;
+
         iter++;
     }
 
 
 }
 
-void DFT::update_col() {
+void DFT::update_col1() {
     ofstream d2("NSP1_data/easter_data/col_dens.txt");
     db ARG = 0, max = 0, old_d = 0, diff = 0;
 
-    comp_FMT_col();
+    comp_FMT_col1();
 
     for (int i = 0; i < Nz; i++) {
-        old_d = coldensity(i);
+        old_d = coldensity1(i);
         ARG = chem + cc(i) - V(i);
-        coldensity(i) = (1.0 - DT) * coldensity(i) + dt * colbulk * exp(ARG);
-        diff = fabs(old_d - coldensity(i));
+        coldensity1(i) = (1.0 - DT) * coldensity1(i) + dt * colbulk * exp(ARG);
+        diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;
 
-        gnucol.send2file((db) i*dz, coldensity(i));
-        d2 << (db) i * dz << "\t" << coldensity(i) << endl;
+        gnucol.send2file((db) i*dz, coldensity1(i));
+        d2 << (db) i * dz << "\t" << coldensity1(i) << endl;
     }
 
     conver_col = max;
@@ -256,56 +221,99 @@ void DFT::norm() {
     d1.resize(Nz);
     db unnorm = 0, norm = 0;
     for (int i = 0; i < Nz; i++) {
-        d1(i) = coldensity(i);
+        d1(i) = coldensity1(i);
         unnorm += d1(i) * dz*A;
     }
     for (int i = 0; i < Nz; i++) {
 
         d1(i) = Nc * d1(i) / unnorm;
-        coldensity(i) = d1(i);
+        coldensity1(i) = d1(i);
         // d2 << (db)i*dz << "\t" << d1(i)<<endl;
         norm += d1(i) * dz*A;
     }
 
-    cout << "TOTAL N: " << norm << endl;
+    //   cout << "TOTAL N: " << norm << endl;
     //d2.close();
 }
 
-void DFT::init_coldensity() // Initialize the colloid density
+void DFT::init_coldensity1() // Initialize the colloid density
 {
     for (int i = 0; i < Nz; i++) {
 
         if (i <= 20 || i == Nz - 1) {
-            coldensity(i) = 0.0;
+            coldensity1(i) = 0.0;
         } else if (i > 20)
-            coldensity(i) = colbulk * exp(V(i));
+            coldensity1(i) = colbulk * exp(V(i));
     }
 }
 
 void DFT::init_field(db a) {
-    
-    for(int i = 0;i < Nz; i++){
+
+    for (int i = 0; i < Nz; i++) {
         field(i) = 0.0;
     }
-    
-  /*  ifstream imf("NSP1_data/easter_data/DFT512_ideal_mf.txt");
-    rini(57389);
-    db Z_, F_;
-    string line;
-    /*for(int i=0;i < field.rows(); i++)
-      {
-        if( i*dz >=0  && i*dz <(Nz)*dz)
-          field(i) = a*exp(-(db)i*dz);
-          }
-    int i = 0;
-    while (getline(imf, line)) {
+}
 
-        stringstream ss(line);
+void DFT::plotcheck(int op) {
+    if (op == 0) {
+        gnudens.plot('l');
+        //gnumf.plot('p');
+    } else if (op == 2) {
+        gnuw0.xrange(0.0, 3.0);
+        gnuw1.xrange(0.0, 3.0);
+        gnuw2.xrange(0.0, 3.0);
+        gnuw3.xrange(0.0, 3.0);
+        gnuwv1.xrange(0.0, 3.0);
+        gnuwv2.xrange(0.0, 3.0);
+        gnuw0.plot('l');
+        gnuw1.plot('l');
+        gnuw2.plot('l');
+        gnuw3.plot('l');
+        gnuwv1.plot('l');
+        gnuwv2.plot('l');
+    } else if (op == 3) {
+        gnun0.plot('p');
+        gnun1.plot('p');
+        gnun2.plot('p');
+        gnun3.plot('p');
+        gnunv1.plot('p');
+        gnunv2.plot('p');
+    } else if (op == 4) {
+        gnup0.plot('p');
+        gnup1.plot('p');
+        gnup2.plot('p');
+        gnup3.plot('p');
+        gnupv1.plot('p');
+        gnupv2.plot('p');
+    } else if (op == 1) {
+        gnuc.plot('l');
 
-        ss >> Z_ >> F_;
-        if (i < Nz)
-            field(i) = F_;
-        i++;
-    }
-    imf.close();*/
+        gnug1.splot(13), gnug2.splot(11);
+    } else
+        cout << "ERROR plot debugging op has to = 0 or 1!\n" << endl;
+
+}
+
+
+
+/*  ifstream imf("NSP1_data/easter_data/DFT512_ideal_mf.txt");
+  rini(57389);
+  db Z_, F_;
+  string line;
+  /*for(int i=0;i < field.rows(); i++)
+    {
+      if( i*dz >=0  && i*dz <(Nz)*dz)
+        field(i) = a*exp(-(db)i*dz);
+        }
+  int i = 0;
+  while (getline(imf, line)) {
+
+      stringstream ss(line);
+
+      ss >> Z_ >> F_;
+      if (i < Nz)
+          field(i) = F_;
+      i++;
+  }
+  imf.close();*/
 }

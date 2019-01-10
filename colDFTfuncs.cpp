@@ -62,7 +62,7 @@ void DFT::comp_dphi_pol() //d(WB)/dn
     db N0, N1, N2, N3, Nv1, Nv2;
     db R;
 
-    R = frac(r*rc11, rc11 + r);
+    R = frac(r*rc1, rc1 + r);
 
     for (int i = 0; i < Nz; i++) {
 

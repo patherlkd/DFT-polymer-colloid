@@ -154,7 +154,7 @@ void fourier(vec &data, int isign)
       while(m >= 2 && j > m)
 	{
 	  j -=m;
-	  m >>=1;set_dia
+	  m >>=1;
 	}
       j+=m;
     }

@@ -7,6 +7,7 @@
 
 
 #include "colDFT.h"
+#include "math.h"
 
 void DFT::comp_POT() {
 
@@ -27,10 +28,48 @@ void DFT::comp_POT() {
 
 }
 
+db DFT::comp_att_term(int zplace,vec &densityj,db eppij,db ri,db rj,db lambdaij){
+   
+    db delz = 0.0, sum = 0.0, dij = ri + rj;
+    db pot_below_d = 0.0; // potential energy beyond hard surface contact
+    
+    if(potential_mode==0){ // Dinos potential
+        
+        pot_below_d = dinos_potential(0.0,eppij,dij,lambdaij); // compute this once
+               
+    for(int iz = 0; iz < Nz; iz++){
+        
+        delz = fabs((db)(iz - zplace)*dz);
+        
+        if(delz >= dij){
+            sum += simp(iz)*densityj(iz)*dinos_potential(delz,eppij,dij,lambdaij)*dz;
+        } else {
+            sum += simp(iz)*densityj(iz)*pot_below_d*dz;
+        }
+       
+    }
+    
+        
+    } else if(potential_mode==1){ // Lukes shorter ranged potential
+        
+        
+        
+    }
+    
+    return sum;
+    
+}
+
+db DFT::dinos_potential(db Z,db eppij,db dij, db lambdaij){
+    
+   return -2.0*eppij*lambdaij*(dij + lambdaij)*pi + 2.0*eppij*pi*(lambdaij*(dij + lambdaij) - 
+      exp((dij - Z)/lambdaij)*lambdaij*(lambdaij + Z))* Htheta(-dij + Z);
+    
+}
 
 db DFT::attractive(int place) {
     db pot = 0, delz = 0, sum = 0, term = 0;
-    int n = Nz;
+  
     for (int l = 0; l < Nz; l++) {
         delz = fabs((db) l * dz - (db) place * dz);
         if (delz >= sigma && delz <= cut)// cutoff disabled for Dinos potential  ATM! !!!!!!

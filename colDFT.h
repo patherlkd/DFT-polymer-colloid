@@ -43,10 +43,11 @@ public:
     void norm();
     db comp_free_energy();
     db simp(int);
-
-    // pair potentials
-
     db attractive(int);
+    db comp_att_term(int zplace,vec& densityj,db eppij,db ri,db rj,db lambdaij); // New general attractive term in free energy
+    
+    // pair potentials
+    db dinos_potential(db Z,db eppij,db dij, db lambdaij);
     db LEA(db);
 
     // Fundamental Measure Theory functions
@@ -82,6 +83,7 @@ private:
     unsigned int Ns; // number of s points
     unsigned int Nz; // number of spatial points
     unsigned int iter; // iteration tracker
+    unsigned int potential_mode; // to use Dinos or my shorter ranged potential
 
     // for plotting purposes
 

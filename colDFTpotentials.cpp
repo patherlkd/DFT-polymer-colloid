@@ -58,3 +58,45 @@ db DFT::LEA(db Z) {
     return ans;
 
 }
+
+/*
+ 
+ * From DFT.h lemons might be more recent
+ * 
+ db DFT::attractive(int place) {
+    if (eps == 0.0)
+        return 0.0;
+
+    db pot = 0.0, delz = 0, sum = 0, term = 0;
+    int n = Nz;
+    for (int l = 0; l < Nz; l++) {
+        delz = fabs((db) l * dz - (db) place * dz);
+
+        if (delz <= cut) {
+            pot = LEA((-eps / conv_fact), lambda, delz);
+        } else;
+
+        sum += simp(l) * pot * density(l) * dz;
+    }
+
+    return sum;
+
+}
+
+db DFT::LEA(db epp, db lambda, db Z)// Potential integrated over the plane                                                      
+{
+    db Z2 = Z*Z, ans;
+    db e1 = exp(Z / lambda);
+    db e2 = exp(-3.0 - Z / lambda);
+    db e3 = exp(1 + Z / lambda);
+    db lambda2 = lambda*lambda;
+    db lambda3 = lambda2*lambda;
+
+    //ans = 8.45561 - 3.46718*Z2 +  1.0138*Z2*Z+exp(-1.31579*Z)*(-9.8651-12.9804*Z);                                            
+    ans = 0;
+    ans = (1.0 / (3.0 * lambda)) * e2 * epp * pi * (-1.0 + Htheta(Z - 2.0 * lambda));
+    ans *= ((31.0 - 12 * euler) * e1 * lambda3 + (12.0 * e3 * lambda3 - 6.0 *euler * euler * lambda2 * (Z + lambda) + e1 * ((2.0 * Z2 * Z) - 9.0 * Z2 * lambda + 7.0 * lambda3)) * Htheta(Z - lambda));
+    return ans;
+}
+ */
+

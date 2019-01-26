@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=DFTPolymerColloid
+PROJECTNAME=DFT-polymer-colloid
 
 # Active Configuration
 DEFAULTCONF=Debug

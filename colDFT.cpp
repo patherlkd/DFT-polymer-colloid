@@ -141,7 +141,7 @@ void DFT::evolve() {
 
     while (conver > gamma) // Do while un converged. Well durr. 
     {
-        solveGs(); // Solve for the propagators
+        solveGs(); // Solve for the propagators for polymer density 
         comp_dens(); // Compute density(Z)
         if (conver == 1) {
             comp_n_col1();
@@ -180,7 +180,7 @@ void DFT::update_col1() {
         d2 << (db) i * dz << "\t" << coldensity1(i) << endl;
     }
 
-    conver_col = max;
+    conver_col1 = max;
     d2.close();
 }
 

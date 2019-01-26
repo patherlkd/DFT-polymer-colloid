@@ -14,8 +14,7 @@ using namespace std;
 void DFT::comp_dens() {
     unnorm = 0;
     bool nan_check(false);
-    ofstream dens("NSP1_data/easter_data/packing256_0.0.txt");
-
+   
     for (int i = 0; i < Nz; i++) {
         density(i) = 0;
         if (i >= 0) {
@@ -36,9 +35,8 @@ void DFT::comp_dens() {
     for (int i = 0; i < Nz; i++) {
 
         density(i) = (density(i)*(db) Nm * (db) Np) / unnorm;
-        if (!nan_check)
-            dens << ((db) i * dz) << '\t' << density(i) << endl;
-        else {
+        
+        if(nan_check) {
             cout << "ERROR: Nan in the density. Aborted." << endl;
         }
         norm1 += simp(i) * density(i) * dz;
@@ -47,7 +45,7 @@ void DFT::comp_dens() {
     cout << "# of monomers =" << norm << endl;
     //cout << "# of monomers(dz) =" << norm1<< endl;
 
-    dens.close();
+  
 }
 
 ////  SOLVE GS ---------------------------------------------------------------------
@@ -138,16 +136,6 @@ void DFT::solveGs() {
         // modulate(Gsol,Nz);
         //Gv2=T*r;
         G2.col(s) = Gv2;
-    }
-
-
-    if (deb == 1) {
-        for (int i = 0; i < Nz; i++) {
-            for (int j = 0; j < Ns; j++) {
-                gnug1.send3file((db) (i) * dz, (db) (j) * ds, G1(i, j));
-                gnug2.send3file((db) (i) * dz, (db) (j) * ds, G2(i, j));
-            }
-        }
     }
 
 }

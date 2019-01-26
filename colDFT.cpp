@@ -8,45 +8,7 @@
 
 using namespace std;
 
-DFT::DFT(int deb) {
-
-    this->deb = deb;
-
-    gnumf.makefile("NSP1_data/easter_data/TESTmf256_0.0.txt");
-    // gnumf.makefile("NSP1_data/easter_data/DFT2048_ideal_mf.txt");
-    gnudens.makefile("NSP1_data/easter_data/packing256_0.0.txt"); // Density profile file
-    gnucol.makefile("NSP1_data/easter_data/col_dens.txt");
-    gnuV.makefile("NSP1_data/Vtest.txt");
-    //gnuF.makefile("NSP1_data/easter_data/FE__0.0.txt");// Free energy file
-    //gnuLEA.makefile("LEA_term_0.2.txt");
-
-
-    if (deb == 1) {
-        gnuc.makefile("FMT_field_contribution.txt");
-        gnug1.makefile("uniform_greens_function.txt");
-        gnug2.makefile("tethered_greens_function.txt");
-    } else if (deb == 2) {
-        gnuw0.makefile("w0.txt");
-        gnuw1.makefile("w1.txt");
-        gnuw2.makefile("w2.txt");
-        gnuw3.makefile("w3.txt");
-        gnuwv1.makefile("wv1.txt");
-        gnuwv2.makefile("wv2.txt");
-    } else if (deb == 3) {
-        gnun0.makefile("n0.txt");
-        gnun1.makefile("n1.txt");
-        gnun2.makefile("n2.txt");
-        gnun3.makefile("n3.txt");
-        gnunv1.makefile("nv1.txt");
-        gnunv2.makefile("nv2.txt");
-    } else if (deb == 4) {
-        gnup0.makefile("p0.txt");
-        gnup1.makefile("p1.txt");
-        gnup2.makefile("p2.txt");
-        gnup3.makefile("p3.txt");
-        gnupv1.makefile("pv1.txt");
-        gnupv2.makefile("pv2.txt");
-    }
+DFT::DFT() {
     
     Gv1.resize(Nz);
     Gv2.resize(Nz);
@@ -98,9 +60,7 @@ DFT::DFT(int deb) {
     Zero_vec(field, Nz);
     Zero_vec(density, Nz);
     Zero_vec(coldensity1, Nz);
-
-
-
+    
     Zero_vec(n0, Nz);
     Zero_vec(n1, Nz);
     Zero_vec(n2, Nz);
@@ -118,15 +78,12 @@ DFT::DFT(int deb) {
 
     Zero_vec(c, Nz);
     Zero_vec(cc, Nz);
-
-
-
+    
     Zero_mat(G1, Nz, Ns);
     Zero_mat(G2, Nz, Ns);
 
     H = (ds * D) / (2 * dz * dz);
-    cout << "H: " << H << endl;
-    cout << "dz: " << dz << endl;
+
 }
 
 void DFT::evolve() {
@@ -151,6 +108,7 @@ void DFT::evolve() {
         update_mf(1); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
         update_col1(); // Update the colloid density
 
+        export_data();
 
         cout << "MF convergence: " << conver << endl;
         cout << "Col density 1 convergence: " << conver_col1 << endl;
@@ -162,8 +120,32 @@ void DFT::evolve() {
 
 }
 
+/*
+ Export essential output data from the simulation
+ */
+void DFT::export_data() {
+
+    DFT::poly_dens_file.open(DFT::poly_dens_filename);
+    DFT::col1_dens_file.open(DFT::col1_dens_filename);
+    DFT::meanfield_file.open(DFT::meanfield_filename);
+    DFT::external_pot_file.open(DFT::external_pot_filename);
+
+    for (int i = 0; i < Nz; i++) {
+        DFT::poly_dens_file << (db) i * dz << "\t" << DFT::density(i) << endl;
+        DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
+        DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
+        DFT::external_pot_file << (db) i * dz << "\t" << DFT::V(i) << endl;
+    }
+    
+    DFT::poly_dens_file.close();
+    DFT::col1_dens_file.close();
+    DFT::meanfield_file.close();
+    DFT::external_pot_file.close();
+    
+}
+
 void DFT::update_col1() {
-    ofstream d2("NSP1_data/easter_data/col_dens.txt");
+
     db ARG = 0, max = 0, old_d = 0, diff = 0;
 
     comp_FMT_col1();
@@ -176,12 +158,11 @@ void DFT::update_col1() {
         if (diff > max)
             max = diff;
 
-        gnucol.send2file((db) i*dz, coldensity1(i));
-        d2 << (db) i * dz << "\t" << coldensity1(i) << endl;
+
     }
 
     conver_col1 = max;
-    d2.close();
+
 }
 
 void DFT::update_mf(int ch) {
@@ -201,9 +182,6 @@ void DFT::update_mf(int ch) {
 
         field(i) = old_mf + dt * (-old_mf + c(i) + V(i));
 
-        gnumf.send2file((db) i*dz, field(i));
-        if (deb == 1)
-            gnuc.send2file((db) i * dz, c(i));
         diff = fabs(old_mf - field(i));
         if (diff > max)
             max = diff;
@@ -253,47 +231,6 @@ void DFT::init_field(db a) {
         field(i) = 0.0;
     }
 }
-
-void DFT::plotcheck(int op) {
-    if (op == 0) {
-        gnudens.plot('l');
-        //gnumf.plot('p');
-    } else if (op == 2) {
-        gnuw0.xrange(0.0, 3.0);
-        gnuw1.xrange(0.0, 3.0);
-        gnuw2.xrange(0.0, 3.0);
-        gnuw3.xrange(0.0, 3.0);
-        gnuwv1.xrange(0.0, 3.0);
-        gnuwv2.xrange(0.0, 3.0);
-        gnuw0.plot('l');
-        gnuw1.plot('l');
-        gnuw2.plot('l');
-        gnuw3.plot('l');
-        gnuwv1.plot('l');
-        gnuwv2.plot('l');
-    } else if (op == 3) {
-        gnun0.plot('p');
-        gnun1.plot('p');
-        gnun2.plot('p');
-        gnun3.plot('p');
-        gnunv1.plot('p');
-        gnunv2.plot('p');
-    } else if (op == 4) {
-        gnup0.plot('p');
-        gnup1.plot('p');
-        gnup2.plot('p');
-        gnup3.plot('p');
-        gnupv1.plot('p');
-        gnupv2.plot('p');
-    } else if (op == 1) {
-        gnuc.plot('l');
-
-        gnug1.splot(13), gnug2.splot(11);
-    } else
-        cout << "ERROR plot debugging op has to = 0 or 1!\n" << endl;
-
-}
-
 
 
 /*  ifstream imf("NSP1_data/easter_data/DFT512_ideal_mf.txt");

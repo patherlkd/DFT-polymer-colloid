@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>CLI11.hpp</itemPath>
       <itemPath>colDFT.h</itemPath>
       <itemPath>gnuplot.h</itemPath>
       <itemPath>main.h</itemPath>
@@ -18,13 +19,13 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>colDFT.cpp</itemPath>
-      <itemPath>colDFTSetters.cpp</itemPath>
       <itemPath>colDFTfreeenergy.cpp</itemPath>
       <itemPath>colDFTfuncs.cpp</itemPath>
       <itemPath>colDFTgetters.cpp</itemPath>
       <itemPath>colDFTmain.cpp</itemPath>
       <itemPath>colDFTpolymerdensity.cpp</itemPath>
       <itemPath>colDFTpotentials.cpp</itemPath>
+      <itemPath>colDFTsetters.cpp</itemPath>
       <itemPath>colDFTweights.cpp</itemPath>
       <itemPath>random.C</itemPath>
       <itemPath>useful.cpp</itemPath>
@@ -50,12 +51,15 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <standard>8</standard>
+        </ccTool>
       </compileType>
+      <item path="CLI11.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="colDFT.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFT.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="colDFTSetters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTfreeenergy.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -68,6 +72,8 @@
       <item path="colDFTpolymerdensity.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTpotentials.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTsetters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTweights.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -104,11 +110,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="CLI11.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="colDFT.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFT.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="colDFTSetters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTfreeenergy.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -121,6 +127,8 @@
       <item path="colDFTpolymerdensity.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTpotentials.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="colDFTsetters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTweights.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -17,7 +17,6 @@
 //#include "euler.h"
 #include "useful.h"
 #include "Dense"
-//#include "gnuplot.h"
 
 using namespace std;
 using namespace Eigen;

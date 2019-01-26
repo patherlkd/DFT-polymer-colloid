@@ -1,5 +1,5 @@
 #include "main.h"
-#include "gnuplot.h"
+
 // FUNCTIONS
 
 typedef MatrixXd mat;
@@ -13,6 +13,7 @@ void Rfourier(vec &data, int isign); // length of vector must be a power of 2
 void modulate(vec &v, int rows);
 void modulate(vec &v,int rows);
 db heaviside(db  R, db x);
+
 template <class T>
 T dirac(T R,T x);
 template <class T>
@@ -140,7 +141,8 @@ void fourier(vec &data, int isign)
   int n,mmax,m,j,istep,i;
   db wtemp,wr,wpr,wpi,wi,theta,tempr,tempi;
 
-  int nn=data.size()/2.0;
+  int nn=(data.rows()*data.cols())/2.0;
+
   n=nn << 1;
   j=1;
   for(i=1;i<n;i+=2)
@@ -195,7 +197,7 @@ void Rfourier(vec &data, int isign)
   int i,i1,i2,i3,i4;
   db c1=0.5,c2,h1r,h1i,h2r,h2i,wr,wi,wpr,wpi,wtemp,theta;
 
-  int n=data.size();
+  int n=data.rows()*data.cols();
   theta=pi/(db)(n>>1);
   if(isign == 1)
     {
@@ -246,7 +248,7 @@ void Rfourier(vec &data, int isign)
 void tridag(vec &a, vec &b, vec &c, vec &r, vec &sol)
 {
   db bet;
-  int n= a.size();
+  int n= a.rows()*a.cols();
   vec gam(n);
   
   if(b(0)==0.0)

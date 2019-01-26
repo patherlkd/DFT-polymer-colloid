@@ -20,11 +20,8 @@ void DFT::comp_POT() {
             V(i) = 0.0;
         else
             V(i) = wall_strength*(exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
-
-        gnuV.send2file(z, V(i));
-
     }
-    // gnuV.plot('l');
+   
 
 }
 

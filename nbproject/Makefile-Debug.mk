@@ -36,13 +36,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/colDFT.o \
-	${OBJECTDIR}/colDFTSetters.o \
 	${OBJECTDIR}/colDFTfreeenergy.o \
 	${OBJECTDIR}/colDFTfuncs.o \
 	${OBJECTDIR}/colDFTgetters.o \
 	${OBJECTDIR}/colDFTmain.o \
 	${OBJECTDIR}/colDFTpolymerdensity.o \
 	${OBJECTDIR}/colDFTpotentials.o \
+	${OBJECTDIR}/colDFTsetters.o \
 	${OBJECTDIR}/colDFTweights.o \
 	${OBJECTDIR}/random.o \
 	${OBJECTDIR}/useful.o
@@ -66,66 +66,66 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dft-polymer-colloid
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dftpolymercolloid
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dft-polymer-colloid: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dftpolymercolloid: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dft-polymer-colloid ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dftpolymercolloid ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/colDFT.o: colDFT.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFT.o colDFT.cpp
-
-${OBJECTDIR}/colDFTSetters.o: colDFTSetters.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTSetters.o colDFTSetters.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFT.o colDFT.cpp
 
 ${OBJECTDIR}/colDFTfreeenergy.o: colDFTfreeenergy.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfreeenergy.o colDFTfreeenergy.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfreeenergy.o colDFTfreeenergy.cpp
 
 ${OBJECTDIR}/colDFTfuncs.o: colDFTfuncs.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfuncs.o colDFTfuncs.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTfuncs.o colDFTfuncs.cpp
 
 ${OBJECTDIR}/colDFTgetters.o: colDFTgetters.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTgetters.o colDFTgetters.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTgetters.o colDFTgetters.cpp
 
 ${OBJECTDIR}/colDFTmain.o: colDFTmain.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTmain.o colDFTmain.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTmain.o colDFTmain.cpp
 
 ${OBJECTDIR}/colDFTpolymerdensity.o: colDFTpolymerdensity.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpolymerdensity.o colDFTpolymerdensity.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpolymerdensity.o colDFTpolymerdensity.cpp
 
 ${OBJECTDIR}/colDFTpotentials.o: colDFTpotentials.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpotentials.o colDFTpotentials.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTpotentials.o colDFTpotentials.cpp
+
+${OBJECTDIR}/colDFTsetters.o: colDFTsetters.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTsetters.o colDFTsetters.cpp
 
 ${OBJECTDIR}/colDFTweights.o: colDFTweights.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTweights.o colDFTweights.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/colDFTweights.o colDFTweights.cpp
 
 ${OBJECTDIR}/random.o: random.C
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/random.o random.C
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/random.o random.C
 
 ${OBJECTDIR}/useful.o: useful.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/useful.o useful.cpp
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/useful.o useful.cpp
 
 # Subprojects
 .build-subprojects:

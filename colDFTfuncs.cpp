@@ -30,24 +30,6 @@ void DFT::comp_n_pol() {
 
         }
 
-        if (deb == 2) {
-            gnuw0.send2file((db) i*dz, w0(r, (db) i * dz));
-            gnuw1.send2file((db) i*dz, w1(r, (db) i * dz));
-            gnuw2.send2file((db) i*dz, w2(r, (db) i * dz));
-            gnuw3.send2file((db) i*dz, w3(r, (db) i * dz));
-            gnuwv1.send2file((db) i*dz, wv1(r, (db) i * dz));
-            gnuwv2.send2file((db) i*dz, wv2(r, (db) i * dz));
-        }
-
-        if (deb == 3) {
-            gnun0.send2file((i)*(dz), n0(i));
-            gnun1.send2file((i)*(dz), n1(i));
-            gnun2.send2file((i)*(dz), n2(i));
-            gnun3.send2file((i)*(dz), n3(i));
-            gnunv1.send2file((i)*(dz), nv1(i));
-            gnunv2.send2file((i)*(dz), nv2(i));
-        }
-
     }
 
 }
@@ -106,15 +88,6 @@ void DFT::comp_dphi_pol() //d(WB)/dn
         dphiv2(i) -= frac(N2 * Nv2 * (N3 + sq(a) * loga), 6.0 * sq(a) * N3 * pi);
         dphiv2(i) -= frac(2.0 * d * n0(i) * nv2(i) * logc, sq(n2(i)));
 
-
-        if (deb == 4) {
-            gnup0.send2file((i)*(dz), dphi0(i));
-            gnup1.send2file((i)*(dz), dphi1(i));
-            gnup2.send2file((i)*(dz), dphi2(i));
-            gnup3.send2file((i)*(dz), dphi3(i));
-            gnupv1.send2file((i)*(dz), dphiv1(i));
-            gnupv2.send2file((i)*(dz), dphiv2(i));
-        }
     }
 }
 
@@ -341,15 +314,6 @@ void DFT::RF() {
         dphiv2(i) -= (n2(i) * nv2(i)) / (4.0 * a2 * pi);
         dphiv2(i) -= 2.0 * d * n0(i) * nv2(i)*(logc / sqn2);
 
-
-        if (deb == 4) {
-            gnup0.send2file((i)*(dz), dphi0(i));
-            gnup1.send2file((i)*(dz), dphi1(i));
-            gnup2.send2file((i)*(dz), dphi2(i));
-            gnup3.send2file((i)*(dz), dphi3(i));
-            gnupv1.send2file((i)*(dz), dphiv1(i));
-            gnupv2.send2file((i)*(dz), dphiv2(i));
-        }
     }
 
 

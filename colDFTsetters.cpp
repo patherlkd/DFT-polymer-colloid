@@ -11,7 +11,7 @@ using namespace std;
 
 void DFT::set_dia(db dia) {
     this->dia = dia;
-    this->r = dia*0.5;
+    this->r = dia * 0.5;
 }
 
 void DFT::set_Np(unsigned int N) {
@@ -51,4 +51,21 @@ void DFT::set_gamma(db g) {
 
 void DFT::set_dt(db t) {
     dt = t;
+}
+
+
+void DFT::set_poly_dens_filename(std::string s){
+    DFT::poly_dens_filename=s;
+}
+void DFT::set_col1_dens_filename(std::string s){
+    DFT::col1_dens_filename=s;
+}
+void DFT::set_meanfield_filename(std::string s){
+    DFT::meanfield_filename=s;
+}
+void DFT::set_external_pot_filename(std::string s){
+    DFT::external_pot_filename=s;
+}
+void DFT::set_system_out_filename(std::string s){
+    DFT::system_out_filename=s;
 }

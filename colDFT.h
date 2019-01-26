@@ -9,12 +9,19 @@ Luke Kristopher Davis:  ucapkda@ucl.ac.uk
 #ifndef DFT_H
 #define DFT_H
 
+#include <fstream>
+#include <string>
 
 class DFT {
-   
 public:
-    DFT(int);
-
+    
+    DFT();
+ 
+    void set_poly_dens_filename(std::string s);
+    void set_col1_dens_filename(std::string s);
+    void set_meanfield_filename(std::string s);
+    void set_external_pot_filename(std::string s);
+    void set_system_out_filename(std::string s);
 
     void set_dia(db dia);
     void set_Np(unsigned int N);
@@ -44,10 +51,10 @@ public:
     db comp_free_energy();
     db simp(int);
     db attractive(int);
-    db comp_att_term(int zplace,vec& densityj,db eppij,db ri,db rj,db lambdaij); // New general attractive term in free energy
-    
+    db comp_att_term(int zplace, vec& densityj, db eppij, db ri, db rj, db lambdaij); // New general attractive term in free energy
+
     // pair potentials
-    db dinos_potential(db Z,db eppij,db dij, db lambdaij);
+    db dinos_potential(db Z, db eppij, db dij, db lambdaij);
     db LEA(db);
 
     // Fundamental Measure Theory functions
@@ -75,7 +82,6 @@ public:
 
     // Churns whole scheme
     virtual void evolve();
-    void plotcheck(int); // plots important things to check whats going on (debugging)
 
 private:
     unsigned int Np; // number of polymers
@@ -86,13 +92,23 @@ private:
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
 
     // for plotting purposes
-
-    gnuplot gnucol, gnudens, gnuw0, gnuw1, gnuw2, gnuw3, gnuwv1, gnuwv2, gnumf;
-    gnuplot gnun0, gnun1, gnun2, gnun3, gnunv1, gnunv2;
-    gnuplot gnup0, gnup1, gnup2, gnup3, gnupv1, gnupv2;
-    gnuplot gnuc, gnug1, gnug2, gnuV, gnuF;
-    gnuplot gnuLEA;
-
+    
+     void export_data();
+    
+    std::string poly_dens_filename;
+    std::string col1_dens_filename;
+    std::string meanfield_filename;
+    std::string external_pot_filename;
+    std::string system_out_filename;
+    
+    std::ofstream system_out_file;
+    std::ofstream poly_dens_file;
+    std::ofstream col1_dens_file;
+    std::ofstream meanfield_file;
+    std::ofstream external_pot_file;
+    
+    // other sim stuff
+    
     db D; //diffusion coefficient
     db H; //used in solving for G's
     db h; //height
@@ -100,13 +116,13 @@ private:
     db graft; //grafting density
     db ds; //time slice size
     db dz; // space slice size
- 
+
     db b; // kuhn length
     db dia; // diameter of monomer
     db r; // radius of monomer
     db rc1; // radius of colloid
-    
-    
+
+
     db gamma; // convergence criterion
     db hs; // one body direct correlation function
     db dt; // for steepest descent (pol)
@@ -131,7 +147,7 @@ private:
     float conver_col2; // same for colloid 2
 
     int tether; // tethering array value
-    int deb; // debugging parameter for gnuplot.h
+
     vec field, density; //vectors for mean field and the density profile (polymers)
     vec coldensity1; // colloid density
     vec Gv1; // to manipulate greens function at one instance

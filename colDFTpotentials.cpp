@@ -8,6 +8,7 @@
 
 #include "colDFT.h"
 #include "math.h"
+#include "useful.h"
 
 void DFT::comp_POT() {
 

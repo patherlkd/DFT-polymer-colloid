@@ -5,6 +5,8 @@
  */
 
 #include "colDFT.h"
+#include "useful.h"
+#include <iostream>
 
 using namespace std;
 
@@ -232,6 +234,17 @@ void DFT::init_field(db a) {
     }
 }
 
+db DFT::correct(db R, db x) {
+     if(eq(x,R,0.001))
+      {return frac(3.0,8.0);}
+    else if(eq(x,R - dz,0.001))
+      {return frac(7.0,6.0);}
+    else if(eq(x,R -2.0*dz,0.001))
+      {return frac(23.0,24.0);}
+    else 
+    {return 1.0;}
+    return 1.0;
+}
 
 /*  ifstream imf("NSP1_data/easter_data/DFT512_ideal_mf.txt");
   rini(57389);
@@ -252,5 +265,5 @@ void DFT::init_field(db a) {
           field(i) = F_;
       i++;
   }
-  imf.close();*/
-}
+  imf.close();
+}*/

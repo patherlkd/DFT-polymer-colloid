@@ -8,6 +8,7 @@
 #include "iostream"
 #include "string"
 #include "fstream"
+#include "useful.h"
 
 using namespace std;
 

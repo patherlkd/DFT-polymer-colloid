@@ -7,7 +7,8 @@
 
 #include "colDFT.h"
 #include "fstream"
-#include "useful.cpp"
+#include "useful.h"
+#include <iostream>
 
 using namespace std;
 

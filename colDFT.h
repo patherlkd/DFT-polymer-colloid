@@ -11,6 +11,7 @@ Luke Kristopher Davis:  ucapkda@ucl.ac.uk
 
 #include <fstream>
 #include <string>
+#include "useful.h"
 
 class DFT {
 public:
@@ -86,8 +87,8 @@ public:
 private:
     unsigned int Np; // number of polymers
     unsigned int Nm; // number of monomers per polymer
-    unsigned int Ns; // number of s points
-    unsigned int Nz; // number of spatial points
+    unsigned int Ns=0; // number of s points
+    unsigned int Nz=0; // number of spatial points
     unsigned int iter; // iteration tracker
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
 
@@ -169,22 +170,14 @@ private:
 
 
 
+
+
+
 /*
 
  * 
  * Depracated code
  *
-db DFT::correct(db R, db x) {
-     if(eq(x,R,0.001))
-      {return frac(3.0,8.0);}
-    else if(eq(x,R - dz,0.001))
-      {return frac(7.0,6.0);}
-    else if(eq(x,R -2.0*dz,0.001))
-      {return frac(23.0,24.0);}
-    else 
-    {return 1.0;}
-    return 1.0;
-}
 
 //Used for EIGEN LU solver (slower but keep just in case)
 

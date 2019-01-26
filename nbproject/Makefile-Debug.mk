@@ -52,8 +52,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-I /homes/ldavis/Eigen/
+CXXFLAGS=-I /homes/ldavis/Eigen/
 
 # Fortran Compiler Flags
 FFLAGS=

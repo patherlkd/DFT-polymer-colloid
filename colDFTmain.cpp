@@ -1,8 +1,9 @@
-#include "useful.cpp"
+#include "useful.h"
 #include "colDFT.h"
 #include "pstream.h"
 #include <ctime>
 #include "CLI11.hpp"
+#include <iostream>
 
 int main(int argc, char *argv[]) {
 
@@ -12,7 +13,7 @@ int main(int argc, char *argv[]) {
     
     db epc1=0.0;
     
-    dftapp.add_option("-epc1",epc1," Polymer & colloid type 1 cohesion strength ");
+    dftapp.add_option("--epc1",epc1," Polymer & colloid type 1 cohesion strength ");
     
     CLI11_PARSE(dftapp,argc,argv);
     
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]) {
     time_t END = time(NULL);
 
     double duration = difftime(END, START);
-    cout << "FINISHED in " << duration << " seconds " << '\n';
+    std::cout << "FINISHED in " << duration << " seconds " << '\n';
 
     return 0;
 }

@@ -6,8 +6,6 @@
                    projectFiles="true">
       <itemPath>CLI11.hpp</itemPath>
       <itemPath>colDFT.h</itemPath>
-      <itemPath>gnuplot.h</itemPath>
-      <itemPath>main.h</itemPath>
       <itemPath>pstream.h</itemPath>
       <itemPath>useful.h</itemPath>
     </logicalFolder>
@@ -46,13 +44,15 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <ccTool>
           <standard>8</standard>
+          <commandLine>-I /homes/ldavis/Eigen/</commandLine>
+          <useLinkerLibraries>false</useLinkerLibraries>
         </ccTool>
       </compileType>
       <item path="CLI11.hpp" ex="false" tool="3" flavor2="0">
@@ -76,10 +76,6 @@
       <item path="colDFTsetters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTweights.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="gnuplot.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="pstream.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -131,10 +127,6 @@
       <item path="colDFTsetters.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="colDFTweights.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="gnuplot.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="pstream.h" ex="false" tool="3" flavor2="0">
       </item>

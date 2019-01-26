@@ -24,14 +24,14 @@ db DFT::w1(db R, db x) {
 
 db DFT::w2(db R, db x) {
     db w = 0;
-    w = correct(R, x)*2.0 * (pi * R) * heaviside(R, x);
+    w = 2.0 * (pi * R) * heaviside(R, x);
 
     return w;
 }
 
 db DFT::w3(db R, db x) {
     db w = 0;
-    w = correct(R, x) * pi * (R * R - x * x) * heaviside(R, x);
+    w = pi * (R * R - x * x) * heaviside(R, x);
     return w;
 }
 
@@ -43,7 +43,7 @@ db DFT::wv1(db R, db x) {
 
 db DFT::wv2(db R, db x) {
     db w = 0;
-    w = correct(R, x)*2.0 * pi * x * heaviside(R, x);
+    w = 2.0 * pi * x * heaviside(R, x);
     return w;
 }
 

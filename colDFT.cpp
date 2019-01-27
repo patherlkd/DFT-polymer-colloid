@@ -11,7 +11,7 @@
 using namespace std;
 
 DFT::DFT() {
-    
+
     Gv1.resize(Nz);
     Gv2.resize(Nz);
     field.resize(Nz);
@@ -62,7 +62,7 @@ DFT::DFT() {
     Zero_vec(field, Nz);
     Zero_vec(density, Nz);
     Zero_vec(coldensity1, Nz);
-    
+
     Zero_vec(n0, Nz);
     Zero_vec(n1, Nz);
     Zero_vec(n2, Nz);
@@ -80,7 +80,7 @@ DFT::DFT() {
 
     Zero_vec(c, Nz);
     Zero_vec(cc, Nz);
-    
+
     Zero_mat(G1, Nz, Ns);
     Zero_mat(G2, Nz, Ns);
 
@@ -107,7 +107,7 @@ void DFT::evolve() {
             comp_n_pol();
         }
         //  norm();
-        update_mf(1); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+        update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
         update_col1(); // Update the colloid density
 
         export_data();
@@ -138,12 +138,12 @@ void DFT::export_data() {
         DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
         DFT::external_pot_file << (db) i * dz << "\t" << DFT::V(i) << endl;
     }
-    
+
     DFT::poly_dens_file.close();
     DFT::col1_dens_file.close();
     DFT::meanfield_file.close();
     DFT::external_pot_file.close();
-    
+
 }
 
 void DFT::update_col1() {
@@ -154,12 +154,11 @@ void DFT::update_col1() {
 
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
-        ARG = chem + cc(i) - V(i);
+        ARG = chem - cc(i) - V(i) - DFT::comp_att_term(i,density,epc,r,rc1,lambdapc); // double check if cc(i) is negative
         coldensity1(i) = (1.0 - DT) * coldensity1(i) + DT * colbulk * exp(ARG);
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;
-
 
     }
 
@@ -167,29 +166,25 @@ void DFT::update_col1() {
 
 }
 
-void DFT::update_mf(int ch) {
+void DFT::update_mf() {
     hs = 0;
 
     att = 0;
-    db max = 0, ave = 0;
+    db max = 0;
     db old_mf = 0, diff = 0;
-    if (ch == 1) {
-        comp_FMT_pol();
-    }
+
+    comp_FMT_pol();
+
 
     for (int i = 0; i < Nz; i++) {
         old_mf = field(i);
-        if (ch == 0)
-            CS(i);
 
-        field(i) = old_mf + dt * (-old_mf + c(i) + V(i) + );
+        field(i) = old_mf + dt * (-old_mf + c(i) + V(i) + DFT::comp_att_term(i, density, epp, r, r, lambdapp));
 
         diff = fabs(old_mf - field(i));
         if (diff > max)
             max = diff;
 
-
-        //    ave+=fabs(old_mf-field(i));   
     }
 
     conver = max;
@@ -235,35 +230,15 @@ void DFT::init_field(db a) {
 }
 
 db DFT::correct(db R, db x) {
-     if(eq(x,R,0.001))
-      {return frac(3.0,8.0);}
-    else if(eq(x,R - dz,0.001))
-      {return frac(7.0,6.0);}
-    else if(eq(x,R -2.0*dz,0.001))
-      {return frac(23.0,24.0);}
-    else 
-    {return 1.0;}
+    if (eq(x, R, 0.001)) {
+        return frac(3.0, 8.0);
+    } else if (eq(x, R - dz, 0.001)) {
+        return frac(7.0, 6.0);
+    } else if (eq(x, R - 2.0 * dz, 0.001)) {
+        return frac(23.0, 24.0);
+    } else {
+        return 1.0;
+    }
     return 1.0;
 }
 
-/*  ifstream imf("NSP1_data/easter_data/DFT512_ideal_mf.txt");
-  rini(57389);
-  db Z_, F_;
-  string line;
-  /*for(int i=0;i < field.rows(); i++)
-    {
-      if( i*dz >=0  && i*dz <(Nz)*dz)
-        field(i) = a*exp(-(db)i*dz);
-        }
-  int i = 0;
-  while (getline(imf, line)) {
-
-      stringstream ss(line);
-
-      ss >> Z_ >> F_;
-      if (i < Nz)
-          field(i) = F_;
-      i++;
-  }
-  imf.close();
-}*/

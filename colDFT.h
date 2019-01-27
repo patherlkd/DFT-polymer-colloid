@@ -24,6 +24,7 @@ public:
     void set_external_pot_filename(std::string s);
     void set_system_out_filename(std::string s);
 
+    void set_epp(db epp);
     void set_dia(db dia);
     void set_Np(unsigned int N);
     void set_Nm(unsigned int N);
@@ -55,7 +56,7 @@ private:
     virtual void solveGs();
     virtual void comp_dens();
     void comp_POT();
-    void update_mf(int);
+    void update_mf();
     void update_col1();
     void CS(int);
     void norm();
@@ -130,10 +131,12 @@ private:
     db DT; // timestep for colloids
     db wall_strength; // energetic strength of hard wall
     db att; // attactive term contribution
-    db eps; // strength for gaussian attractive
-    db lambda; //range for gaussian attractive
-    db sigma; // the same as particle diameter
-    db cut; // cutoff for attraction
+  
+    db epp; // strength for cohesion (polymer-polymer)
+    db epc; // same but for polymer-colloid
+    db lambdapp; //range for gaussian attractive (polymer-polymer)
+    db lambdapc; 
+    
     db conv_fact;
     db unnorm;
     db Z; //" Partition function" 
@@ -159,7 +162,7 @@ private:
     vec dphi0, dphi1, dphi2, dphi3, dphiv1, dphiv2; // derivative of free energy density
     vec cdphi0, cdphi1, cdphi2, cdphi3, cdphiv1, cdphiv2; // colloid derivative of free energy density
 
-    vec c; // To hold the one body direct correlation function and the weights
+    vec c; // To hold the one body direct correlation function and the weights for the polymers
     vec cc; // one body... for colloids
     vec V; //external potential
     mat G1; // these will hold all G's for all s and z

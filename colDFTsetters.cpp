@@ -9,6 +9,10 @@
 
 using namespace std;
 
+void DFT::set_epp(db epp){
+    this->epp = epp;
+}
+
 void DFT::set_dia(db dia) {
     this->dia = dia;
     this->r = dia * 0.5;

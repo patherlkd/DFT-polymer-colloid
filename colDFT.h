@@ -36,10 +36,20 @@ public:
     void set_dt(db t);
 
     db get_dz();
+    
+    // Churns whole scheme
+    virtual void evolve();
 
-    // General DFT functions
+private:
+    unsigned int Np; // number of polymers
+    unsigned int Nm; // number of monomers per polymer
+    unsigned int Ns=0; // number of s points
+    unsigned int Nz=0; // number of spatial points
+    unsigned int iter; // iteration tracker
+    unsigned int potential_mode; // to use Dinos or my shorter ranged potential
 
-    void init_field(db);
+    
+        void init_field(db);
     void init_coldensity1();
 
     virtual void solveGs();
@@ -56,6 +66,7 @@ public:
 
     // pair potentials
     db dinos_potential(db Z, db eppij, db dij, db lambdaij);
+    db lukes_potential(db Z, db eppij, db dij, db lambdaij);
     db LEA(db);
 
     // Fundamental Measure Theory functions
@@ -80,18 +91,7 @@ public:
     db w3(db, db);
     db wv1(db, db);
     db wv2(db, db);
-
-    // Churns whole scheme
-    virtual void evolve();
-
-private:
-    unsigned int Np; // number of polymers
-    unsigned int Nm; // number of monomers per polymer
-    unsigned int Ns=0; // number of s points
-    unsigned int Nz=0; // number of spatial points
-    unsigned int iter; // iteration tracker
-    unsigned int potential_mode; // to use Dinos or my shorter ranged potential
-
+    
     // for plotting purposes
     
      void export_data();
@@ -126,8 +126,8 @@ private:
 
     db gamma; // convergence criterion
     db hs; // one body direct correlation function
-    db dt; // for steepest descent (pol)
-    db DT; // for colloids
+    db dt; // timestep for steepest descent (pol)
+    db DT; // timestep for colloids
     db wall_strength; // energetic strength of hard wall
     db att; // attactive term contribution
     db eps; // strength for gaussian attractive

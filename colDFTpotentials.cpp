@@ -20,54 +20,81 @@ void DFT::comp_POT() {
         if (z > dia && z < (h - dia))
             V(i) = 0.0;
         else
-            V(i) = wall_strength*(exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
+            V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
     }
-   
+
 
 }
 
-db DFT::comp_att_term(int zplace,vec &densityj,db eppij,db ri,db rj,db lambdaij){
-   
+db DFT::comp_att_term(int zplace, vec &densityj, db eppij, db ri, db rj, db lambdaij) {
+
     db delz = 0.0, sum = 0.0, dij = ri + rj;
     db pot_below_d = 0.0; // potential energy beyond hard surface contact
-    
-    if(potential_mode==0){ // Dinos potential
-        
-        pot_below_d = dinos_potential(0.0,eppij,dij,lambdaij); // compute this once
-               
-    for(int iz = 0; iz < Nz; iz++){
-        
-        delz = fabs((db)(iz - zplace)*dz);
-        
-        if(delz >= dij){
-            sum += simp(iz)*densityj(iz)*dinos_potential(delz,eppij,dij,lambdaij)*dz;
-        } else {
-            sum += simp(iz)*densityj(iz)*pot_below_d*dz;
+
+    if (potential_mode == 0) { // Dinos potential
+
+        pot_below_d = dinos_potential(0.0, eppij, dij, lambdaij); // compute this once
+
+        for (int iz = 0; iz < Nz; iz++) {
+
+            delz = fabs((db) (iz - zplace) * dz);
+
+            if (delz >= dij) {
+                sum += simp(iz) * densityj(iz) * dinos_potential(delz, eppij, dij, lambdaij) * dz;
+            } else {
+                sum += simp(iz) * densityj(iz) * pot_below_d*dz;
+            }
+
         }
-       
+
+
+    } else if (potential_mode == 1) { // Lukes shorter ranged potential
+
+        pot_below_d = lukes_potential(0.0, eppij, dij, lambdaij); // compute this once
+
+        for (int iz = 0; iz < Nz; iz++) {
+
+            delz = fabs((db) (iz - zplace) * dz);
+
+            if (delz >= dij) {
+                sum += simp(iz) * densityj(iz) * lukes_potential(delz, eppij, dij, lambdaij) * dz;
+            } else {
+                sum += simp(iz) * densityj(iz) * pot_below_d*dz;
+            }
+
+        }
+
     }
-    
-        
-    } else if(potential_mode==1){ // Lukes shorter ranged potential
-        
-        
-        
-    }
-    
+
     return sum;
-    
+
 }
 
-db DFT::dinos_potential(db Z,db eppij,db dij, db lambdaij){
-    
-   return -2.0*eppij*lambdaij*(dij + lambdaij)*pi + 2.0*eppij*pi*(lambdaij*(dij + lambdaij) - 
-      exp((dij - Z)/lambdaij)*lambdaij*(lambdaij + Z))* Htheta(-dij + Z);
-    
+db DFT::dinos_potential(db Z, db eppij, db dij, db lambdaij) {
+
+    return -2.0 * eppij * lambdaij * (dij + lambdaij) * pi + 2.0 * eppij * pi * (lambdaij * (dij + lambdaij) -
+            exp((dij - Z) / lambdaij) * lambdaij * (lambdaij + Z)) * Htheta(-dij + Z);
+
 }
 
+db DFT::lukes_potential(db Z, db eppij, db dij, db lambdaij) {
+
+    db dij2 = dij*dij;
+    db dij3 = dij2*dij;
+    db lambdaij2 = lambdaij*lambdaij;
+    db lambdaij3 = lambdaij2*lambdaij;
+    db Z2 = Z*Z;
+    db Z3 = Z2*Z;
+
+    return (2 * eppij * pi * (4 * dij3 / 3. - +2 * dij2 * lambdaij + lambdaij3 - (lambdaij * Z2) / 2.0 + Z3 / 3.0 -
+            exp((2 * dij - Z) / lambdaij) * lambdaij2 * (lambdaij + Z) + dij * (2 * lambdaij2 - Z2))) /
+            (dij + lambdaij - exp(dij / lambdaij) * lambdaij);
+}
+
+/*
 db DFT::attractive(int place) {
     db pot = 0, delz = 0, sum = 0, term = 0;
-  
+
     for (int l = 0; l < Nz; l++) {
         delz = fabs((db) l * dz - (db) place * dz);
         if (delz >= sigma && delz <= cut)// cutoff disabled for Dinos potential  ATM! !!!!!!
@@ -96,7 +123,7 @@ db DFT::LEA(db Z) {
 
 }
 
-/*
+
  
  * From DFT.h lemons might be more recent
  * 

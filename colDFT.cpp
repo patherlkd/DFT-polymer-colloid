@@ -155,7 +155,7 @@ void DFT::update_col1() {
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
         ARG = chem + cc(i) - V(i);
-        coldensity1(i) = (1.0 - DT) * coldensity1(i) + dt * colbulk * exp(ARG);
+        coldensity1(i) = (1.0 - DT) * coldensity1(i) + DT * colbulk * exp(ARG);
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;
@@ -182,7 +182,7 @@ void DFT::update_mf(int ch) {
         if (ch == 0)
             CS(i);
 
-        field(i) = old_mf + dt * (-old_mf + c(i) + V(i));
+        field(i) = old_mf + dt * (-old_mf + c(i) + V(i) + );
 
         diff = fabs(old_mf - field(i));
         if (diff > max)

@@ -154,8 +154,8 @@ void DFT::update_col1() {
 
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
-        ARG = chem - cc(i) - V(i) - DFT::comp_att_term(i,density,epc,r,rc1,lambdapc); // double check if cc(i) is negative
-        coldensity1(i) = (1.0 - DT) * coldensity1(i) + DT * colbulk * exp(ARG);
+        ARG = chem + cc(i) - V(i) - DFT::comp_att_term(i,density,epc,r,rc1,lambdapc); // double check if cc(i) is negative
+        coldensity1(i) = (1.0 - dt) * coldensity1(i) + dt * colbulk * exp(ARG);
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;

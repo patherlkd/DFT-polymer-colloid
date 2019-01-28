@@ -15,9 +15,9 @@ Luke Kristopher Davis:  ucapkda@ucl.ac.uk
 
 class DFT {
 public:
-    
+
     DFT();
- 
+
     void set_poly_dens_filename(std::string s);
     void set_col1_dens_filename(std::string s);
     void set_meanfield_filename(std::string s);
@@ -37,20 +37,20 @@ public:
     void set_dt(db t);
 
     db get_dz();
-    
+
     // Churns whole scheme
     virtual void evolve();
 
 private:
     unsigned int Np; // number of polymers
     unsigned int Nm; // number of monomers per polymer
-    unsigned int Ns=0; // number of s points
-    unsigned int Nz=0; // number of spatial points
+    unsigned int Ns = 0; // number of s points
+    unsigned int Nz = 0; // number of spatial points
     unsigned int iter; // iteration tracker
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
 
-    
-        void init_field(db);
+
+    void init_field(db);
     void init_coldensity1();
 
     virtual void solveGs();
@@ -92,25 +92,25 @@ private:
     db w3(db, db);
     db wv1(db, db);
     db wv2(db, db);
-    
+
     // for plotting purposes
-    
-     void export_data();
-    
+
+    void export_data();
+
     std::string poly_dens_filename;
     std::string col1_dens_filename;
     std::string meanfield_filename;
     std::string external_pot_filename;
     std::string system_out_filename;
-    
+
     std::ofstream system_out_file;
     std::ofstream poly_dens_file;
     std::ofstream col1_dens_file;
     std::ofstream meanfield_file;
     std::ofstream external_pot_file;
-    
+
     // other sim stuff
-    
+
     db D; //diffusion coefficient
     db H; //used in solving for G's
     db h; //height
@@ -131,12 +131,12 @@ private:
     db DT; // timestep for colloids
     db wall_strength; // energetic strength of hard wall
     db att; // attactive term contribution
-  
+
     db epp; // strength for cohesion (polymer-polymer)
     db epc; // same but for polymer-colloid
     db lambdapp; //range for gaussian attractive (polymer-polymer)
-    db lambdapc; 
-    
+    db lambdapc;
+
     db conv_fact;
     db unnorm;
     db Z; //" Partition function" 

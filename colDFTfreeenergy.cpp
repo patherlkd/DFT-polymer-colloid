@@ -81,7 +81,7 @@ db DFT::comp_free_energy() {
     cout << "out of getline" << endl;
     for (int i = 0; i < Nz; i++) {
         for (int j = 0; j < Nz; j++) {
-            sum += density(i) * density(j) * eps * att_(abs(i - j)) * dz*dz;
+            sum += density(i) * density(j) * epp * att_(abs(i - j)) * dz*dz;
         }
     }
     F_att = sum;

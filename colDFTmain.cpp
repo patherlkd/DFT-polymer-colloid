@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
     db epp = 0.0, epc1 = 0.0;
     db lambdapp = 0.0, lambdapc1 = 0.0;
-    db gamma = 0.0, dt = 0.0;
+    db gamma = 0.0, dt = 0.0, DT = 0.0;
     db height = 0.0, area = 0.0, wall_strength = 0.0;
 
     int potential_mode = 0; // use Dino potential by default
@@ -27,19 +27,21 @@ int main(int argc, char *argv[]) {
 
     CLI::Option* opt_potentialmode = dftapp.add_option("-p,--potential_mode", potential_mode, " Attractive potential to use for all particles (0 = long ranged gaussian, 1 = short ranged gaussian) ");
     CLI::Option* opt_convertol = dftapp.add_option("-c,--ctol,--convergence_tolerance", gamma, " Convergence tolerance for DFT simulation.");
-    CLI::Option* opt_timestep = dftapp.add_option("-t,--dt,--timestep", dt, " timestep for the numerical algorithm to advance system to equilibrium");
+    CLI::Option* opt_timestep = dftapp.add_option("-t,--dt,--timestep", dt, " timestep for the numerical algorithm to advance system to equilibrium (for polymers)");
+    CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep",DT,"timestep for the numerical algorithm but for colloids");
     CLI::Option* opt_spacepoints = dftapp.add_option("--Nz,--spatial_points", Nz, "Number of spatial points");
 
     opt_potentialmode->required()->group("Simulation parameters");
     opt_convertol->required()->group("Simulation parameters");
     opt_timestep->required()->group("Simulation parameters");
+    opt_timestep_col->required()->group("Simulation parameters");
     opt_spacepoints->required()->group("Simulation parameters");
 
     CLI::Option* opt_polydensfilename = dftapp.add_option("--poly_dens_file", poly_dens_filename, " filename for polymer density");
-    CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", poly_dens_filename, " filename for polymer density");
-    CLI::Option* opt_meanfieldfilename = dftapp.add_option("--meanfield_file", poly_dens_filename, " filename for polymer density");
-    CLI::Option* opt_externalpotfilename = dftapp.add_option("--external_pot_file", poly_dens_filename, " filename for polymer density");
-    CLI::Option* opt_systemoutfilename = dftapp.add_option("--system_out_file", poly_dens_filename, " filename for polymer density");
+    CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", col1_dens_filename, " filename for colloid density");
+    CLI::Option* opt_meanfieldfilename = dftapp.add_option("--meanfield_file", meanfield_filename, " filename for meanfield");
+    CLI::Option* opt_externalpotfilename = dftapp.add_option("--external_pot_file", external_pot_filename, " filename for external potential");
+    CLI::Option* opt_systemoutfilename = dftapp.add_option("--system_out_file", system_out_filename, " filename for system output");
 
     opt_polydensfilename->group("Output files");
     opt_col1densfilename->group("Output files");
@@ -58,8 +60,8 @@ int main(int argc, char *argv[]) {
 
     CLI::Option* opt_epp = dftapp.add_option("--epp", epp, " Polymer - polymer cohesion strength ");
     CLI::Option* opt_epc1 = dftapp.add_option("--epc1", epc1, " Polymer - colloid type 1 cohesion strength ");
-    CLI::Option* opt_lambdapp = dftapp.add_option("--lambdapp", lambdapp, " Polymer - polymer attraction range ");
-    CLI::Option* opt_lambdapc1 = dftapp.add_option("--lambdapc1", lambdapc1, " Polymer - colloid type 1 cohesion strength ");
+    CLI::Option* opt_lambdapp = dftapp.add_option("--lambdapp", lambdapp, " Polymer - polymer cohesion range ");
+    CLI::Option* opt_lambdapc1 = dftapp.add_option("--lambdapc1", lambdapc1, " Polymer - colloid type 1 cohesion range");
 
     opt_epp->needs(opt_lambdapp);
     opt_lambdapp->needs(opt_epp);
@@ -81,11 +83,12 @@ int main(int argc, char *argv[]) {
 
     CLI::Option* opt_poly_bondlength = dftapp.add_option("--poly_bondlength", poly_bondlength, "Bondlength of beads in a polymer");
     CLI::Option* opt_poly_diameter = dftapp.add_option("--poly_diameter", poly_diameter, "diameter of beads in a polymer");
-    CLI::Option* opt_poly_npoly = dftapp.add_option("--npolymers", poly_bondlength, "Number of polymers in system");
-    CLI::Option* opt_poly_nbeads = dftapp.add_option("-N,--nbeads", poly_bondlength, "Number of beads in a polymer");
-    CLI::Option* opt_poly_ns = dftapp.add_option("--Ns", poly_bondlength, "Number of points for solving polymer diffusion equation");
-    CLI::Option* opt_poly_tether = dftapp.add_option("--tether", poly_bondlength, "z tethering index for polymer grafting");
+    CLI::Option* opt_poly_npoly = dftapp.add_option("--npolymers", npoly, "Number of polymers in system");
+    CLI::Option* opt_poly_nbeads = dftapp.add_option("-N,--nbeads", nbeads, "Number of beads in a polymer");
+    CLI::Option* opt_poly_ns = dftapp.add_option("--Ns", Ns, "Number of points for solving polymer diffusion equation");
+    CLI::Option* opt_poly_tether = dftapp.add_option("--tether", tether, "z tethering index for polymer grafting");
 
+    opt_poly_npoly->group("Polymer parameters");
     opt_poly_bondlength->group("Polymer parameters")->needs(opt_poly_npoly)->needs(opt_poly_nbeads);
     opt_poly_diameter->group("Polymer parameters")->needs(opt_poly_bondlength)->needs(opt_poly_npoly)->needs(opt_poly_nbeads);
     opt_poly_nbeads->group("Polymer parameters")->needs(opt_poly_npoly);
@@ -93,14 +96,17 @@ int main(int argc, char *argv[]) {
     opt_poly_tether->group("Polymer parameters")->needs(opt_poly_npoly)->needs(opt_poly_nbeads);
     
     
+    db chem1 = 0.0;
+    int ncolloids1 = 0;
     
+    CLI::Option* opt_chem1 = dftapp.add_option("--chem1",chem1,"Colloid (1) excess chemical potential");
+    CLI::Option* opt_ncolloids1 = dftapp.add_option("--Nc1",ncolloids1,"Colloid (1) number of colloids");
+    
+    opt_chem1->group("Colloid parameters");
+    opt_ncolloids1->group("Colloid parameters");
     
     CLI11_PARSE(dftapp, argc, argv);
-
-    if (*opt_potentialmode) {
-        std::cout << "Potential mode recieved\n";
-    }
-
+    
     //DFT sim();
 
     /*  sim.set_eps(EPP);

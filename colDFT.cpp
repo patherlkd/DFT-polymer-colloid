@@ -84,7 +84,7 @@ DFT::DFT() {
     Zero_mat(G1, Nz, Ns);
     Zero_mat(G2, Nz, Ns);
 
-    H = (ds * D) / (2 * dz * dz);
+    H = (ds * D) / (2 * dz * dz); // used in numerically solving for the greens function
 
 }
 
@@ -92,11 +92,10 @@ void DFT::evolve() {
 
     iter = 0;
     conver = 1;
-    init_field(0.80); // Initialize mean field
+    
+    init_field(0.0); // Initialize mean field
     init_coldensity1(); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
-
-
 
     while (conver > gamma) // Do while un converged. Well durr. 
     {
@@ -154,8 +153,8 @@ void DFT::update_col1() {
 
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
-        ARG = chem + cc(i) - V(i) - DFT::comp_att_term(i,density,epc,r,rc1,lambdapc); // double check if cc(i) is negative
-        coldensity1(i) = (1.0 - dt) * coldensity1(i) + dt * colbulk * exp(ARG);
+        ARG = chem1 + cc(i) - V(i) - DFT::comp_att_term(i,density,epc,r,rc1,lambdapc); // double check if cc(i) is negative
+        coldensity1(i) = (1.0 - dt) * coldensity1(i) + dt * colbulk1 * exp(ARG);
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;
@@ -201,7 +200,7 @@ void DFT::norm() {
     }
     for (int i = 0; i < Nz; i++) {
 
-        d1(i) = Nc * d1(i) / unnorm;
+        d1(i) = Nc1 * d1(i) / unnorm;
         coldensity1(i) = d1(i);
         // d2 << (db)i*dz << "\t" << d1(i)<<endl;
         norm += d1(i) * dz*A;
@@ -218,14 +217,14 @@ void DFT::init_coldensity1() // Initialize the colloid density
         if (i <= 20 || i == Nz - 1) {
             coldensity1(i) = 0.0;
         } else if (i > 20)
-            coldensity1(i) = colbulk * exp(V(i));
+            coldensity1(i) = colbulk1 * exp(V(i));
     }
 }
 
 void DFT::init_field(db a) {
 
     for (int i = 0; i < Nz; i++) {
-        field(i) = 0.0;
+        field(i) = a;
     }
 }
 

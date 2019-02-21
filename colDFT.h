@@ -142,9 +142,9 @@ private:
     db Z; //" Partition function" 
     db F_ent; // "entropic term Free energy"
 
-    db colbulk; // bulk fluid density colloids
-    db chem; // excess chem potential
-    int Nc; // # of colloids
+    db colbulk1; // bulk fluid density colloids
+    db chem1; // excess chem potential
+    int Nc1; // # of colloids
 
     float conver; // Convergence tracker (mean field) aka polymer
     float conver_col1; // same for colloid 1

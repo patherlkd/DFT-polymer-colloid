@@ -84,8 +84,6 @@ DFT::DFT() {
     Zero_mat(G1, Nz, Ns);
     Zero_mat(G2, Nz, Ns);
 
-    H = (ds * D) / (2 * dz * dz); // used in numerically solving for the greens function
-
 }
 
 void DFT::evolve() {

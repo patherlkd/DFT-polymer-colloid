@@ -13,6 +13,10 @@ void DFT::set_epp(db epp){
     this->epp = epp;
 }
 
+void DFT::set_epc(db epc){
+    this->epc = epc;
+}
+
 void DFT::set_dia(db dia) {
     this->dia = dia;
     this->r = dia * 0.5;
@@ -55,6 +59,12 @@ void DFT::set_gamma(db g) {
 
 void DFT::set_dt(db t) {
     dt = t;
+}
+
+void DFT::set_H_solver(){
+    
+    H = (ds * D) / (2 * dz * dz); // used in numerically solving for the greens function
+
 }
 
 

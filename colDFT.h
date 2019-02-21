@@ -25,6 +25,7 @@ public:
     void set_system_out_filename(std::string s);
 
     void set_epp(db epp);
+    void set_epc(db epc);
     void set_dia(db dia);
     void set_Np(unsigned int N);
     void set_Nm(unsigned int N);
@@ -35,6 +36,7 @@ public:
     void set_A(db a);
     void set_gamma(db g);
     void set_dt(db t);
+    void set_H_solver();
 
     db get_dz();
 

@@ -107,9 +107,9 @@ int main(int argc, char *argv[]) {
     
     CLI11_PARSE(dftapp, argc, argv);
     
-    //DFT sim();
+    DFT sim();
 
-    /*  sim.set_eps(EPP);
+      sim.set_epp(epp);
       sim.set_h(HEIGHT);
       sim.set_b(B);
       sim.set_conv_fact(0.0357611);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
       sim.set_A(LENGTH * LENGTH);
       sim.set_gamma(GAMMA);
       sim.set_dt(DT);
-     */
+    
     time_t START = time(NULL);
     //  sim.evolve();
     time_t END = time(NULL);

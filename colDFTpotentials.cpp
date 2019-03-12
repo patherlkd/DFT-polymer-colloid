@@ -20,7 +20,7 @@ void DFT::comp_POT() {
         if (z > dia && z < (h - dia))
             V(i) = 0.0;
         else
-            V(i) = wall_strength * (-1.0 / exp(0.5) - exp((dia - h) / 2.0 * dia) + exp((z - h) / 2.0 * dia));
+            V(i) = wall_strength * (-1.0 * (1.0/exp(0.5)) - exp((dia - h) / (2.0 * dia)) + exp(-z/(2.0*dia)) + exp((z - h) / (2.0 * dia)));
      //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
     }
 

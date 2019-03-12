@@ -55,6 +55,8 @@ public:
     
     db get_dz();
 
+    
+    virtual void setup();
     // Churns whole scheme
     virtual void evolve();
 
@@ -65,8 +67,7 @@ private:
     unsigned int Nz = 0; // number of spatial points
     unsigned int iter; // iteration tracker
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
-
-
+    
          // pair potentials
     db dinos_potential(db Z, db eppij, db dij, db lambdaij);
     db lukes_potential(db Z, db eppij, db dij, db lambdaij);

@@ -12,6 +12,11 @@ using namespace std;
 
 DFT::DFT() {
 
+}
+ 
+
+void DFT::setup(){
+
     Gv1.resize(Nz);
     Gv2.resize(Nz);
     field.resize(Nz);
@@ -95,17 +100,22 @@ void DFT::evolve() {
     iter = 0;
     conver = 1;
 
-    init_field(0.0); // Initialize mean field
+    init_field(0.80); // Initialize mean field
     init_coldensity1(20); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
 
+    export_data();
+    
     while (conver > gamma) // Do while un converged. Well durr. 
     {
         solveGs(); // Solve for the propagators for polymer density 
         comp_dens(); // Compute density(Z)
         if (conver == 1) {
-            comp_n_col1();
-            comp_n_pol();
+            DFT::comp_n_pol();
+        }
+        
+        if(conver ==1){
+            DFT::comp_n_col1();
         }
         //  norm();
         update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
@@ -120,8 +130,7 @@ void DFT::evolve() {
         iter++;
     }
 
-
-    export_data();
+   // export_data();
     
 }
 

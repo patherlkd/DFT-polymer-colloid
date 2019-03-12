@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     std::string external_pot_filename = "";
     std::string system_out_filename = "";
 
-    dftapp.set_config("--config", "config.dft", "configuration file for dftpolymercolloid", false);
+    dftapp.set_config("--config", "./config.dft", "configuration file for dftpolymercolloid", true);
 
     CLI::Option* opt_potentialmode = dftapp.add_option("-p,--potential_mode", potential_mode, " Attractive potential to use for all particles (0 = long ranged gaussian, 1 = short ranged gaussian) ");
     CLI::Option* opt_convertol = dftapp.add_option("-c,--ctol,--convergence_tolerance", gamma, " Convergence tolerance for DFT simulation.");
@@ -110,8 +110,16 @@ int main(int argc, char *argv[]) {
 
     CLI11_PARSE(dftapp, argc, argv);
 
+    std::cout << dftapp.config_to_str(true,false) << "\n";
+    
     DFT sim;
 
+    sim.set_poly_dens_filename(poly_dens_filename);
+    sim.set_col1_dens_filename(col1_dens_filename);
+    sim.set_meanfield_filename(meanfield_filename);
+    sim.set_system_out_filename(system_out_filename);
+    sim.set_external_pot_filename(external_pot_filename);
+    
     sim.set_potential_mode(potential_mode);
     sim.set_gamma(gamma);
     sim.set_dt(dt);
@@ -120,11 +128,7 @@ int main(int argc, char *argv[]) {
     sim.set_A(area);
     sim.set_wall_strength(wall_strength);
 
-    sim.set_poly_dens_filename(poly_dens_filename);
-    sim.set_col1_dens_filename(col1_dens_filename);
-    sim.set_meanfield_filename(meanfield_filename);
-    sim.set_system_out_filename(system_out_filename);
-    sim.set_external_pot_filename(external_pot_filename);
+    
 
     sim.set_epp(epp);
     sim.set_epc1(epc1);
@@ -144,9 +148,11 @@ int main(int argc, char *argv[]) {
     sim.set_D(0.16666 * sqr_d(poly_diameter));
 
 
+    //sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
+    //sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
+    
     time_t START = time(NULL);
-    sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
-    sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
+    sim.setup();
     sim.evolve();
     time_t END = time(NULL);
 

@@ -18,27 +18,31 @@ void DFT::comp_dens() {
 
     for (int i = 0; i < Nz; i++) {
         density(i) = 0.0;
-        //     if (i >= 0) {
+        if (i >= 0) {
+            {
+                for (int j = 0; j < Ns; j++) {
+                    density(i) += simp(i) * G2(i, (Ns - 1) - j) * G1(i, j) * ds * dz*A; // Convolute the Greens
 
-        for (int j = 0; j < Ns; j++) {
-            density(i) += simp(i) * G2(i, (Ns - 1) - j) * G1(i, j) * ds * dz*A; // Convolute the Greens
-
+                }
+            }
+            DFT::system_out_file << "density(i)= " << density(i) << "\n";
         }
-
-        //   }
-        if (isnan((float) density(i))){
+        if (isnan((float) density(i))) {
             nan_check = true;
         }
-        
+
+        //      DFT::system_out_file << "density(i)= " << density(i) << "\n"; 
         unnorm += simp(i) * density(i) * dz*A; // Compute unnormalized density integral
 
     }
+
+    DFT::system_out_file << "unnorm= " << unnorm << "\n";
 
     db norm = 0, norm1 = 0;
     for (int i = 0; i < Nz; i++) {
 
         density(i) = (density(i)*(db) Nm * (db) Np) / unnorm;
-
+        DFT::system_out_file << "density(i)= " << density(i) << "\n";
         if (nan_check) {
             cout << "ERROR: Nan in the density. Aborted." << endl;
         }

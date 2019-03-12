@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
     time_t START = time(NULL);
     sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
     sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
-    //  sim.evolve();
+    sim.evolve();
     time_t END = time(NULL);
 
     double duration = difftime(END, START);

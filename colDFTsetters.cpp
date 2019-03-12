@@ -62,6 +62,7 @@ void DFT::set_ds(unsigned int N) {
 void DFT::set_dz(unsigned int N, db Z) {
     this->Nz = N;
     this->dz = frac(Z, (db) Nz - 1);
+    this->h = Z;
 }
 
 void DFT::set_A(db a) {

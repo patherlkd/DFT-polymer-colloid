@@ -89,9 +89,56 @@ db DFT::lukes_potential(db Z, db eppij, db dij, db lambdaij) {
     db Z2 = Z*Z;
     db Z3 = Z2*Z;
 
-    return (2 * eppij * pi * (4 * dij3 / 3. - +2 * dij2 * lambdaij + lambdaij3 - (lambdaij * Z2) / 2.0 + Z3 / 3.0 -
+   
+    return (2 * -eppij * pi * (4 * dij3 / 3. + 2 * dij2 * lambdaij + lambdaij3 - (lambdaij * Z2 / 2.0) + Z3 / 3.0 -
             exp((2 * dij - Z) / lambdaij) * lambdaij2 * (lambdaij + Z) + dij * (2 * lambdaij2 - Z2))) /
             (dij + lambdaij - exp(dij / lambdaij) * lambdaij);
 }
 
+void DFT::test_dinos_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij){
+    
+    DFT::system_out_file << "Testing dinos potential\n";
+    
+    std::ofstream test;
+    
+    test.open("dinos_potential.txt");
+    
+    for(int i=0; i < Nz; i++){
+        db z = (db)i * dz;
+        test << z << "\t" << DFT::dinos_potential(z,eppij,dij,lambdaij) << "\n";
+    }
+    
+    test.close();
+}
 
+void DFT::test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij){
+    
+    DFT::system_out_file << "Testing lukes potential\n";
+    
+    std::ofstream test;
+    
+    test.open("lukes_potential.txt");
+    
+    db z = 0.0;
+    db atdia = DFT::lukes_potential(dij,eppij,dij,lambdaij) ;
+    db pot = 0.0;
+    
+    for(int i=0; i < Nz; i++){
+        z = (db)i * dz;
+        
+        
+        if(z<=dia){
+            pot = atdia;
+        }
+        else if(z<=2*dia){
+            pot = DFT::lukes_potential(z,eppij,dij,lambdaij);
+        }
+        else{
+            pot = 0.0;
+        }
+        
+        test << z << "\t" << pot << "\n";
+    }
+    
+    test.close();
+}

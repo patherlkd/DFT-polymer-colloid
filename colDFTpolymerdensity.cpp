@@ -43,7 +43,7 @@ void DFT::comp_dens() {
         norm1 += simp(i) * density(i) * dz;
         norm += simp(i) * density(i) * dz*A;
     }
-    cout << "# of monomers =" << norm << endl;
+    DFT::system_out_file << "# of monomers =" << norm << endl;
     //cout << "# of monomers(dz) =" << norm1<< endl;
 
   
@@ -75,7 +75,7 @@ void DFT::solveGs() {
         } else;
 
         if (i > 0 && i < Nz - 1 && abs(a(i)) + abs(c(i)) >= abs(b(i))) {
-            cout << "a + c > b???" << endl;
+            DFT::system_out_file << "a + c > b???" << endl;
         }
 
     }

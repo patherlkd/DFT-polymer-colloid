@@ -9,12 +9,24 @@
 
 using namespace std;
 
+void DFT::set_potential_mode(unsigned int pm){
+    this->potential_mode = pm; 
+}
+
 void DFT::set_epp(db epp){
     this->epp = epp;
 }
 
-void DFT::set_epc(db epc){
-    this->epc = epc;
+void DFT::set_lambdapp(db lpp){
+    this->lambdapp = lpp;
+}
+
+void DFT::set_lambdapc1(db lpc){
+    this->lambdapc1 = lpc;
+}
+
+void DFT::set_epc1(db epc1){
+    this->epc1= epc1;
 }
 
 void DFT::set_dia(db dia) {
@@ -30,6 +42,10 @@ void DFT::set_Nm(unsigned int N) {
     this->Nm = N;
 }
 
+void DFT::set_wall_strength(db ws){
+    this->wall_strength = ws;
+}
+
 void DFT::set_D(db coef) {
     this->D = coef;
 }
@@ -41,32 +57,50 @@ void DFT::set_b(db B) {
 void DFT::set_ds(unsigned int N) {
     this->Ns = N;
     this->ds = ((db) Nm / (db) Ns);
-    cout << "ds" << ds << endl;
 }
 
 void DFT::set_dz(unsigned int N, db Z) {
-    Nz = N;
-    dz = frac(Z, (db) Nz - 1);
+    this->Nz = N;
+    this->dz = frac(Z, (db) Nz - 1);
 }
 
 void DFT::set_A(db a) {
-    A = a;
+    this->A = a;
 }
 
 void DFT::set_gamma(db g) {
-    gamma = g;
+    this->gamma = g;
 }
 
 void DFT::set_dt(db t) {
-    dt = t;
+    this->dt = t;
+}
+
+void DFT::set_DT(db DT){
+    this->DT = DT;
+}
+
+void DFT::set_tether(unsigned int t){
+    this->tether = t;
 }
 
 void DFT::set_H_solver(){
     
-    H = (ds * D) / (2 * dz * dz); // used in numerically solving for the greens function
+    this->H = (ds * D) / (2 * dz * dz); // used in numerically solving for the greens function
 
 }
 
+void DFT::set_chem1(db ch){
+    this->chem1 = ch;
+}
+
+void DFT::set_ncolloids1(unsigned int nc){
+    this->Nc1 = nc;
+}
+
+void DFT::set_rc1(db rc){
+    this->rc1 = rc;
+}
 
 void DFT::set_poly_dens_filename(std::string s){
     DFT::poly_dens_filename=s;
@@ -82,4 +116,7 @@ void DFT::set_external_pot_filename(std::string s){
 }
 void DFT::set_system_out_filename(std::string s){
     DFT::system_out_filename=s;
+    
+    DFT::system_out_file.open(DFT::system_out_filename);
+    
 }

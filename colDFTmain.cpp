@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_potentialmode = dftapp.add_option("-p,--potential_mode", potential_mode, " Attractive potential to use for all particles (0 = long ranged gaussian, 1 = short ranged gaussian) ");
     CLI::Option* opt_convertol = dftapp.add_option("-c,--ctol,--convergence_tolerance", gamma, " Convergence tolerance for DFT simulation.");
     CLI::Option* opt_timestep = dftapp.add_option("-t,--dt,--timestep", dt, " timestep for the numerical algorithm to advance system to equilibrium (for polymers)");
-    CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep",DT,"timestep for the numerical algorithm but for colloids");
+    CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep", DT, "timestep for the numerical algorithm but for colloids");
     CLI::Option* opt_spacepoints = dftapp.add_option("--Nz,--spatial_points", Nz, "Number of spatial points");
 
     opt_potentialmode->required()->group("Simulation parameters");
@@ -94,40 +94,59 @@ int main(int argc, char *argv[]) {
     opt_poly_nbeads->group("Polymer parameters")->needs(opt_poly_npoly);
     opt_poly_ns->group("Polymer parameters")->needs(opt_poly_npoly)->needs(opt_poly_nbeads);
     opt_poly_tether->group("Polymer parameters")->needs(opt_poly_npoly)->needs(opt_poly_nbeads);
-    
-    
+
+
     db chem1 = 0.0;
+    db col1_rad = 0.0;
     int ncolloids1 = 0;
-    
-    CLI::Option* opt_chem1 = dftapp.add_option("--chem1",chem1,"Colloid (1) excess chemical potential");
-    CLI::Option* opt_ncolloids1 = dftapp.add_option("--Nc1",ncolloids1,"Colloid (1) number of colloids");
-    
+
+    CLI::Option* opt_chem1 = dftapp.add_option("--chem1", chem1, "Colloid (1) excess chemical potential");
+    CLI::Option* opt_ncolloids1 = dftapp.add_option("--Nc1", ncolloids1, "Colloid (1) number of colloids");
+    CLI::Option* opt_col1_rad = dftapp.add_option("--rc1", col1_rad, "Colloids (1) radius");
+
     opt_chem1->group("Colloid parameters");
     opt_ncolloids1->group("Colloid parameters");
-    
+    opt_col1_rad->group("Colloid parameters");
+
     CLI11_PARSE(dftapp, argc, argv);
-    
-    DFT sim();
 
-      sim.set_epp(epp);
-      sim.set_h(HEIGHT);
-      sim.set_b(B);
-      sim.set_conv_fact(0.0357611);
-      sim.set_dia(DIA);
-      sim.set_Np(NP);
-      sim.set_Nm(NM);
-      //sim.set_D(0.16666*sqr_d(1.0)); 
+    DFT sim;
 
-      cout << "Nm = " << NM << '\n';
+    sim.set_potential_mode(potential_mode);
+    sim.set_gamma(gamma);
+    sim.set_dt(dt);
+    sim.set_DT(DT);
+    sim.set_dz(Nz, height);
+    sim.set_A(area);
+    sim.set_wall_strength(wall_strength);
 
-      sim.set_ds(12000);
-      //  sim.set_dz(NZ,NM*DIA*0.5); 
-      sim.set_dz(NZ, HEIGHT);
-      sim.set_A(LENGTH * LENGTH);
-      sim.set_gamma(GAMMA);
-      sim.set_dt(DT);
-    
+    sim.set_poly_dens_filename(poly_dens_filename);
+    sim.set_col1_dens_filename(col1_dens_filename);
+    sim.set_meanfield_filename(meanfield_filename);
+    sim.set_system_out_filename(system_out_filename);
+    sim.set_external_pot_filename(external_pot_filename);
+
+    sim.set_epp(epp);
+    sim.set_epc1(epc1);
+    sim.set_lambdapp(lambdapp);
+    sim.set_lambdapc1(lambdapc1);
+
+    sim.set_Np(npoly);
+    sim.set_Nm(nbeads);
+    sim.set_dia(poly_diameter);
+    sim.set_ds(Ns);
+    sim.set_tether(tether);
+
+    sim.set_chem1(chem1);
+    sim.set_ncolloids1(ncolloids1);
+    sim.set_rc1(col1_rad);
+
+    sim.set_D(0.16666 * sqr_d(poly_diameter));
+
+
     time_t START = time(NULL);
+    sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
+    sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
     //  sim.evolve();
     time_t END = time(NULL);
 

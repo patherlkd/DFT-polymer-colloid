@@ -7,5 +7,5 @@
 #include "colDFT.h"
 
 db DFT::get_dz(){
-        return dz;
+        return this->dz;
     }

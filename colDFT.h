@@ -17,15 +17,21 @@ class DFT {
 public:
 
     DFT();
-
+    ~DFT();
+    
     void set_poly_dens_filename(std::string s);
     void set_col1_dens_filename(std::string s);
     void set_meanfield_filename(std::string s);
     void set_external_pot_filename(std::string s);
     void set_system_out_filename(std::string s);
 
+    
+    void set_potential_mode(unsigned int pm);
+    void set_wall_strength(db ws);
     void set_epp(db epp);
-    void set_epc(db epc);
+    void set_lambdapp(db lpp);
+    void set_epc1(db epc1);
+    void set_lambdapc1(db lpc);
     void set_dia(db dia);
     void set_Np(unsigned int N);
     void set_Nm(unsigned int N);
@@ -36,8 +42,17 @@ public:
     void set_A(db a);
     void set_gamma(db g);
     void set_dt(db t);
+    void set_DT(db DT);
+    void set_tether(unsigned int t);
     void set_H_solver();
-
+    void set_chem1(db ch);
+    void set_ncolloids1(unsigned int nc);
+    void set_rc1(db rc);
+    
+    void test_dinos_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij);
+    void test_lukes_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij);
+    
+    
     db get_dz();
 
     // Churns whole scheme
@@ -52,8 +67,13 @@ private:
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
 
 
+         // pair potentials
+    db dinos_potential(db Z, db eppij, db dij, db lambdaij);
+    db lukes_potential(db Z, db eppij, db dij, db lambdaij);
+    db LEA(db);
+    
     void init_field(db);
-    void init_coldensity1();
+    void init_coldensity1(unsigned int);
 
     virtual void solveGs();
     virtual void comp_dens();
@@ -67,10 +87,7 @@ private:
     db attractive(int);
     db comp_att_term(int zplace, vec& densityj, db eppij, db ri, db rj, db lambdaij); // New general attractive term in free energy
 
-    // pair potentials
-    db dinos_potential(db Z, db eppij, db dij, db lambdaij);
-    db lukes_potential(db Z, db eppij, db dij, db lambdaij);
-    db LEA(db);
+ 
 
     // Fundamental Measure Theory functions
 
@@ -124,7 +141,7 @@ private:
     db b; // kuhn length
     db dia; // diameter of monomer
     db r; // radius of monomer
-    db rc1; // radius of colloid
+    db rc1; // radius of colloid 1
 
 
     db gamma; // convergence criterion
@@ -135,11 +152,11 @@ private:
     db att; // attactive term contribution
 
     db epp; // strength for cohesion (polymer-polymer)
-    db epc; // same but for polymer-colloid
+    db epc1; // same but for polymer-colloid
     db lambdapp; //range for gaussian attractive (polymer-polymer)
-    db lambdapc;
+    db lambdapc1; // range for attraction (polymer - colloid 1)
 
-    db conv_fact;
+   
     db unnorm;
     db Z; //" Partition function" 
     db F_ent; // "entropic term Free energy"

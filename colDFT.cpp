@@ -86,13 +86,17 @@ DFT::DFT() {
 
 }
 
+DFT::~DFT() {
+    DFT::system_out_file.close();
+}
+
 void DFT::evolve() {
 
     iter = 0;
     conver = 1;
-    
+
     init_field(0.0); // Initialize mean field
-    init_coldensity1(); // Initialize colloid density (bulk?)
+    init_coldensity1(20); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
 
     while (conver > gamma) // Do while un converged. Well durr. 
@@ -107,10 +111,10 @@ void DFT::evolve() {
         update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
         update_col1(); // Update the colloid density
 
-        export_data();
+        //export_data();
 
-        cout << "MF convergence: " << conver << endl;
-        cout << "Col density 1 convergence: " << conver_col1 << endl;
+        DFT::system_out_file << "MF convergence: " << conver << endl;
+        DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
         //        cout << "Col density 2 convergence: " << conver_col2 << endl;
 
         iter++;
@@ -151,7 +155,7 @@ void DFT::update_col1() {
 
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
-        ARG = chem1 + cc(i) - V(i) - DFT::comp_att_term(i,density,epc,r,rc1,lambdapc); // double check if cc(i) is negative
+        ARG = chem1 + cc(i) - V(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1); // double check if cc(i) is negative
         coldensity1(i) = (1.0 - dt) * coldensity1(i) + dt * colbulk1 * exp(ARG);
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
@@ -188,7 +192,7 @@ void DFT::update_mf() {
 }
 
 void DFT::norm() {
-    //ofstream d2("NSP1_data/easter_data/col_dens.txt");
+    
     vec d1;
     d1.resize(Nz);
     db unnorm = 0, norm = 0;
@@ -208,13 +212,13 @@ void DFT::norm() {
     //d2.close();
 }
 
-void DFT::init_coldensity1() // Initialize the colloid density
+void DFT::init_coldensity1(unsigned int cut) // Initialize the colloid density
 {
     for (int i = 0; i < Nz; i++) {
 
-        if (i <= 20 || i == Nz - 1) {
+        if (i <= cut || i == Nz - 1) {
             coldensity1(i) = 0.0;
-        } else if (i > 20)
+        } else if (i > cut)
             coldensity1(i) = colbulk1 * exp(V(i));
     }
 }

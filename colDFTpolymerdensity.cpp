@@ -15,19 +15,21 @@ using namespace std;
 void DFT::comp_dens() {
     unnorm = 0;
     bool nan_check(false);
-   
-    for (int i = 0; i < Nz; i++) {
-        density(i) = 0;
-        if (i >= 0) {
-            {
-                for (int j = 0; j < Ns; j++) {
-                    density(i) += simp(i) * G2(i, (Ns - 1) - j) * G1(i, j) * ds * dz*A; // Convolute the Greens
 
-                }
-            }
+    for (int i = 0; i < Nz; i++) {
+        density(i) = 0.0;
+        //     if (i >= 0) {
+
+        for (int j = 0; j < Ns; j++) {
+            density(i) += simp(i) * G2(i, (Ns - 1) - j) * G1(i, j) * ds * dz*A; // Convolute the Greens
+
         }
-        if (isnan((float) density(i)))
+
+        //   }
+        if (isnan((float) density(i))){
             nan_check = true;
+        }
+        
         unnorm += simp(i) * density(i) * dz*A; // Compute unnormalized density integral
 
     }
@@ -36,8 +38,8 @@ void DFT::comp_dens() {
     for (int i = 0; i < Nz; i++) {
 
         density(i) = (density(i)*(db) Nm * (db) Np) / unnorm;
-        
-        if(nan_check) {
+
+        if (nan_check) {
             cout << "ERROR: Nan in the density. Aborted." << endl;
         }
         norm1 += simp(i) * density(i) * dz;
@@ -46,7 +48,7 @@ void DFT::comp_dens() {
     DFT::system_out_file << "# of monomers =" << norm << endl;
     //cout << "# of monomers(dz) =" << norm1<< endl;
 
-  
+
 }
 
 ////  SOLVE GS ---------------------------------------------------------------------
@@ -54,7 +56,7 @@ void DFT::comp_dens() {
 void DFT::solveGs() {
 
     vec r(Nz), a(Nz), b(Nz), c(Nz - 1), Gsol(Nz);
-    mat T(Nz, Nz);
+    // mat T(Nz, Nz);
     a(0) = 0;
     Zero_vec(Gsol, Nz);
     Zero_vec(r, Nz);

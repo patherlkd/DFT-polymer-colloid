@@ -121,6 +121,8 @@ void DFT::evolve() {
     }
 
 
+    export_data();
+    
 }
 
 /*

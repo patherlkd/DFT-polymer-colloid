@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
     sim.set_rc1(col1_rad);
 
     sim.set_D(0.16666 * sqr_d(poly_diameter));
-
+    sim.set_H_solver(); // VITAL for solving the polymer density
 
     //sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
     //sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);

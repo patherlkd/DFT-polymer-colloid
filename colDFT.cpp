@@ -98,8 +98,9 @@ DFT::~DFT() {
 void DFT::evolve() {
 
     iter = 0;
-    conver = 1;
-
+    conver = 1.0;
+    conver_col1 = 1.0;
+    
     init_field(0.80); // Initialize mean field
     init_coldensity1(20); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 

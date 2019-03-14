@@ -25,7 +25,7 @@ void DFT::comp_dens() {
 
                 }
             }
-            DFT::system_out_file << "density(i)= " << density(i) << "\n";
+          //  DFT::system_out_file << "density(i)= " << density(i) << "\n";
         }
         if (isnan((float) density(i))) {
             nan_check = true;

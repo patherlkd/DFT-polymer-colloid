@@ -46,6 +46,7 @@ public:
     void set_tether(unsigned int t);
     void set_H_solver();
     void set_chem1(db ch);
+    void set_colbulk1();
     void set_ncolloids1(unsigned int nc);
     void set_rc1(db rc);
     

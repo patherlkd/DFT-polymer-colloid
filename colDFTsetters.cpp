@@ -108,6 +108,10 @@ void DFT::set_rc1(db rc) {
     this->rc1 = rc;
 }
 
+void DFT::set_colbulk1(){
+    this->colbulk1 = (db)Nc1/(A*h);
+}
+
 void DFT::set_poly_dens_filename(std::string s) {
     DFT::poly_dens_filename = s;
 }

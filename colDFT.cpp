@@ -13,9 +13,8 @@ using namespace std;
 DFT::DFT() {
 
 }
- 
 
-void DFT::setup(){
+void DFT::setup() {
 
     Gv1.resize(Nz);
     Gv2.resize(Nz);
@@ -100,13 +99,13 @@ void DFT::evolve() {
     iter = 0;
     conver = 1.0;
     conver_col1 = 1.0;
-    
+
     init_field(0.80); // Initialize mean field
     init_coldensity1(20); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
 
-    export_data();
-    
+    // export_data();
+
     while (conver > gamma) // Do while un converged. Well durr. 
     {
         solveGs(); // Solve for the propagators for polymer density 
@@ -114,8 +113,8 @@ void DFT::evolve() {
         if (conver == 1) {
             DFT::comp_n_pol();
         }
-        
-        if(conver ==1){
+
+        if (conver_col1 == 1) {
             DFT::comp_n_col1();
         }
         //  norm();
@@ -128,11 +127,12 @@ void DFT::evolve() {
         DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
         //        cout << "Col density 2 convergence: " << conver_col2 << endl;
 
+        export_data();
         iter++;
     }
 
-   // export_data();
-    
+
+
 }
 
 /*
@@ -140,21 +140,64 @@ void DFT::evolve() {
  */
 void DFT::export_data() {
 
-    DFT::poly_dens_file.open(DFT::poly_dens_filename);
-    DFT::col1_dens_file.open(DFT::col1_dens_filename);
-    DFT::meanfield_file.open(DFT::meanfield_filename);
+    bool polnan(false);
+    bool col1nan(false);
+    bool meanfieldnan(false);
+
+    for (int i = 0; i < Nz; i++) {
+
+        if (std::isnan(DFT::density(i))) {
+            polnan = true;
+        }
+
+        if (std::isnan(DFT::coldensity1(i))) {
+            col1nan = true;
+        }
+
+        if (std::isnan(DFT::field(i))) {
+            meanfieldnan = true;
+        }
+
+    }
+
+
+    if (!polnan) {
+        DFT::poly_dens_file.open(DFT::poly_dens_filename);
+    }
+    if (!col1nan) {
+        DFT::col1_dens_file.open(DFT::col1_dens_filename);
+    }
+    if (!meanfieldnan) {
+        DFT::meanfield_file.open(DFT::meanfield_filename);
+    }
+
     DFT::external_pot_file.open(DFT::external_pot_filename);
 
     for (int i = 0; i < Nz; i++) {
-        DFT::poly_dens_file << (db) i * dz << "\t" << DFT::density(i) << endl;
-        DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
-        DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
+
+
+
+        if (!polnan) {
+            DFT::poly_dens_file << (db) i * dz << "\t" << DFT::density(i) << endl;
+        }
+        if (!col1nan) {
+            DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
+        }
+        if (!meanfieldnan) {
+            DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
+        }
         DFT::external_pot_file << (db) i * dz << "\t" << DFT::V(i) << endl;
     }
 
-    DFT::poly_dens_file.close();
-    DFT::col1_dens_file.close();
-    DFT::meanfield_file.close();
+    if (!polnan) {
+        DFT::poly_dens_file.close();
+    }
+    if (!col1nan) {
+        DFT::col1_dens_file.close();
+    }
+    if (!meanfieldnan) {
+        DFT::meanfield_file.close();
+    }
     DFT::external_pot_file.close();
 
 }
@@ -204,7 +247,7 @@ void DFT::update_mf() {
 }
 
 void DFT::norm() {
-    
+
     vec d1;
     d1.resize(Nz);
     db unnorm = 0, norm = 0;

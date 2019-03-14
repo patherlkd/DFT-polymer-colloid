@@ -42,7 +42,7 @@ void DFT::comp_dens() {
     for (int i = 0; i < Nz; i++) {
 
         density(i) = (density(i)*(db) Nm * (db) Np) / unnorm;
-        DFT::system_out_file << "density(i)= " << density(i) << "\n";
+     //   DFT::system_out_file << "density(i)= " << density(i) << "\n";
         if (nan_check) {
             cout << "ERROR: Nan in the density. Aborted." << endl;
         }

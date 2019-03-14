@@ -144,6 +144,7 @@ int main(int argc, char *argv[]) {
     sim.set_chem1(chem1);
     sim.set_ncolloids1(ncolloids1);
     sim.set_rc1(col1_rad);
+    sim.set_colbulk1();
 
     sim.set_D(0.16666 * sqr_d(poly_diameter));
     sim.set_H_solver(); // VITAL for solving the polymer density

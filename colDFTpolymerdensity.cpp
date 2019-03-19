@@ -36,9 +36,9 @@ void DFT::comp_dens() {
 
     }
 
-    DFT::system_out_file << "unnorm= " << unnorm << "\n";
+  //  DFT::system_out_file << "unnorm= " << unnorm << "\n";
 
-    db norm = 0, norm1 = 0;
+    db norm = 0.0, norm1 = 0.0, norm_col1=0.0;
     for (int i = 0; i < Nz; i++) {
 
         density(i) = (density(i)*(db) Nm * (db) Np) / unnorm;
@@ -48,8 +48,10 @@ void DFT::comp_dens() {
         }
         norm1 += simp(i) * density(i) * dz;
         norm += simp(i) * density(i) * dz*A;
+        norm_col1 += simp(i)* DFT::coldensity1(i) * dz *A;
+        
     }
-    DFT::system_out_file << "# of monomers =" << norm << endl;
+    DFT::system_out_file << "[# polymer beads] = " << norm << "\t [# of colloid 1 beads] = "<< norm_col1 << endl;
     //cout << "# of monomers(dz) =" << norm1<< endl;
 
 

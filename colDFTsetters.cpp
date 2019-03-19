@@ -29,6 +29,14 @@ void DFT::set_epc1(db epc1) {
     this->epc1 = epc1;
 }
 
+void DFT::set_ec1c1(db ep){
+    this->ec1c1 = ep; 
+}
+
+void DFT::set_lambdac1c1(db lc1c1){
+    this->lambdac1c1 = lc1c1;
+}
+
 void DFT::set_dia(db dia) {
     this->dia = dia;
     this->r = dia * 0.5;
@@ -58,8 +66,8 @@ void DFT::set_ds(unsigned int N) {
     this->Ns = N;
     this->ds = ((db) Nm / (db) Ns);
     
-    DFT::system_out_file << "Ns: "<<Ns<<"\n";
-    DFT::system_out_file << "ds: "<<ds<<"\n";
+   // DFT::system_out_file << "Ns: "<<Ns<<"\n";
+   // DFT::system_out_file << "ds: "<<ds<<"\n";
 }
 
 void DFT::set_dz(unsigned int N, db Z) {
@@ -71,7 +79,7 @@ void DFT::set_dz(unsigned int N, db Z) {
 
 void DFT::set_A(db a) {
     this->A = a;
-    DFT::system_out_file << "A= " << A << "\n";
+  //  DFT::system_out_file << "A= " << A << "\n";
 }
 
 void DFT::set_gamma(db g) {
@@ -110,6 +118,10 @@ void DFT::set_rc1(db rc) {
 
 void DFT::set_colbulk1(){
     this->colbulk1 = (db)Nc1/(A*h);
+}
+
+void DFT::set_col1_init_cut(db c){
+    this->col1_init_cut = c;
 }
 
 void DFT::set_poly_dens_filename(std::string s) {

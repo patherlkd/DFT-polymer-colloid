@@ -101,7 +101,7 @@ void DFT::evolve() {
     conver_col1 = 1.0;
 
     init_field(0.80); // Initialize mean field
-    init_coldensity1(20); // Initialize colloid density (bulk?)
+    init_coldensity1(DFT::col1_init_cut); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
 
     // export_data();
@@ -210,8 +210,12 @@ void DFT::update_col1() {
 
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
-        ARG = chem1 + cc(i) - V(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1); // double check if cc(i) is negative
-        coldensity1(i) = (1.0 - dt) * coldensity1(i) + dt * colbulk1 * exp(ARG);
+        ARG = chem1 - cc(i) - V(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1);
+        ARG -= DFT::comp_att_term(i,coldensity1,ec1c1,rc1,rc1,lambdac1c1);
+        coldensity1(i) = (1.0 - DT) * coldensity1(i) + DT * colbulk1 * exp(ARG);
+        
+        
+        
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;
@@ -236,6 +240,7 @@ void DFT::update_mf() {
         old_mf = field(i);
 
         field(i) = old_mf + dt * (-old_mf + c(i) + V(i) + DFT::comp_att_term(i, density, epp, r, r, lambdapp));
+        field(i) += dt*DFT::comp_att_term(i, coldensity1, epc1, r, rc1, lambdapc1);
 
         diff = fabs(old_mf - field(i));
         if (diff > max)
@@ -269,13 +274,26 @@ void DFT::norm() {
 
 void DFT::init_coldensity1(unsigned int cut) // Initialize the colloid density
 {
+    
+    db unnorm = 0.0;
+    
     for (int i = 0; i < Nz; i++) {
 
-        if (i <= cut || i == Nz - 1) {
+        if ((db)i*dz <= cut || i == Nz - 1) {
             coldensity1(i) = 0.0;
-        } else if (i > cut)
+        } else {
             coldensity1(i) = colbulk1 * exp(V(i));
+        }
+        
+         unnorm += simp(i)*coldensity1(i)*dz*A;
     }
+    
+    for(int i = 0; i < Nz; i++){
+        
+        coldensity1(i) = (coldensity1(i)*(db)Nc1)/unnorm;
+        
+    }
+    
 }
 
 void DFT::init_field(db a) {

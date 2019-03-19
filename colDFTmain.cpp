@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
 
     CLI::App dftapp{"Density functional theory (DFT) for polymers + colloids in a film"};
 
-    db epp = 0.0, epc1 = 0.0;
-    db lambdapp = 0.0, lambdapc1 = 0.0;
+    db epp = 0.0, epc1 = 0.0, ec1c1 = 0.0;
+    db lambdapp = 0.0, lambdapc1 = 0.0, lambdac1c1 = 0.0;
     db gamma = 0.0, dt = 0.0, DT = 0.0;
     db height = 0.0, area = 0.0, wall_strength = 0.0;
 
@@ -60,19 +60,24 @@ int main(int argc, char *argv[]) {
 
     CLI::Option* opt_epp = dftapp.add_option("--epp", epp, " Polymer - polymer cohesion strength ");
     CLI::Option* opt_epc1 = dftapp.add_option("--epc1", epc1, " Polymer - colloid type 1 cohesion strength ");
+    CLI::Option* opt_ec1c1 = dftapp.add_option("--ec1c1", ec1c1, " colloid 1 - colloid 1 cohesion strength ");
     CLI::Option* opt_lambdapp = dftapp.add_option("--lambdapp", lambdapp, " Polymer - polymer cohesion range ");
     CLI::Option* opt_lambdapc1 = dftapp.add_option("--lambdapc1", lambdapc1, " Polymer - colloid type 1 cohesion range");
+    CLI::Option* opt_lambdac1c1 = dftapp.add_option("--lambdac1c1", lambdac1c1, " colloid 1 - colloid type 1 cohesion range");
 
     opt_epp->needs(opt_lambdapp);
     opt_lambdapp->needs(opt_epp);
     opt_epc1->needs(opt_lambdapc1);
     opt_lambdapc1->needs(opt_epc1);
+    opt_ec1c1->needs(opt_lambdac1c1);
+    opt_lambdac1c1->needs(opt_ec1c1);
 
     opt_epp->group("Particle interactions");
     opt_epc1->group("Particle interactions");
     opt_lambdapp->group("Particle interactions");
     opt_lambdapc1->group("Particle interactions");
-
+    opt_lambdac1c1->group("Particle interactions");
+    opt_ec1c1->group("Particle interactions");
 
     db poly_bondlength = 0.0;
     db poly_diameter = 0.0;
@@ -98,20 +103,24 @@ int main(int argc, char *argv[]) {
 
     db chem1 = 0.0;
     db col1_rad = 0.0;
+    db col1_init_cut = 0.0;
     int ncolloids1 = 0;
 
     CLI::Option* opt_chem1 = dftapp.add_option("--chem1", chem1, "Colloid (1) excess chemical potential");
     CLI::Option* opt_ncolloids1 = dftapp.add_option("--Nc1", ncolloids1, "Colloid (1) number of colloids");
     CLI::Option* opt_col1_rad = dftapp.add_option("--rc1", col1_rad, "Colloids (1) radius");
+    CLI::Option* opt_col1_init_cut = dftapp.add_option("--col1_init_cut", col1_init_cut, "Colloids (1) height which below density is zero (to begin with)");
+
 
     opt_chem1->group("Colloid parameters");
     opt_ncolloids1->group("Colloid parameters");
     opt_col1_rad->group("Colloid parameters");
+    opt_col1_init_cut->group("Colloid parameters");
 
     CLI11_PARSE(dftapp, argc, argv);
 
-    std::cout << dftapp.config_to_str(true,false) << "\n";
-    
+    std::cout << dftapp.config_to_str(true, false) << "\n";
+
     DFT sim;
 
     sim.set_poly_dens_filename(poly_dens_filename);
@@ -119,7 +128,7 @@ int main(int argc, char *argv[]) {
     sim.set_meanfield_filename(meanfield_filename);
     sim.set_system_out_filename(system_out_filename);
     sim.set_external_pot_filename(external_pot_filename);
-    
+
     sim.set_potential_mode(potential_mode);
     sim.set_gamma(gamma);
     sim.set_dt(dt);
@@ -128,12 +137,15 @@ int main(int argc, char *argv[]) {
     sim.set_A(area);
     sim.set_wall_strength(wall_strength);
 
-    
+
 
     sim.set_epp(epp);
     sim.set_epc1(epc1);
+    sim.set_ec1c1(ec1c1);
+
     sim.set_lambdapp(lambdapp);
     sim.set_lambdapc1(lambdapc1);
+    sim.set_lambdac1c1(lambdac1c1);
 
     sim.set_Np(npoly);
     sim.set_Nm(nbeads);
@@ -145,13 +157,14 @@ int main(int argc, char *argv[]) {
     sim.set_ncolloids1(ncolloids1);
     sim.set_rc1(col1_rad);
     sim.set_colbulk1();
+    sim.set_col1_init_cut(col1_init_cut);
 
     sim.set_D(0.16666 * sqr_d(poly_diameter));
     sim.set_H_solver(); // VITAL for solving the polymer density
 
     //sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
     //sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp);
-    
+
     time_t START = time(NULL);
     sim.setup();
     sim.evolve();

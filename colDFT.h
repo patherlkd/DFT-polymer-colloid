@@ -32,6 +32,9 @@ public:
     void set_lambdapp(db lpp);
     void set_epc1(db epc1);
     void set_lambdapc1(db lpc);
+    void set_ec1c1(db);
+    void set_lambdac1c1(db);
+    
     void set_dia(db dia);
     void set_Np(unsigned int N);
     void set_Nm(unsigned int N);
@@ -49,6 +52,7 @@ public:
     void set_colbulk1();
     void set_ncolloids1(unsigned int nc);
     void set_rc1(db rc);
+    void set_col1_init_cut(db);
     
     void test_dinos_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij);
     void test_lukes_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij);
@@ -88,8 +92,6 @@ private:
     db simp(int);
     db attractive(int);
     db comp_att_term(int zplace, vec& densityj, db eppij, db ri, db rj, db lambdaij); // New general attractive term in free energy
-
- 
 
     // Fundamental Measure Theory functions
 
@@ -155,9 +157,12 @@ private:
 
     db epp; // strength for cohesion (polymer-polymer)
     db epc1; // same but for polymer-colloid
+    db ec1c1; // colloid 1 colloid 1 interaction
+    
+
     db lambdapp; //range for gaussian attractive (polymer-polymer)
     db lambdapc1; // range for attraction (polymer - colloid 1)
-
+    db lambdac1c1; // range for atraction (col1 - col1)
    
     db unnorm;
     db Z; //" Partition function" 
@@ -165,6 +170,7 @@ private:
 
     db colbulk1; // bulk fluid density colloids
     db chem1; // excess chem potential
+    db col1_init_cut; // for initialising the col1 density 
     int Nc1; // # of colloids
 
     float conver; // Convergence tracker (mean field) aka polymer
@@ -188,7 +194,6 @@ private:
     vec V; //external potential
     mat G1; // these will hold all G's for all s and z
     mat G2;
-
 
 };
 

@@ -100,7 +100,10 @@ void DFT::evolve() {
     conver = 1.0;
     conver_col1 = 1.0;
 
-    init_field(0.80); // Initialize mean field
+    if (!DFT::polymers_off) {
+        init_field(0.80); // Initialize mean field
+    }
+
     init_coldensity1(DFT::col1_init_cut); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
 
@@ -108,22 +111,36 @@ void DFT::evolve() {
 
     while (conver > gamma) // Do while un converged. Well durr. 
     {
-        solveGs(); // Solve for the propagators for polymer density 
-        comp_dens(); // Compute density(Z)
-        if (conver == 1) {
-            DFT::comp_n_pol();
+
+        if (!DFT::polymers_off) {
+            solveGs(); // Solve for the propagators for polymer density 
+            comp_dens(); // Compute density(Z)
+
+
+            if (conver == 1) {
+                DFT::comp_n_pol();
+            }
+
         }
 
         if (conver_col1 == 1) {
             DFT::comp_n_col1();
         }
         //  norm();
-        update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+
+        if (!DFT::polymers_off) {
+            update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+        }
         update_col1(); // Update the colloid density
 
         //export_data();
 
-        DFT::system_out_file << "MF convergence: " << conver << endl;
+
+        if (!DFT::polymers_off) {
+            DFT::system_out_file << "MF convergence: " << conver << endl;
+
+        }
+        
         DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
         //        cout << "Col density 2 convergence: " << conver_col2 << endl;
 
@@ -211,11 +228,11 @@ void DFT::update_col1() {
     for (int i = 0; i < Nz; i++) {
         old_d = coldensity1(i);
         ARG = chem1 - cc(i) - V(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1);
-        ARG -= DFT::comp_att_term(i,coldensity1,ec1c1,rc1,rc1,lambdac1c1);
+        ARG -= DFT::comp_att_term(i, coldensity1, ec1c1, rc1, rc1, lambdac1c1);
         coldensity1(i) = (1.0 - DT) * coldensity1(i) + DT * colbulk1 * exp(ARG);
-        
-        
-        
+
+
+
         diff = fabs(old_d - coldensity1(i));
         if (diff > max)
             max = diff;
@@ -227,6 +244,9 @@ void DFT::update_col1() {
 }
 
 void DFT::update_mf() {
+
+
+
     hs = 0;
 
     att = 0;
@@ -240,7 +260,7 @@ void DFT::update_mf() {
         old_mf = field(i);
 
         field(i) = old_mf + dt * (-old_mf + c(i) + V(i) + DFT::comp_att_term(i, density, epp, r, r, lambdapp));
-        field(i) += dt*DFT::comp_att_term(i, coldensity1, epc1, r, rc1, lambdapc1);
+        field(i) += dt * DFT::comp_att_term(i, coldensity1, epc1, r, rc1, lambdapc1);
 
         diff = fabs(old_mf - field(i));
         if (diff > max)
@@ -274,26 +294,26 @@ void DFT::norm() {
 
 void DFT::init_coldensity1(unsigned int cut) // Initialize the colloid density
 {
-    
+
     db unnorm = 0.0;
-    
+
     for (int i = 0; i < Nz; i++) {
 
-        if ((db)i*dz <= cut || i == Nz - 1) {
+        if ((db) i * dz <= cut || i == Nz - 1) {
             coldensity1(i) = 0.0;
         } else {
             coldensity1(i) = colbulk1 * exp(V(i));
         }
-        
-         unnorm += simp(i)*coldensity1(i)*dz*A;
+
+        unnorm += simp(i) * coldensity1(i) * dz*A;
     }
-    
-    for(int i = 0; i < Nz; i++){
-        
-        coldensity1(i) = (coldensity1(i)*(db)Nc1)/unnorm;
-        
+
+    for (int i = 0; i < Nz; i++) {
+
+        coldensity1(i) = (coldensity1(i)*(db) Nc1) / unnorm;
+
     }
-    
+
 }
 
 void DFT::init_field(db a) {

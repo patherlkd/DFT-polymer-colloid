@@ -27,6 +27,7 @@ public:
 
     
     void set_potential_mode(unsigned int pm);
+    void set_polymers_off();
     void set_wall_strength(db ws);
     void set_epp(db epp);
     void set_lambdapp(db lpp);
@@ -72,6 +73,7 @@ private:
     unsigned int Nz = 0; // number of spatial points
     unsigned int iter; // iteration tracker
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
+    bool polymers_off = false;
     
          // pair potentials
     db dinos_potential(db Z, db eppij, db dij, db lambdaij);

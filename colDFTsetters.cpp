@@ -82,6 +82,10 @@ void DFT::set_A(db a) {
   //  DFT::system_out_file << "A= " << A << "\n";
 }
 
+void DFT::set_polymers_off(){
+    this->polymers_off = true;
+}
+
 void DFT::set_gamma(db g) {
     this->gamma = g;
 }

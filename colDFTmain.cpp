@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
     db height = 0.0, area = 0.0, wall_strength = 0.0;
 
     int potential_mode = 0; // use Dino potential by default
+    bool polymers_off = false; // polymers on by default
     int Nz = 0;
 
     std::string poly_dens_filename = "";
@@ -23,20 +24,23 @@ int main(int argc, char *argv[]) {
     std::string external_pot_filename = "";
     std::string system_out_filename = "";
 
-    dftapp.set_config("--config", "./config.dft", "configuration file for dftpolymercolloid", true);
+    dftapp.set_config("--config", "./config.dft", "configuration file for dftpolymercolloid", false);
 
     CLI::Option* opt_potentialmode = dftapp.add_option("-p,--potential_mode", potential_mode, " Attractive potential to use for all particles (0 = long ranged gaussian, 1 = short ranged gaussian) ");
     CLI::Option* opt_convertol = dftapp.add_option("-c,--ctol,--convergence_tolerance", gamma, " Convergence tolerance for DFT simulation.");
     CLI::Option* opt_timestep = dftapp.add_option("-t,--dt,--timestep", dt, " timestep for the numerical algorithm to advance system to equilibrium (for polymers)");
     CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep", DT, "timestep for the numerical algorithm but for colloids");
     CLI::Option* opt_spacepoints = dftapp.add_option("--Nz,--spatial_points", Nz, "Number of spatial points");
+    CLI::Option* opt_polymers_off = dftapp.add_flag("--polymers_off", polymers_off, "Switch polymers off");
 
     opt_potentialmode->required()->group("Simulation parameters");
     opt_convertol->required()->group("Simulation parameters");
     opt_timestep->required()->group("Simulation parameters");
     opt_timestep_col->required()->group("Simulation parameters");
     opt_spacepoints->required()->group("Simulation parameters");
-
+    opt_polymers_off->group("Simulation parameters");
+    
+    
     CLI::Option* opt_polydensfilename = dftapp.add_option("--poly_dens_file", poly_dens_filename, " filename for polymer density");
     CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", col1_dens_filename, " filename for colloid density");
     CLI::Option* opt_meanfieldfilename = dftapp.add_option("--meanfield_file", meanfield_filename, " filename for meanfield");
@@ -123,6 +127,10 @@ int main(int argc, char *argv[]) {
 
     DFT sim;
 
+    if(polymers_off){
+        sim.set_polymers_off();
+    }
+    
     sim.set_poly_dens_filename(poly_dens_filename);
     sim.set_col1_dens_filename(col1_dens_filename);
     sim.set_meanfield_filename(meanfield_filename);

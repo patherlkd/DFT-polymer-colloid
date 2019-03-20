@@ -9,6 +9,7 @@
 #include "colDFT.h"
 #include "math.h"
 #include "useful.h"
+#include <string>
 
 void DFT::comp_POT() {
 
@@ -102,13 +103,13 @@ db DFT::lukes_potential(db Z, db eppij, db dij, db lambdaij) {
             (dij + lambdaij - exp(dij / lambdaij) * lambdaij);
 }
 
-void DFT::test_dinos_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij) {
+void DFT::test_dinos_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij, std::string filename) {
 
     DFT::system_out_file << "Testing dinos potential\n";
 
     std::ofstream test;
 
-    test.open("dinos_potential.txt");
+    test.open(filename);
 
     for (int i = 0; i < Nz; i++) {
         db z = (db) i * dz;
@@ -118,13 +119,13 @@ void DFT::test_dinos_potential(unsigned int Nz, db dz, db eppij, db dij, db lamb
     test.close();
 }
 
-void DFT::test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij) {
+void DFT::test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij,std::string filename) {
 
     DFT::system_out_file << "Testing lukes potential\n";
 
     std::ofstream test;
 
-    test.open("lukes_potential.txt");
+    test.open(filename);
 
     db z = 0.0;
     db atdia = DFT::lukes_potential(dij, eppij, dij, lambdaij);

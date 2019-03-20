@@ -55,8 +55,8 @@ public:
     void set_rc1(db rc);
     void set_col1_init_cut(db);
     
-    void test_dinos_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij);
-    void test_lukes_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij);
+    void test_dinos_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij,std::string filename);
+    void test_lukes_potential(unsigned int Nz,db dz, db eppij, db dij, db lambdaij,std::string filename);
     
     
     db get_dz();

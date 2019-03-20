@@ -3,6 +3,26 @@
 
 using namespace std;
 
+db Power(db x,int n){
+    
+  
+    if(n==2){
+        return x*x;
+    } else if(n==3){
+        return x*x*x;
+    } else if(n==-2){
+        return 1.0/(x*x);
+    } else if(n==4){
+        return x*x*x*x;
+    } else {
+       
+        cout << "Encountered unexpected power 'n': "<<n<<" put option in Power function in useful.cpp\n";
+        exit(1);
+    }
+    
+    
+}
+
 db Htheta(db x) {
 
     if (x < 0.0)

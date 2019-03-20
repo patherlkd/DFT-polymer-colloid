@@ -104,7 +104,10 @@ private:
     void comp_n_pol();
     void comp_n_col1();
     void comp_dphi_pol();
+    void comp_dphi_pol_v2();
     void comp_dphi_col1();
+    void comp_dphi_col1_v2();
+    
     db WBF(unsigned int);
     db CHF(unsigned int);
     db correct(db, db);

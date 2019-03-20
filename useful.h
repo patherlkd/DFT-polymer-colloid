@@ -21,6 +21,7 @@ void modulate(vec &v, int rows);
 void modulate1(vec &v,int rows);
 db heaviside(db  R, db x);
 db Htheta(db x);
+db Power(db x,int n);
 
 
 template <class T>
@@ -38,7 +39,7 @@ inline T sq(T x) {
 
 template <class T>
 inline T cu(T x) {
-    return (T) (x * x);
+    return (T) (x * x * x);
 }
 
 template <class T>
@@ -89,7 +90,7 @@ inline bool eq(T a,T b,T eps){return abs(a-b)<eps;}
 db pow12(db g);
 
 // CONSTANTS
-const db pi = 3.14159265359; 
+const db pi = 3.14159265358979323846; 
 const db euler = 2.71828; 
 //useful CLASSES
 

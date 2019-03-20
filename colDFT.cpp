@@ -109,10 +109,12 @@ void DFT::evolve() {
 
     // export_data();
 
+    
+    if(!DFT::polymers_off){
     while (conver > gamma) // Do while un converged. Well durr. 
     {
 
-        if (!DFT::polymers_off) {
+       
             solveGs(); // Solve for the propagators for polymer density 
             comp_dens(); // Compute density(Z)
 
@@ -121,25 +123,24 @@ void DFT::evolve() {
                 DFT::comp_n_pol();
             }
 
-        }
+      
 
         if (conver_col1 == 1) {
             DFT::comp_n_col1();
         }
         //  norm();
 
-        if (!DFT::polymers_off) {
             update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
-        }
+        
+        
         update_col1(); // Update the colloid density
 
         //export_data();
 
 
-        if (!DFT::polymers_off) {
             DFT::system_out_file << "MF convergence: " << conver << endl;
 
-        }
+     
         
         DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
         //        cout << "Col density 2 convergence: " << conver_col2 << endl;
@@ -147,7 +148,26 @@ void DFT::evolve() {
         export_data();
         iter++;
     }
+    } else {
+        
+        while (conver_col1 > gamma) // Do while un converged. Well durr. 
+    {
 
+
+        if (conver_col1 == 1) {
+            DFT::comp_n_col1();
+        }
+
+        update_col1(); // Update the colloid density
+   
+        DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
+
+        export_data();
+        iter++;
+    }
+        
+        
+    }
 
 
 }

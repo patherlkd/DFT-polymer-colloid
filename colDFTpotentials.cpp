@@ -15,23 +15,55 @@ void DFT::comp_POT() {
 
     db z = 0.0;
 
-    for (int i = 0; i < (int)(Nz*0.5); i++) {
+    for (int i = 0; i < (int) (Nz * 0.5); i++) {
         z = (db) i*dz;
 
         if (z > dia && z < (h - dia))
             V(i) = 0.0;
         else
-            V(i) = wall_strength * (-1.0 * (1.0/exp(0.5)) - exp((dia - h) / (2.0 * dia)) + exp(-z/(2.0*dia)) + exp((z - h) / (2.0 * dia)));
-     //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
+            V(i) = wall_strength * (-1.0 * (1.0 / exp(0.5)) - exp((dia - h) / (2.0 * dia)) + exp(-z / (2.0 * dia)) + exp((z - h) / (2.0 * dia)));
+        //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
     }
-    
-    for (int i = (int)(Nz*0.5); i < Nz; i++) {
+
+    for (int i = (int) (Nz * 0.5); i < Nz; i++) {
         z = (db) i*dz;
 
         if (z > dia && z < (h - dia))
             V(i) = 0.0;
         else
             V(i) = V(Nz - i - 1);
+    }
+
+
+}
+
+void DFT::comp_POT_c1() {
+
+
+    db z = 0.0;
+
+    db dc1 = rc1 * 2.0;
+
+    for (int i = 0; i < (int) (Nz * 0.5); i++) {
+        z = (db) i*dz;
+
+        if (z > dc1 && z < (h - dc1))
+            Vc1(i) = 0.0;
+        else
+            Vc1(i) = wall_strength * (-1.0 * (1.0 / exp(0.5)) - exp((dc1 - h) / (2.0 * dc1)) + exp(-z / (2.0 * dc1)) + exp((z - h) / (2.0 * dc1)));
+        //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
+    }
+
+    for (int i = (int) (Nz * 0.5); i < Nz; i++) {
+        z = (db) i*dz;
+        if (topwall_off_c1) {
+            Vc1(i) = 0.0;
+        } else {
+            if (z > dia && z < (h - dia))
+                Vc1(i) = 0.0;
+            else
+                Vc1(i) = Vc1(Nz - i - 1);
+        }
     }
 
 
@@ -128,7 +160,7 @@ void DFT::test_dinos_potential(unsigned int Nz, db dz, db eppij, db dij, db lamb
     test.close();
 }
 
-void DFT::test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij,std::string filename) {
+void DFT::test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij, std::string filename) {
 
     DFT::system_out_file << "Testing lukes potential\n";
 

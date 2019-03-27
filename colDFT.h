@@ -28,6 +28,7 @@ public:
     
     void set_potential_mode(unsigned int pm);
     void set_polymers_off();
+    void set_topwall_off_c1();
     void set_wall_strength(db ws);
     void set_epp(db epp);
     void set_lambdapp(db lpp);
@@ -74,6 +75,7 @@ private:
     unsigned int iter; // iteration tracker
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
     bool polymers_off = false;
+    bool topwall_off_c1 = false;
     
          // pair potentials
     db dinos_potential(db Z, db eppij, db dij, db lambdaij);
@@ -86,6 +88,7 @@ private:
     virtual void solveGs();
     virtual void comp_dens();
     void comp_POT();
+    void comp_POT_c1();
     void update_mf();
     void update_col1();
     void CS(int);
@@ -196,7 +199,8 @@ private:
 
     vec c; // To hold the one body direct correlation function and the weights for the polymers
     vec cc; // one body... for colloids
-    vec V; //external potential
+    vec V; //external potential 'polymers'
+    vec Vc1; // external potential 'col-1'
     mat G1; // these will hold all G's for all s and z
     mat G2;
 

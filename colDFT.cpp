@@ -53,7 +53,7 @@ void DFT::setup() {
     c.resize(Nz);
     cc.resize(Nz);
     V.resize(Nz);
-
+    Vc1.resize(Nz);
 
     density.resize(Nz);
     coldensity1.resize(Nz);
@@ -261,7 +261,7 @@ void DFT::update_col1() {
 
 
 
-        ARG = chem1 - cc(i) - V(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1);
+        ARG = chem1 - cc(i) - Vc1(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1);
         ARG -= DFT::comp_att_term(i, old_dens, ec1c1, rc1, rc1, lambdac1c1);
 
 

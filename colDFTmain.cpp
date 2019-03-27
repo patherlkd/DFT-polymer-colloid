@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
 
     int potential_mode = 0; // use Dino potential by default
     bool polymers_off = false; // polymers on by default
+    bool topwall_off_c1 = false; // top wall on for col-1 by default
     int Nz = 0;
 
     std::string poly_dens_filename = "";
@@ -32,6 +33,7 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep", DT, "timestep for the numerical algorithm but for colloids");
     CLI::Option* opt_spacepoints = dftapp.add_option("--Nz,--spatial_points", Nz, "Number of spatial points");
     CLI::Option* opt_polymers_off = dftapp.add_flag("--polymers_off", polymers_off, "Switch polymers off");
+     CLI::Option* opt_topwall_off_c1 = dftapp.add_flag("--topwall_c1_off", topwall_off_c1, "Switch top wall off for colloid 1");
 
     opt_potentialmode->required()->group("Simulation parameters");
     opt_convertol->required()->group("Simulation parameters");
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]) {
     opt_timestep_col->required()->group("Simulation parameters");
     opt_spacepoints->required()->group("Simulation parameters");
     opt_polymers_off->group("Simulation parameters");
+    opt_topwall_off_c1->group("Simulations parameters");
     
     
     CLI::Option* opt_polydensfilename = dftapp.add_option("--poly_dens_file", poly_dens_filename, " filename for polymer density");
@@ -129,6 +132,10 @@ int main(int argc, char *argv[]) {
 
     if(polymers_off){
         sim.set_polymers_off();
+    }
+    
+    if(topwall_off_c1){
+        sim.set_topwall_off_c1();
     }
     
     sim.set_poly_dens_filename(poly_dens_filename);

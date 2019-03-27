@@ -86,6 +86,10 @@ void DFT::set_polymers_off(){
     this->polymers_off = true;
 }
 
+void DFT::set_topwall_c1_off(){
+    this->topwall_off_c1 = true;
+}
+
 void DFT::set_gamma(db g) {
     this->gamma = g;
 }

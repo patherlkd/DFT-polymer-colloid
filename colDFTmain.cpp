@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     int potential_mode = 0; // use Dino potential by default
     bool polymers_off = false; // polymers on by default
     bool topwall_off_c1 = false; // top wall on for col-1 by default
+    bool botwall_off_c1 = false;
     int Nz = 0;
 
     std::string poly_dens_filename = "";
@@ -33,7 +34,8 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep", DT, "timestep for the numerical algorithm but for colloids");
     CLI::Option* opt_spacepoints = dftapp.add_option("--Nz,--spatial_points", Nz, "Number of spatial points");
     CLI::Option* opt_polymers_off = dftapp.add_flag("--polymers_off", polymers_off, "Switch polymers off");
-     CLI::Option* opt_topwall_off_c1 = dftapp.add_flag("--topwall_c1_off", topwall_off_c1, "Switch top wall off for colloid 1");
+    CLI::Option* opt_topwall_off_c1 = dftapp.add_flag("--topwall_off_c1", topwall_off_c1, "Switch top wall off for colloid 1");
+    CLI::Option* opt_botwall_off_c1 = dftapp.add_flag("--botwall_off_c1", botwall_off_c1, "Switch bottom wall off for colloid 1");
 
     opt_potentialmode->required()->group("Simulation parameters");
     opt_convertol->required()->group("Simulation parameters");
@@ -41,9 +43,9 @@ int main(int argc, char *argv[]) {
     opt_timestep_col->required()->group("Simulation parameters");
     opt_spacepoints->required()->group("Simulation parameters");
     opt_polymers_off->group("Simulation parameters");
-    opt_topwall_off_c1->group("Simulations parameters");
-    
-    
+    opt_topwall_off_c1->group("Simulation parameters");
+    opt_botwall_off_c1->group("Simulation parameters");
+
     CLI::Option* opt_polydensfilename = dftapp.add_option("--poly_dens_file", poly_dens_filename, " filename for polymer density");
     CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", col1_dens_filename, " filename for colloid density");
     CLI::Option* opt_meanfieldfilename = dftapp.add_option("--meanfield_file", meanfield_filename, " filename for meanfield");
@@ -130,14 +132,18 @@ int main(int argc, char *argv[]) {
 
     DFT sim;
 
-    if(polymers_off){
+    if (polymers_off) {
         sim.set_polymers_off();
     }
-    
-    if(topwall_off_c1){
+
+    if (topwall_off_c1) {
         sim.set_topwall_off_c1();
     }
     
+    if (botwall_off_c1) {
+        sim.set_botwall_off_c1();
+    }
+
     sim.set_poly_dens_filename(poly_dens_filename);
     sim.set_col1_dens_filename(col1_dens_filename);
     sim.set_meanfield_filename(meanfield_filename);
@@ -177,13 +183,13 @@ int main(int argc, char *argv[]) {
     sim.set_D(0.16666 * sqr_d(poly_diameter));
     sim.set_H_solver(); // VITAL for solving the polymer density
 
-    sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp,"dinos_potential_epp.txt");
-    sim.test_dinos_potential(Nz, sim.get_dz(), epc1, poly_diameter*0.5 + col1_rad, lambdapc1,"dinos_potential_epc1.txt");
-    sim.test_dinos_potential(Nz, sim.get_dz(), ec1c1, 2.0*col1_rad, lambdac1c1,"dinos_potential_ec1c1.txt");
-    
-    sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp,"lukes_potential_epp.txt");
-    sim.test_lukes_potential(Nz, sim.get_dz(), epc1, poly_diameter*0.5 + col1_rad, lambdapc1,"lukes_potential_epc1.txt");
-    sim.test_lukes_potential(Nz, sim.get_dz(), ec1c1, 2.0*col1_rad, lambdac1c1,"lukes_potential_ec1c1.txt");
+    sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp, "dinos_potential_epp.txt");
+    sim.test_dinos_potential(Nz, sim.get_dz(), epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "dinos_potential_epc1.txt");
+    sim.test_dinos_potential(Nz, sim.get_dz(), ec1c1, 2.0 * col1_rad, lambdac1c1, "dinos_potential_ec1c1.txt");
+
+    sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp, "lukes_potential_epp.txt");
+    sim.test_lukes_potential(Nz, sim.get_dz(), epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "lukes_potential_epc1.txt");
+    sim.test_lukes_potential(Nz, sim.get_dz(), ec1c1, 2.0 * col1_rad, lambdac1c1, "lukes_potential_ec1c1.txt");
 
     time_t START = time(NULL);
     sim.setup();

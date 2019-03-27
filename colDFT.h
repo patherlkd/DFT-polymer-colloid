@@ -29,6 +29,7 @@ public:
     void set_potential_mode(unsigned int pm);
     void set_polymers_off();
     void set_topwall_off_c1();
+    void set_botwall_off_c1();
     void set_wall_strength(db ws);
     void set_epp(db epp);
     void set_lambdapp(db lpp);
@@ -76,6 +77,7 @@ private:
     unsigned int potential_mode; // to use Dinos or my shorter ranged potential
     bool polymers_off = false;
     bool topwall_off_c1 = false;
+    bool botwall_off_c1 = false;
     
          // pair potentials
     db dinos_potential(db Z, db eppij, db dij, db lambdaij);

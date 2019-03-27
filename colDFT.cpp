@@ -344,7 +344,7 @@ void DFT::init_coldensity1(unsigned int cut) // Initialize the colloid density
         if ((db) i * dz <= cut || i == Nz - 1) {
             coldensity1(i) = 0.0;
         } else {
-            coldensity1(i) = colbulk1 * exp(V(i));
+            coldensity1(i) = colbulk1 * exp(Vc1(i));
         }
 
         unnorm += simp(i) * coldensity1(i) * dz*A;

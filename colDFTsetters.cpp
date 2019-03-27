@@ -90,6 +90,10 @@ void DFT::set_topwall_off_c1(){
     this->topwall_off_c1 = true;
 }
 
+void DFT::set_botwall_off_c1(){
+    this->botwall_off_c1 = true;
+}
+
 void DFT::set_gamma(db g) {
     this->gamma = g;
 }

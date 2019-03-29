@@ -69,8 +69,8 @@ void DFT::comp_dphi_pol_v2() {
         npv1 = nv1(i);
         npv2 = nv2(i);
 
-        dphi0(i) = -Log(1 - nf3 - nff3 - np3) + ((1 - N)*(1 - Power(npv2, 2) / Power(np2, 2)) *
-                Log(1 / (1 - nf3 - nff3 - np3) + ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) /
+        dphi0(i) = -log(1 - nf3 - nff3 - np3) + ((1 - N)*(1 - Power(npv2, 2) / Power(np2, 2)) *
+                log(1 / (1 - nf3 - nff3 - np3) + ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) /
                 (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
                 (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3)))) / N;
 
@@ -86,9 +86,9 @@ void DFT::comp_dphi_pol_v2() {
                 (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
                 (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3))))\
     + ((2 * (nf2 + nff2 + np2) - 3 * Power(nffv2 + nfv2 + npv2, 2))*
-                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * Log(1 - nf3 - nff3 - np3))) /
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
                 (36. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi) +
-                (2 * (1 - N) * np0 * Power(npv2, 2) * Log(1 / (1 - nf3 - nff3 - np3) +
+                (2 * (1 - N) * np0 * Power(npv2, 2) * log(1 / (1 - nf3 - nff3 - np3) +
                 ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) / (2. * (1 - nf3 - nff3 - np3)) +
                 (Power(nf2 + nff2 + np2, 2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
                 (18. * Power(1 - nf2 - nff3 - np3, 3)))) / (N * Power(np2, 3));
@@ -103,13 +103,13 @@ void DFT::comp_dphi_pol_v2() {
                 (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
                 (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3))))\
     + ((Power(nf2 + nff2 + np2, 2) - 3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2))*
-                (nf3 + nff3 + np3 - 2 * (1 - nf3 - nff3 - np3) * Log(1 - nf3 - nff3 - np3))) /
+                (nf3 + nff3 + np3 - 2 * (1 - nf3 - nff3 - np3) * log(1 - nf3 - nff3 - np3))) /
                 (36. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi) -
                 ((Power(nf2 + nff2 + np2, 2) - 3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2))*
-                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * Log(1 - nf3 - nff3 - np3))) /
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
                 (36. * Power(1 - nf3 - nff3 - np3, 2) * Power(nf3 + nff3 + np3, 2) * pi) +
                 ((Power(nf2 + nff2 + np2, 2) - 3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2))*
-                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * Log(1 - nf3 - nff3 - np3))) /
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
                 (18. * Power(1 - nf3 - nff3 - np3, 3)*(nf3 + nff3 + np3) * pi);
 
         dphiv1(i) = (-nffv2 - nfv2 - npv2) / (1 - nf3 - nff3 - np3);
@@ -120,8 +120,8 @@ void DFT::comp_dphi_pol_v2() {
                 (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
                 (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3))))\
     - ((nf2 + nff2 + np2)*(nffv2 + nfv2 + npv2)*(nf3 + nff3 + np3 +
-                Power(1 - nf3 - nff3 - np3, 2) * Log(1 - nf3 - nff3 - np3))) / (6. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi)\
-    - (2 * (1 - N) * np0 * npv2 * Log(1 / (1 - nf3 - nff3 - np3) +
+                Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) / (6. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi)\
+    - (2 * (1 - N) * np0 * npv2 * log(1 / (1 - nf3 - nff3 - np3) +
                 ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) / (2. * (1 - nf3 - nff3 - np3)) +
                 (Power(nf2 + nff2 + np2, 2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
                 (18. * Power(1 - nf2 - nff3 - np3, 3)))) / (N * Power(np2, 2));
@@ -256,32 +256,57 @@ void DFT::comp_dphi_col1_v2() {
         npv2 = nv2(i);
 
 
-        cdphi0(i) = -Log(1. - nf3 - nff3);
+        cdphi0(i) = -log(1. - nf3 - nff3 - np3);
 
-        cdphi1(i) = (0. + nf2 + nff2) / (1. - nf3 - nff3);
+        cdphi1(i) = (nf2 + nff2 + np2) / (1. - nf3 - nff3 - np3);
 
-        cdphi2(i) = (0. + nf1 + nff1) / (1. - nf3 - nff3) + ((2 * (0. + nf2 + nff2) - 3 * Power(0. + nffv2 + nfv2, 2))*
-                (0. + nf3 + nff3 + Power(1. - nf3 - nff3, 2) * Log(1. - nf3 - nff3))) / (36. * Power(1. - nf3 - nff3, 2)*(0. + nf3 + nff3) * pi);
+        cdphi2(i) = (nf1 + nff1 + np1) / (1 - nf3 - nff3 - np3) + ((2 * (nf2 + nff2 + np2) - 3 * Power(nffv2 + nfv2 + npv2, 2))*
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
+                (36. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi);
 
-        cdphi3(i) = -((0. - nf0 - nff0) / (1. - nf3 - nff3)) + ((0. + nf1 + nff1)*(0. + nf2 + nff2) - (0. + nffv1 + nfv1)*(0. + nffv2 + nfv2)) /
-                Power(1. - nf3 - nff3, 2) + ((Power(0. + nf2 + nff2, 2) - 3 * (0. + nf2 + nff2) * Power(0. + nffv2 + nfv2, 2))*
-                (0. + nf3 + nff3 - 2 * (1. - nf3 - nff3) * Log(1. - nf3 - nff3))) / (36. * Power(1. - nf3 - nff3, 2)*(0. + nf3 + nff3) * pi) -
-                ((Power(0. + nf2 + nff2, 2) - 3 * (0. + nf2 + nff2) * Power(0. + nffv2 + nfv2, 2))*
-                (0. + nf3 + nff3 + Power(1. - nf3 - nff3, 2) * Log(1. - nf3 - nff3))) /
-                (36. * Power(1. - nf3 - nff3, 2) * Power(0. + nf3 + nff3, 2) * pi) +
-                ((Power(0. + nf2 + nff2, 2) - 3 * (0. + nf2 + nff2) * Power(0. + nffv2 + nfv2, 2))*
-                (0. + nf3 + nff3 + Power(1. - nf3 - nff3, 2) * Log(1. - nf3 - nff3))) / (18. * Power(1. - nf3 - nff3, 3)*(0. + nf3 + nff3) * pi);
+        cdphi3(i) = -((-nf0 - nff0 - np0) / (1 - nf3 - nff3 - np3)) + ((nf1 + nff1 + np1)*(nf2 + nff2 + np2) -
+                (nffv1 + nfv1 + npv1)*(nffv2 + nfv2 + npv2)) / Power(1 - nf3 - nff3 - np3, 2) +
+                ((Power(nf2 + nff2 + np2, 2) - 3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2))*
+                (nf3 + nff3 + np3 - 2 * (1 - nf3 - nff3 - np3) * log(1 - nf3 - nff3 - np3))) /
+                (36. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi) -
+                ((Power(nf2 + nff2 + np2, 2) - 3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2))*
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
+                (36. * Power(1 - nf3 - nff3 - np3, 2) * Power(nf3 + nff3 + np3, 2) * pi) +
+                ((Power(nf2 + nff2 + np2, 2) - 3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2))*
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
+                (18. * Power(1 - nf3 - nff3 - np3, 3)*(nf3 + nff3 + np3) * pi);
 
-        cdphiv1(i) = (0. - nffv2 - nfv2) / (1. - nf3 - nff3);
+        cdphiv1(i) = (-npv2 - nffv2 - nfv2) / (1. - nf3 - nff3 - np3);
 
-        cdphiv2(i) = (0. - nffv1 - nfv1) / (1. - nf3 - nff3) -
-                ((0. + nf2 + nff2)*(0. + nffv2 + nfv2)*
-                (0. + nf3 + nff3 +
-                Power(1. - nf3 - nff3, 2) * Log(1. - nf3 - nff3))) /
-                (6. * Power(1. - nf3 - nff3, 2)*(0. + nf3 + nff3) * pi);
+        cdphiv2(i) = (-nffv1 - nfv1 - npv1) / (1 - nf3 - nff3 - np3) - ((nf2 + nff2 + np2)*(nffv2 + nfv2 + npv2)*
+                (nf3 + nff3 + np3 + Power(1 - nf3 - nff3 - np3, 2) * log(1 - nf3 - nff3 - np3))) /
+                (6. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) * pi);
 
         if (!DFT::polymers_off) {
 
+            cdphi2(i) += ((1 - N) * np0 * (1 - Power(npv2, 2) / Power(np2, 2))*((Power(nffv2 + nfv2 + npv2, 2) * Rp) /
+                    (Power(nf2 + nff2 + np2, 2)*(1 - nf3 - nff3 - np3)) +
+                    ((1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) / (2. * (1 - nf3 - nff3 - np3)) +
+                    (Power(nffv2 + nfv2 + npv2, 2) * Power(Rp, 2)) / (9. * (nf2 + nff2 + np2) * Power(1 - nf2 - nff3 - np3, 3)) +
+                    (Power(nf2 + nff2 + np2, 2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
+                    (6. * Power(1 - nf2 - nff3 - np3, 4)) + ((nf2 + nff2 + np2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (9. * Power(1 - nf2 - nff3 - np3, 3)))) /
+                    (N * (1 / (1 - nf3 - nff3 - np3) + ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3))));
+
+            cdphi3(i) += ((1 - N) * np0 * (1 - Power(npv2, 2) / Power(np2, 2))*(Power(1 - nf3 - nff3 - np3, -2) +
+                    ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * Power(1 - nf3 - nff3 - np3, 2)))) /
+                    (N * (1 / (1 - nf3 - nff3 - np3) + ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3))));
+
+            cdphiv2(i) += ((1 - N) * np0 * (1 - Power(npv2, 2) / Power(np2, 2))*(-(((nffv2 + nfv2 + npv2) * Rp) / ((nf2 + nff2 + np2)*(1 - nf3 - nff3 - np3))) -
+                    ((nffv2 + nfv2 + npv2) * Power(Rp, 2)) / (9. * Power(1 - nf2 - nff3 - np3, 3)))) /
+                    (N * (1 / (1 - nf3 - nff3 - np3) + ((nf2 + nff2 + np2)*(1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) + (Power(nf2 + nff2 + np2, 2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) / Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) / (18. * Power(1 - nf2 - nff3 - np3, 3))));
 
         }
 
@@ -325,10 +350,113 @@ void DFT::comp_dphi_col2_v2() {
         npv2 = nv2(i);
 
 
+        ccdphi0(i) = -log(1 - nf3 - nff3 - np3);
 
+        ccdphi1(i) = (nf2 + nff2 + np2) / (1 - nf3 - nff3 - np3);
+
+        ccdphi2(i) = (nf1 + nff1 + np1) / (1 - nf3 - nff3 - np3) +
+                ((2 * (nf2 + nff2 + np2) -
+                3 * Power(nffv2 + nfv2 + npv2, 2))*
+                (nf3 + nff3 + np3 +
+                Power(1 - nf3 - nff3 - np3, 2) *
+                log(1 - nf3 - nff3 - np3))) /
+                (36. * Power(1 - nf3 - nff3 - np3, 2)*
+                (nf3 + nff3 + np3) * pi);
+
+        ccdphi3(i) = -((-nf0 - nff0 - np0) / (1 - nf3 - nff3 - np3)) +
+                ((nf1 + nff1 + np1)*(nf2 + nff2 + np2) -
+                (nffv1 + nfv1 + npv1)*(nffv2 + nfv2 + npv2)) /
+                Power(1 - nf3 - nff3 - np3, 2) +
+                ((Power(nf2 + nff2 + np2, 2) -
+                3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2)
+                )*(nf3 + nff3 + np3 -
+                2 * (1 - nf3 - nff3 - np3) *
+                log(1 - nf3 - nff3 - np3))) /
+                (36. * Power(1 - nf3 - nff3 - np3, 2)*
+                (nf3 + nff3 + np3) * pi) -
+                ((Power(nf2 + nff2 + np2, 2) -
+                3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2)
+                )*(nf3 + nff3 + np3 +
+                Power(1 - nf3 - nff3 - np3, 2) *
+                log(1 - nf3 - nff3 - np3))) /
+                (36. * Power(1 - nf3 - nff3 - np3, 2) *
+                Power(nf3 + nff3 + np3, 2) * pi) +
+                ((Power(nf2 + nff2 + np2, 2) -
+                3 * (nf2 + nff2 + np2) * Power(nffv2 + nfv2 + npv2, 2)
+                )*(nf3 + nff3 + np3 +
+                Power(1 - nf3 - nff3 - np3, 2) *
+                log(1 - nf3 - nff3 - np3))) /
+                (18. * Power(1 - nf3 - nff3 - np3, 3)*
+                (nf3 + nff3 + np3) * pi);
+
+        ccdphiv1(i) = (-nffv2 - nfv2 - npv2) / (1 - nf3 - nff3 - np3);
+
+        ccdphiv2(i) = (-nffv1 - nfv1 - npv1) / (1 - nf3 - nff3 - np3) -
+                ((nf2 + nff2 + np2)*(nffv2 + nfv2 + npv2)*
+                (nf3 + nff3 + np3 +
+                Power(1 - nf3 - nff3 - np3, 2) *
+                log(1 - nf3 - nff3 - np3))) /
+                (6. * Power(1 - nf3 - nff3 - np3, 2)*(nf3 + nff3 + np3) *
+                pi);
 
 
         if (!DFT::polymers_off) {
+
+            ccdphi2(i) += ((1 - N) * np0 * (1 - Power(npv2, 2) / Power(np2, 2))*
+                    ((Power(nffv2 + nfv2 + npv2, 2) * Rp) /
+                    (Power(nf2 + nff2 + np2, 2)*
+                    (1 - nf3 - nff3 - np3)) +
+                    ((1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) +
+                    (Power(nffv2 + nfv2 + npv2, 2) * Power(Rp, 2)) /
+                    (9. * (nf2 + nff2 + np2) *
+                    Power(1 - nf2 - nff3 - np3, 3)) +
+                    ((nf2 + nff2 + np2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
+                    (9. * Power(1 - nf2 - nff3 - np3, 3)))) /
+                    (N * (1 / (1 - nf3 - nff3 - np3) +
+                    ((nf2 + nff2 + np2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) +
+                    (Power(nf2 + nff2 + np2, 2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
+                    (18. * Power(1 - nf2 - nff3 - np3, 3))));
+
+            ccdphi3(i) += ((1 - N) * np0 * (1 - Power(npv2, 2) / Power(np2, 2))*
+                    (Power(1 - nf3 - nff3 - np3, -2) +
+                    ((nf2 + nff2 + np2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * Power(1 - nf3 - nff3 - np3, 2)))) /
+                    (N * (1 / (1 - nf3 - nff3 - np3) +
+                    ((nf2 + nff2 + np2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) +
+                    (Power(nf2 + nff2 + np2, 2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
+                    (18. * Power(1 - nf2 - nff3 - np3, 3))));
+
+            ccdphiv2(i) += ((1 - N) * np0 * (1 - Power(npv2, 2) / Power(np2, 2))*
+                    (-(((nffv2 + nfv2 + npv2) * Rp) /
+                    ((nf2 + nff2 + np2)*(1 - nf3 - nff3 - np3))) -
+                    ((nffv2 + nfv2 + npv2) * Power(Rp, 2)) /
+                    (9. * Power(1 - nf2 - nff3 - np3, 3)))) /
+                    (N * (1 / (1 - nf3 - nff3 - np3) +
+                    ((nf2 + nff2 + np2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Rp) /
+                    (2. * (1 - nf3 - nff3 - np3)) +
+                    (Power(nf2 + nff2 + np2, 2)*
+                    (1 - Power(nffv2 + nfv2 + npv2, 2) /
+                    Power(nf2 + nff2 + np2, 2)) * Power(Rp, 2)) /
+                    (18. * Power(1 - nf2 - nff3 - np3, 3))));
+
 
 
         }
@@ -383,7 +511,7 @@ void DFT::comp_FMT_col2() {
     // comp_dphi_col1(); // White bear
     //Zero_vec(c,Nz);
 
-    comp_dphi_col1_v2();
+    comp_dphi_col2_v2();
 
     for (int i = 0; i < Nz; i++) // Convolution in real space because lol. 
     {

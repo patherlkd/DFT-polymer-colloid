@@ -46,12 +46,15 @@ void DFT::comp_POT_c1() {
 
     for (int i = 0; i < (int) (Nz * 0.5); i++) {
         z = (db) i*dz;
-
-        if (z > dc1 && z < (h - dc1))
+        if (botwall_off_c1) {
             Vc1(i) = 0.0;
-        else
-            Vc1(i) = wall_strength * (-1.0 * (1.0 / exp(0.5)) - exp((dc1 - h) / (2.0 * dc1)) + exp(-z / (2.0 * dc1)) + exp((z - h) / (2.0 * dc1)));
-        //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
+        } else {
+             if (z > dc1 && z < (h - dc1))
+                Vc1(i) = 0.0;
+            else
+                Vc1(i) = wall_strength * (-1.0 * (1.0 / exp(0.5)) - exp((dc1 - h) / (2.0 * dc1)) + exp(-z / (2.0 * dc1)) + exp((z - h) / (2.0 * dc1)));
+            //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
+        }
     }
 
     for (int i = (int) (Nz * 0.5); i < Nz; i++) {
@@ -59,8 +62,44 @@ void DFT::comp_POT_c1() {
         if (topwall_off_c1) {
             Vc1(i) = 0.0;
         } else {
-            if (z > dia && z < (h - dia))
+            if (z > dc1 && z < (h - dc1))
                 Vc1(i) = 0.0;
+            else
+                Vc1(i) = Vc1(Nz - i - 1);
+        }
+    }
+
+
+}
+
+
+void DFT::comp_POT_c2() {
+
+
+    db z = 0.0;
+
+    db dc2 = rc2 * 2.0;
+
+    for (int i = 0; i < (int) (Nz * 0.5); i++) {
+        z = (db) i*dz;
+        if (botwall_off_c2) {
+            Vc2(i) = 0.0;
+        } else {
+             if (z > dc2 && z < (h - dc2))
+                Vc2(i) = 0.0;
+            else
+                Vc2(i) = wall_strength * (-1.0 * (1.0 / exp(0.5)) - exp((dc2 - h) / (2.0 * dc2)) + exp(-z / (2.0 * dc2)) + exp((z - h) / (2.0 * dc2)));
+            //   V(i) = wall_strength * (exp((-z) / (2.0 * dia)) + exp((z - h) / (2.0 * dia)) - exp(-dia / dia));
+        }
+    }
+
+    for (int i = (int) (Nz * 0.5); i < Nz; i++) {
+        z = (db) i*dz;
+        if (topwall_off_c2) {
+            Vc2(i) = 0.0;
+        } else {
+            if (z > dc2 && z < (h - dc2))
+                Vc2(i) = 0.0;
             else
                 Vc1(i) = Vc1(Nz - i - 1);
         }

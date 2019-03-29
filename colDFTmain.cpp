@@ -9,19 +9,25 @@ int main(int argc, char *argv[]) {
 
     CLI::App dftapp{"Density functional theory (DFT) for polymers + colloids in a film"};
 
-    db epp = 0.0, epc1 = 0.0, ec1c1 = 0.0;
-    db lambdapp = 0.0, lambdapc1 = 0.0, lambdac1c1 = 0.0;
+    db epp = 0.0, epc1 = 0.0, epc2 = 0.0, ec1c1 = 0.0, ec2c2 = 0.0, ec1c2 = 0.0;
+    db lambdapp = 0.0, lambdapc1 = 0.0,, lambdapc2 = 0.0, lambdac1c1 = 0.0, lambdac2c2 = 0.0, lambdac1c2 = 0.0;
     db gamma = 0.0, dt = 0.0, DT = 0.0;
     db height = 0.0, area = 0.0, wall_strength = 0.0;
 
     int potential_mode = 0; // use Dino potential by default
     bool polymers_off = false; // polymers on by default
+
+
     bool topwall_off_c1 = false; // top wall on for col-1 by default
     bool botwall_off_c1 = false;
+
+    bool topwall_off_c2 = false; // top wall on for col-2 by default
+    bool botwall_off_c2 = false;
     int Nz = 0;
 
     std::string poly_dens_filename = "";
     std::string col1_dens_filename = "";
+    std::string col2_dens_filename = "";
     std::string meanfield_filename = "";
     std::string external_pot_filename = "";
     std::string system_out_filename = "";
@@ -36,6 +42,8 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_polymers_off = dftapp.add_flag("--polymers_off", polymers_off, "Switch polymers off");
     CLI::Option* opt_topwall_off_c1 = dftapp.add_flag("--topwall_off_c1", topwall_off_c1, "Switch top wall off for colloid 1");
     CLI::Option* opt_botwall_off_c1 = dftapp.add_flag("--botwall_off_c1", botwall_off_c1, "Switch bottom wall off for colloid 1");
+    CLI::Option* opt_topwall_off_c2 = dftapp.add_flag("--topwall_off_c2", topwall_off_c2, "Switch top wall off for colloid 2");
+    CLI::Option* opt_botwall_off_c2 = dftapp.add_flag("--botwall_off_c2", botwall_off_c2, "Switch bottom wall off for colloid 2");
 
     opt_potentialmode->required()->group("Simulation parameters");
     opt_convertol->required()->group("Simulation parameters");
@@ -45,15 +53,19 @@ int main(int argc, char *argv[]) {
     opt_polymers_off->group("Simulation parameters");
     opt_topwall_off_c1->group("Simulation parameters");
     opt_botwall_off_c1->group("Simulation parameters");
+    opt_topwall_off_c2->group("Simulation parameters");
+    opt_botwall_off_c2->group("Simulation parameters");
 
     CLI::Option* opt_polydensfilename = dftapp.add_option("--poly_dens_file", poly_dens_filename, " filename for polymer density");
-    CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", col1_dens_filename, " filename for colloid density");
+    CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", col1_dens_filename, " filename for colloid density 1");
+    CLI::Option* opt_col2densfilename = dftapp.add_option("--col2_dens_file", col2_dens_filename, " filename for colloid density 2");
     CLI::Option* opt_meanfieldfilename = dftapp.add_option("--meanfield_file", meanfield_filename, " filename for meanfield");
     CLI::Option* opt_externalpotfilename = dftapp.add_option("--external_pot_file", external_pot_filename, " filename for external potential");
     CLI::Option* opt_systemoutfilename = dftapp.add_option("--system_out_file", system_out_filename, " filename for system output");
 
     opt_polydensfilename->group("Output files");
     opt_col1densfilename->group("Output files");
+    opt_col2densfilename->group("Output files");
     opt_meanfieldfilename->group("Output files");
     opt_externalpotfilename->group("Output files")->required();
     opt_systemoutfilename->group("Output files")->required();
@@ -69,24 +81,43 @@ int main(int argc, char *argv[]) {
 
     CLI::Option* opt_epp = dftapp.add_option("--epp", epp, " Polymer - polymer cohesion strength ");
     CLI::Option* opt_epc1 = dftapp.add_option("--epc1", epc1, " Polymer - colloid type 1 cohesion strength ");
+    CLI::Option* opt_epc2 = dftapp.add_option("--epc2", epc2, " Polymer - colloid type 2 cohesion strength ");
     CLI::Option* opt_ec1c1 = dftapp.add_option("--ec1c1", ec1c1, " colloid 1 - colloid 1 cohesion strength ");
+    CLI::Option* opt_ec2c2 = dftapp.add_option("--ec2c2", ec2c2, " colloid 2 - colloid 2 cohesion strength ");
+    CLI::Option* opt_ec1c2 = dftapp.add_option("--ec1c2", ec1c2, " colloid 1 - colloid 2 cohesion strength ");
+
     CLI::Option* opt_lambdapp = dftapp.add_option("--lambdapp", lambdapp, " Polymer - polymer cohesion range ");
     CLI::Option* opt_lambdapc1 = dftapp.add_option("--lambdapc1", lambdapc1, " Polymer - colloid type 1 cohesion range");
+    CLI::Option* opt_lambdapc2 = dftapp.add_option("--lambdapc2", lambdapc2, " Polymer - colloid type 2 cohesion range");
     CLI::Option* opt_lambdac1c1 = dftapp.add_option("--lambdac1c1", lambdac1c1, " colloid 1 - colloid type 1 cohesion range");
+    CLI::Option* opt_lambdac2c2 = dftapp.add_option("--lambdac2c2", lambdac2c2, " colloid 2 - colloid type 2 cohesion range");
+    CLI::Option* opt_lambdac1c2 = dftapp.add_option("--lambdac1c1", lambdac1c2, " colloid 1 - colloid type 2 cohesion range");
 
     opt_epp->needs(opt_lambdapp);
     opt_lambdapp->needs(opt_epp);
     opt_epc1->needs(opt_lambdapc1);
     opt_lambdapc1->needs(opt_epc1);
+    opt_epc2->needs(opt_lambdapc2);
+    opt_lambdapc2->needs(opt_epc2);
     opt_ec1c1->needs(opt_lambdac1c1);
     opt_lambdac1c1->needs(opt_ec1c1);
+    opt_ec2c2->needs(opt_lambdac2c2);
+    opt_lambdac2c2->needs(opt_ec2c2);
+    opt_ec1c2->needs(opt_lambdac1c2);
+    opt_lambdac1c2->needs(opt_ec1c2);
 
     opt_epp->group("Particle interactions");
     opt_epc1->group("Particle interactions");
+    opt_epc2->group("Particle interactions");
+    opt_ec1c1->group("Particle interactions");
+    opt_ec2c2->group("Particle interactions");
+    opt_ec1c2->group("Particle interactions");
     opt_lambdapp->group("Particle interactions");
     opt_lambdapc1->group("Particle interactions");
+    opt_lambdapc2->group("Particle interactions");
     opt_lambdac1c1->group("Particle interactions");
-    opt_ec1c1->group("Particle interactions");
+    opt_lambdac2c2->group("Particle interactions");
+    opt_lambdac1c2->group("Particle interactions");
 
     db poly_bondlength = 0.0;
     db poly_diameter = 0.0;
@@ -121,10 +152,27 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_col1_init_cut = dftapp.add_option("--col1_init_cut", col1_init_cut, "Colloids (1) height which below density is zero (to begin with)");
 
 
-    opt_chem1->group("Colloid parameters");
-    opt_ncolloids1->group("Colloid parameters");
-    opt_col1_rad->group("Colloid parameters");
-    opt_col1_init_cut->group("Colloid parameters");
+    opt_chem1->group("Colloid 1 parameters");
+    opt_ncolloids1->group("Colloid 1 parameters");
+    opt_col1_rad->group("Colloid 1 parameters");
+    opt_col1_init_cut->group("Colloid 1 parameters");
+
+
+    db chem2 = 0.0;
+    db col2_rad = 0.0;
+    db col2_init_cut = 0.0;
+    int ncolloids2 = 0;
+
+    CLI::Option* opt_chem2 = dftapp.add_option("--chem2", chem2, "Colloid (2) excess chemical potential");
+    CLI::Option* opt_ncolloids2 = dftapp.add_option("--Nc2", ncolloids2, "Colloid (2) number of colloids");
+    CLI::Option* opt_col2_rad = dftapp.add_option("--rc2", col2_rad, "Colloids (2) radius");
+    CLI::Option* opt_col2_init_cut = dftapp.add_option("--col2_init_cut", col2_init_cut, "Colloids (2) height which below density is zero (to begin with)");
+
+
+    opt_chem2->group("Colloid 2 parameters");
+    opt_ncolloids2->group("Colloid 2 parameters");
+    opt_col2_rad->group("Colloid 2 parameters");
+    opt_col2_init_cut->group("Colloid 2 parameters");
 
     CLI11_PARSE(dftapp, argc, argv);
 
@@ -139,13 +187,22 @@ int main(int argc, char *argv[]) {
     if (topwall_off_c1) {
         sim.set_topwall_off_c1();
     }
-    
+
     if (botwall_off_c1) {
         sim.set_botwall_off_c1();
     }
 
+    if (topwall_off_c2) {
+        sim.set_topwall_off_c2();
+    }
+
+    if (botwall_off_c2) {
+        sim.set_botwall_off_c2();
+    }
+
     sim.set_poly_dens_filename(poly_dens_filename);
     sim.set_col1_dens_filename(col1_dens_filename);
+    sim.set_col2_dens_filename(col2_dens_filename);
     sim.set_meanfield_filename(meanfield_filename);
     sim.set_system_out_filename(system_out_filename);
     sim.set_external_pot_filename(external_pot_filename);
@@ -162,11 +219,17 @@ int main(int argc, char *argv[]) {
 
     sim.set_epp(epp);
     sim.set_epc1(epc1);
+    sim.set_epc2(epc2);
     sim.set_ec1c1(ec1c1);
+    sim.set_ec2c2(ec2c2);
+    sim.set_ec1c2(ec1c2);
 
     sim.set_lambdapp(lambdapp);
     sim.set_lambdapc1(lambdapc1);
+    sim.set_lambdapc2(lambdapc2);
     sim.set_lambdac1c1(lambdac1c1);
+    sim.set_lambdac2c2(lambdac2c2);
+    sim.set_lambdac1c2(lambdac1c2);
 
     sim.set_Np(npoly);
     sim.set_Nm(nbeads);
@@ -180,6 +243,12 @@ int main(int argc, char *argv[]) {
     sim.set_colbulk1();
     sim.set_col1_init_cut(col1_init_cut);
 
+    sim.set_chem2(chem2);
+    sim.set_ncolloids2(ncolloids2);
+    sim.set_rc1(col2_rad);
+    sim.set_colbulk2();
+    sim.set_col2_init_cut(col2_init_cut);
+
     sim.set_D(0.16666 * sqr_d(poly_diameter));
     sim.set_H_solver(); // VITAL for solving the polymer density
 
@@ -187,9 +256,19 @@ int main(int argc, char *argv[]) {
     sim.test_dinos_potential(Nz, sim.get_dz(), epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "dinos_potential_epc1.txt");
     sim.test_dinos_potential(Nz, sim.get_dz(), ec1c1, 2.0 * col1_rad, lambdac1c1, "dinos_potential_ec1c1.txt");
 
+
+    sim.test_dinos_potential(Nz, sim.get_dz(), epc2, poly_diameter * 0.5 + col2_rad, lambdapc2, "dinos_potential_epc2.txt");
+    sim.test_dinos_potential(Nz, sim.get_dz(), ec2c2, 2.0 * col2_rad, lambdac2c2, "dinos_potential_ec2c2.txt");
+    sim.test_dinos_potential(Nz, sim.get_dz(), ec1c2, col1_rad + col2_rad, lambdac1c2, "dinos_potential_ec1c2.txt");
+
     sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp, "lukes_potential_epp.txt");
     sim.test_lukes_potential(Nz, sim.get_dz(), epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "lukes_potential_epc1.txt");
     sim.test_lukes_potential(Nz, sim.get_dz(), ec1c1, 2.0 * col1_rad, lambdac1c1, "lukes_potential_ec1c1.txt");
+
+
+    sim.test_lukes_potential(Nz, sim.get_dz(), epc2, poly_diameter * 0.5 + col2_rad, lambdapc2, "lukes_potential_epc2.txt");
+    sim.test_lukes_potential(Nz, sim.get_dz(), ec2c2, 2.0 * col2_rad, lambdac2c2, "lukes_potential_ec2c2.txt");
+    sim.test_lukes_potential(Nz, sim.get_dz(), ec1c2, col1_rad + col2_rad, lambdac1c2, "lukes_potential_ec1c2.txt");
 
     time_t START = time(NULL);
     sim.setup();

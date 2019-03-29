@@ -136,12 +136,36 @@ void DFT::set_col1_init_cut(db c){
     this->col1_init_cut = c;
 }
 
+void DFT::set_chem2(db ch) {
+    this->chem2 = ch;
+}
+
+void DFT::set_ncolloids2(unsigned int nc) {
+    this->Nc2 = nc;
+}
+
+void DFT::set_rc2(db rc) {
+    this->rc2 = rc;
+}
+
+void DFT::set_colbulk2(){
+    this->colbulk2 = (db)Nc2/(A*h);
+}
+
+void DFT::set_col2_init_cut(db c){
+    this->col2_init_cut = c;
+}
+
 void DFT::set_poly_dens_filename(std::string s) {
     DFT::poly_dens_filename = s;
 }
 
 void DFT::set_col1_dens_filename(std::string s) {
     DFT::col1_dens_filename = s;
+}
+
+void DFT::set_col2_dens_filename(std::string s) {
+    DFT::col2_dens_filename = s;
 }
 
 void DFT::set_meanfield_filename(std::string s) {

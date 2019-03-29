@@ -131,10 +131,12 @@ void DFT::evolve() {
         init_field(0.80); // Initialize mean field
     }
 
-    init_coldensity1(DFT::col1_init_cut); // Initialize colloid density (bulk?)
     comp_POT(); // Compute external potential. 
     comp_POT_c1(); // for colloids 1
     comp_POT_c2();
+
+    init_coldensity1(DFT::col1_init_cut); // Initialize colloid density 1
+    init_coldensity2(DFT::col2_init_cut); // Initialize colloid density 2
     // export_data();
 
 
@@ -210,6 +212,7 @@ void DFT::export_data() {
 
     bool polnan(false);
     bool col1nan(false);
+    bool col2nan(false);
     bool meanfieldnan(false);
 
     for (int i = 0; i < Nz; i++) {
@@ -221,6 +224,11 @@ void DFT::export_data() {
         if (std::isnan(DFT::coldensity1(i))) {
             col1nan = true;
         }
+
+        if (std::isnan(DFT::coldensity2(i))) {
+            col2nan = true;
+        }
+
 
         if (std::isnan(DFT::field(i))) {
             meanfieldnan = true;
@@ -234,6 +242,9 @@ void DFT::export_data() {
     }
     if (!col1nan) {
         DFT::col1_dens_file.open(DFT::col1_dens_filename);
+    }
+    if (!col2nan) {
+        DFT::col2_dens_file.open(DFT::col2_dens_filename);
     }
     if (!meanfieldnan) {
         DFT::meanfield_file.open(DFT::meanfield_filename);
@@ -251,6 +262,9 @@ void DFT::export_data() {
         if (!col1nan) {
             DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
         }
+        if (!col2nan) {
+            DFT::col2_dens_file << (db) i * dz << "\t" << DFT::coldensity2(i) << endl;
+        }
         if (!meanfieldnan) {
             DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
         }
@@ -263,6 +277,9 @@ void DFT::export_data() {
     if (!col1nan) {
         DFT::col1_dens_file.close();
     }
+    if (!col2nan) {
+        DFT::col2_dens_file.close();
+    }
     if (!meanfieldnan) {
         DFT::meanfield_file.close();
     }
@@ -272,7 +289,7 @@ void DFT::export_data() {
 
 void DFT::update_col1() {
 
-    db ARG = 0, max = 0, old_d = 0, diff = 0;
+    db ARG = 0, max = 0, diff = 0;
 
     comp_FMT_col1();
 
@@ -308,7 +325,7 @@ void DFT::update_col1() {
 
 void DFT::update_col2() {
 
-    db ARG = 0, max = 0, old_d = 0, diff = 0;
+    db ARG = 0, max = 0, diff = 0;
 
     comp_FMT_col2();
 
@@ -324,9 +341,9 @@ void DFT::update_col2() {
         ARG = chem2 - ccc(i) - Vc2(i) - DFT::comp_att_term(i, density, epc2, r, rc2, lambdapc2);
         ARG -= DFT::comp_att_term(i, old_dens, ec2c2, rc2, rc2, lambdac2c2);
         ARG -= DFT::comp_att_term(i, coldensity1, ec1c2, rc1, rc2, lambdac1c2);
-        coldensity1(i) = (1.0 - DT) * old_dens(i) + DT * colbulk1 * exp(ARG);
+        coldensity1(i) = (1.0 - DT) * old_dens(i) + DT * colbulk2 * exp(ARG);
 
-        diff = fabs(old_dens(i) - coldensity1(i));
+        diff = fabs(old_dens(i) - coldensity2(i));
 
         //        std::cout << "diff = " << diff << "\n";
 
@@ -335,7 +352,7 @@ void DFT::update_col2() {
 
     }
 
-    conver_col1 = max;
+    conver_col2 = max;
 
 }
 
@@ -409,6 +426,30 @@ void DFT::init_coldensity1(unsigned int cut) // Initialize the colloid density
     for (int i = 0; i < Nz; i++) {
 
         coldensity1(i) = (coldensity1(i)*(db) Nc1) / unnorm;
+
+    }
+
+}
+
+void DFT::init_coldensity2(unsigned int cut) // Initialize the colloid density
+{
+
+    db unnorm = 0.0;
+
+    for (int i = 0; i < Nz; i++) {
+
+        if ((db) i * dz <= cut || i == Nz - 1) {
+            coldensity2(i) = 0.0;
+        } else {
+            coldensity2(i) = colbulk2 * exp(Vc2(i));
+        }
+
+        unnorm += simp(i) * coldensity2(i) * dz*A;
+    }
+
+    for (int i = 0; i < Nz; i++) {
+
+        coldensity2(i) = (coldensity2(i)*(db) Nc2) / unnorm;
 
     }
 

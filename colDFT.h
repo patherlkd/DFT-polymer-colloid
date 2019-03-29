@@ -21,6 +21,7 @@ public:
 
     void set_poly_dens_filename(std::string s);
     void set_col1_dens_filename(std::string s);
+    void set_col2_dens_filename(std::string s);
     void set_meanfield_filename(std::string s);
     void set_external_pot_filename(std::string s);
     void set_system_out_filename(std::string s);
@@ -114,6 +115,7 @@ private:
 
     void init_field(db);
     void init_coldensity1(unsigned int);
+    void init_coldensity2(unsigned int);
 
     virtual void solveGs();
     virtual void comp_dens();
@@ -135,7 +137,7 @@ private:
     void comp_FMT_pol();
     void comp_FMT_col1();
     void comp_FMT_col2();
-    
+
 
     void comp_n_pol();
     void comp_n_col1();
@@ -249,8 +251,8 @@ private:
     vec dphi0, dphi1, dphi2, dphi3, dphiv1, dphiv2; // derivative of free energy density
     vec cdphi0, cdphi1, cdphi2, cdphi3, cdphiv1, cdphiv2; // colloid 1 derivative of free energy density
     vec ccdphi0, ccdphi1, ccdphi2, ccdphi3, ccdphiv1, ccdphiv2; // colloid 1 derivative of free energy density
-    
-    
+
+
     vec c; // To hold the one body direct correlation function and the weights for the polymers
     vec cc; // one body... for colloid 1
     vec ccc; // one body... for colloid 2

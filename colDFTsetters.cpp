@@ -25,16 +25,40 @@ void DFT::set_lambdapc1(db lpc) {
     this->lambdapc1 = lpc;
 }
 
+void DFT::set_lambdapc2(db lpc) {
+    this->lambdapc2 = lpc;
+}
+
 void DFT::set_epc1(db epc1) {
     this->epc1 = epc1;
+}
+
+void DFT::set_epc2(db epc2) {
+    this->epc2 = epc2;
 }
 
 void DFT::set_ec1c1(db ep){
     this->ec1c1 = ep; 
 }
 
+void DFT::set_ec2c2(db ep){
+    this->ec2c2 = ep; 
+}
+
+void DFT::set_ec1c2(db ep){
+    this->ec1c2 = ep; 
+}
+
 void DFT::set_lambdac1c1(db lc1c1){
     this->lambdac1c1 = lc1c1;
+}
+
+void DFT::set_lambdac2c2(db lc2c2){
+    this->lambdac2c2 = lc2c2;
+}
+
+void DFT::set_lambdac1c2(db lc1c2){
+    this->lambdac1c2 = lc1c2;
 }
 
 void DFT::set_dia(db dia) {
@@ -92,6 +116,14 @@ void DFT::set_topwall_off_c1(){
 
 void DFT::set_botwall_off_c1(){
     this->botwall_off_c1 = true;
+}
+
+void DFT::set_topwall_off_c2(){
+    this->topwall_off_c2 = true;
+}
+
+void DFT::set_botwall_off_c2(){
+    this->botwall_off_c2 = true;
 }
 
 void DFT::set_gamma(db g) {

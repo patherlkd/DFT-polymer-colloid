@@ -101,7 +101,7 @@ void DFT::comp_POT_c2() {
             if (z > dc2 && z < (h - dc2))
                 Vc2(i) = 0.0;
             else
-                Vc1(i) = Vc1(Nz - i - 1);
+                Vc2(i) = Vc2(Nz - i - 1);
         }
     }
 

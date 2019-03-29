@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     CLI::App dftapp{"Density functional theory (DFT) for polymers + colloids in a film"};
 
     db epp = 0.0, epc1 = 0.0, epc2 = 0.0, ec1c1 = 0.0, ec2c2 = 0.0, ec1c2 = 0.0;
-    db lambdapp = 0.0, lambdapc1 = 0.0,, lambdapc2 = 0.0, lambdac1c1 = 0.0, lambdac2c2 = 0.0, lambdac1c2 = 0.0;
+    db lambdapp = 0.0, lambdapc1 = 0.0, lambdapc2 = 0.0, lambdac1c1 = 0.0, lambdac2c2 = 0.0, lambdac1c2 = 0.0;
     db gamma = 0.0, dt = 0.0, DT = 0.0;
     db height = 0.0, area = 0.0, wall_strength = 0.0;
 
@@ -90,19 +90,25 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_lambdapc1 = dftapp.add_option("--lambdapc1", lambdapc1, " Polymer - colloid type 1 cohesion range");
     CLI::Option* opt_lambdapc2 = dftapp.add_option("--lambdapc2", lambdapc2, " Polymer - colloid type 2 cohesion range");
     CLI::Option* opt_lambdac1c1 = dftapp.add_option("--lambdac1c1", lambdac1c1, " colloid 1 - colloid type 1 cohesion range");
+    
     CLI::Option* opt_lambdac2c2 = dftapp.add_option("--lambdac2c2", lambdac2c2, " colloid 2 - colloid type 2 cohesion range");
-    CLI::Option* opt_lambdac1c2 = dftapp.add_option("--lambdac1c1", lambdac1c2, " colloid 1 - colloid type 2 cohesion range");
+    CLI::Option* opt_lambdac1c2 = dftapp.add_option("--lambdac1c2", lambdac1c2, " colloid 1 - colloid type 2 cohesion range");
 
     opt_epp->needs(opt_lambdapp);
     opt_lambdapp->needs(opt_epp);
+    
     opt_epc1->needs(opt_lambdapc1);
     opt_lambdapc1->needs(opt_epc1);
+    
     opt_epc2->needs(opt_lambdapc2);
     opt_lambdapc2->needs(opt_epc2);
+    
     opt_ec1c1->needs(opt_lambdac1c1);
     opt_lambdac1c1->needs(opt_ec1c1);
+    
     opt_ec2c2->needs(opt_lambdac2c2);
     opt_lambdac2c2->needs(opt_ec2c2);
+    
     opt_ec1c2->needs(opt_lambdac1c2);
     opt_lambdac1c2->needs(opt_ec1c2);
 
@@ -167,7 +173,6 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_ncolloids2 = dftapp.add_option("--Nc2", ncolloids2, "Colloid (2) number of colloids");
     CLI::Option* opt_col2_rad = dftapp.add_option("--rc2", col2_rad, "Colloids (2) radius");
     CLI::Option* opt_col2_init_cut = dftapp.add_option("--col2_init_cut", col2_init_cut, "Colloids (2) height which below density is zero (to begin with)");
-
 
     opt_chem2->group("Colloid 2 parameters");
     opt_ncolloids2->group("Colloid 2 parameters");
@@ -245,7 +250,7 @@ int main(int argc, char *argv[]) {
 
     sim.set_chem2(chem2);
     sim.set_ncolloids2(ncolloids2);
-    sim.set_rc1(col2_rad);
+    sim.set_rc2(col2_rad);
     sim.set_colbulk2();
     sim.set_col2_init_cut(col2_init_cut);
 

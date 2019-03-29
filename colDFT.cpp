@@ -341,7 +341,7 @@ void DFT::update_col2() {
         ARG = chem2 - ccc(i) - Vc2(i) - DFT::comp_att_term(i, density, epc2, r, rc2, lambdapc2);
         ARG -= DFT::comp_att_term(i, old_dens, ec2c2, rc2, rc2, lambdac2c2);
         ARG -= DFT::comp_att_term(i, coldensity1, ec1c2, rc1, rc2, lambdac1c2);
-        coldensity1(i) = (1.0 - DT) * old_dens(i) + DT * colbulk2 * exp(ARG);
+        coldensity2(i) = (1.0 - DT) * old_dens(i) + DT * colbulk2 * exp(ARG);
 
         diff = fabs(old_dens(i) - coldensity2(i));
 

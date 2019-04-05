@@ -92,12 +92,12 @@ public:
     virtual void evolve();
 
 private:
-    unsigned int Np; // number of polymers
-    unsigned int Nm; // number of monomers per polymer
+    unsigned int Np = 0; // number of polymers
+    unsigned int Nm = 0; // number of monomers per polymer
     unsigned int Ns = 0; // number of s points
     unsigned int Nz = 0; // number of spatial points
-    unsigned int iter; // iteration tracker
-    unsigned int potential_mode; // to use Dinos or my shorter ranged potential
+    unsigned int iter = 0; // iteration tracker
+    unsigned int potential_mode; // to use Dinos or Lukes shorter ranged potential
 
     bool polymers_off = false;
     bool col1_off = false;

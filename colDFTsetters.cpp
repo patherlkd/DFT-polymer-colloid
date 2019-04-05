@@ -110,6 +110,14 @@ void DFT::set_polymers_off(){
     this->polymers_off = true;
 }
 
+void DFT::set_col1_off(){
+    this->col1_off = true;
+}
+
+void DFT::set_col2_off(){
+    this->col2_off = true;
+}
+
 void DFT::set_topwall_off_c1(){
     this->topwall_off_c1 = true;
 }

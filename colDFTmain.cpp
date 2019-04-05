@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
 
     int potential_mode = 0; // use Dino potential by default
     bool polymers_off = false; // polymers on by default
+    bool col1_off = false;
+    bool col2_off = false;
 
 
     bool topwall_off_c1 = false; // top wall on for col-1 by default
@@ -40,6 +42,8 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_timestep_col = dftapp.add_option("--DT,--coltimestep", DT, "timestep for the numerical algorithm but for colloids");
     CLI::Option* opt_spacepoints = dftapp.add_option("--Nz,--spatial_points", Nz, "Number of spatial points");
     CLI::Option* opt_polymers_off = dftapp.add_flag("--polymers_off", polymers_off, "Switch polymers off");
+    CLI::Option* opt_col1_off = dftapp.add_flag("--col1_off", col1_off, "Switch colloid 1 off");
+    CLI::Option* opt_col2_off = dftapp.add_flag("--col2_off", col2_off, "Switch colloid 2 off");
     CLI::Option* opt_topwall_off_c1 = dftapp.add_flag("--topwall_off_c1", topwall_off_c1, "Switch top wall off for colloid 1");
     CLI::Option* opt_botwall_off_c1 = dftapp.add_flag("--botwall_off_c1", botwall_off_c1, "Switch bottom wall off for colloid 1");
     CLI::Option* opt_topwall_off_c2 = dftapp.add_flag("--topwall_off_c2", topwall_off_c2, "Switch top wall off for colloid 2");
@@ -51,6 +55,8 @@ int main(int argc, char *argv[]) {
     opt_timestep_col->required()->group("Simulation parameters");
     opt_spacepoints->required()->group("Simulation parameters");
     opt_polymers_off->group("Simulation parameters");
+    opt_col1_off->group("Simulation parameters");
+    opt_col2_off->group("Simulation parameters");
     opt_topwall_off_c1->group("Simulation parameters");
     opt_botwall_off_c1->group("Simulation parameters");
     opt_topwall_off_c2->group("Simulation parameters");
@@ -90,25 +96,25 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_lambdapc1 = dftapp.add_option("--lambdapc1", lambdapc1, " Polymer - colloid type 1 cohesion range");
     CLI::Option* opt_lambdapc2 = dftapp.add_option("--lambdapc2", lambdapc2, " Polymer - colloid type 2 cohesion range");
     CLI::Option* opt_lambdac1c1 = dftapp.add_option("--lambdac1c1", lambdac1c1, " colloid 1 - colloid type 1 cohesion range");
-    
+
     CLI::Option* opt_lambdac2c2 = dftapp.add_option("--lambdac2c2", lambdac2c2, " colloid 2 - colloid type 2 cohesion range");
     CLI::Option* opt_lambdac1c2 = dftapp.add_option("--lambdac1c2", lambdac1c2, " colloid 1 - colloid type 2 cohesion range");
 
     opt_epp->needs(opt_lambdapp);
     opt_lambdapp->needs(opt_epp);
-    
+
     opt_epc1->needs(opt_lambdapc1);
     opt_lambdapc1->needs(opt_epc1);
-    
+
     opt_epc2->needs(opt_lambdapc2);
     opt_lambdapc2->needs(opt_epc2);
-    
+
     opt_ec1c1->needs(opt_lambdac1c1);
     opt_lambdac1c1->needs(opt_ec1c1);
-    
+
     opt_ec2c2->needs(opt_lambdac2c2);
     opt_lambdac2c2->needs(opt_ec2c2);
-    
+
     opt_ec1c2->needs(opt_lambdac1c2);
     opt_lambdac1c2->needs(opt_ec1c2);
 
@@ -189,6 +195,14 @@ int main(int argc, char *argv[]) {
         sim.set_polymers_off();
     }
 
+    if(col1_off){
+        sim.set_col1_off();
+    }
+    
+    if(col2_off){
+        sim.set_col2_off();
+    }
+    
     if (topwall_off_c1) {
         sim.set_topwall_off_c1();
     }

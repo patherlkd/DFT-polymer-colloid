@@ -135,71 +135,189 @@ void DFT::evolve() {
     comp_POT_c1(); // for colloids 1
     comp_POT_c2();
 
-    init_coldensity1(DFT::col1_init_cut); // Initialize colloid density 1
-    init_coldensity2(DFT::col2_init_cut); // Initialize colloid density 2
-    // export_data();
+    if (!DFT::col1_off) {
+        init_coldensity1(DFT::col1_init_cut); // Initialize colloid density 1
+    }
+    if (!DFT::col2_off) {
+        init_coldensity2(DFT::col2_init_cut); // Initialize colloid density 2
+    }
 
 
-    if (!DFT::polymers_off) {
-        while (conver > gamma) // Do while un converged. Well durr. 
-        {
+    if (!DFT::polymers_off) { // polymers switched on
+        if (!DFT::col1_off && !DFT::col2_off) { // polymers & col1 & col2 swtiched on
+            while (conver > gamma) // Do while un converged. Well durr. 
+            {
+
+                solveGs(); // Solve for the propagators for polymer density 
+                comp_dens(); // Compute density(Z)
 
 
-            solveGs(); // Solve for the propagators for polymer density 
-            comp_dens(); // Compute density(Z)
+                if (conver == 1) {
+                    DFT::comp_n_pol();
+                }
 
+                if (conver_col1 == 1) {
+                    DFT::comp_n_col1();
+                }
 
-            if (conver == 1) {
-                DFT::comp_n_pol();
+                if (conver_col2 == 1) {
+                    DFT::comp_n_col2();
+                }
+                //  norm();
+
+                update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+                update_col1(); // Update the colloid density 1 
+                update_col2(); // for colloid 2 
+
+                DFT::system_out_file << "MF convergence: " << conver << endl;
+                DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
+                DFT::system_out_file << "Col density 2 convergence: " << conver_col2 << endl;
+                //        cout << "Col density 2 convergence: " << conver_col2 << endl;
+
+                export_data();
+                iter++;
             }
 
-            if (conver_col1 == 1) {
-                DFT::comp_n_col1();
+        } else if (DFT::col1_off && !DFT::col2_off) { // polymers & col2 switched on, col1 switched off
+
+            while (conver > gamma) // Do while un converged. Well durr. 
+            {
+
+
+                solveGs(); // Solve for the propagators for polymer density 
+                comp_dens(); // Compute density(Z)
+
+
+                if (conver == 1) {
+                    DFT::comp_n_pol();
+                }
+
+                if (conver_col2 == 1) {
+                    DFT::comp_n_col2();
+                }
+
+                update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+                update_col2(); // for colloid 2 
+
+                DFT::system_out_file << "MF convergence: " << conver << endl;
+                DFT::system_out_file << "Col density 2 convergence: " << conver_col2 << endl;
+                //        cout << "Col density 2 convergence: " << conver_col2 << endl;
+
+                export_data();
+                iter++;
             }
 
-            if (conver_col2 == 1) {
-                DFT::comp_n_col2();
+        } else if (!DFT::col1_off && DFT::col2_off) { // polymers & col1 switched on, col2 switched off  
+            while (conver > gamma) // Do while un converged. Well durr. 
+            {
+
+
+                solveGs(); // Solve for the propagators for polymer density 
+                comp_dens(); // Compute density(Z)
+
+
+                if (conver == 1) {
+                    DFT::comp_n_pol();
+                }
+
+                if (conver_col1 == 1) {
+                    DFT::comp_n_col1();
+                }
+
+                update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+                update_col1(); // Update the colloid density 1 
+
+                DFT::system_out_file << "MF convergence: " << conver << endl;
+                DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
+
+                export_data();
+                iter++;
             }
-            //  norm();
+        } else { // polymers switched on, col1 and col2 swtiched off 
 
-            update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
-            update_col1(); // Update the colloid density 1 
-            update_col2(); // for colloid 2 
+            while (conver > gamma) // Do while un converged. Well durr. 
+            {
 
-            DFT::system_out_file << "MF convergence: " << conver << endl;
-            DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
-            DFT::system_out_file << "Col density 2 convergence: " << conver_col2 << endl;
-            //        cout << "Col density 2 convergence: " << conver_col2 << endl;
 
-            export_data();
-            iter++;
+                solveGs(); // Solve for the propagators for polymer density 
+                comp_dens(); // Compute density(Z)
+
+
+                if (conver == 1) {
+                    DFT::comp_n_pol();
+                }
+
+                update_mf(); //Update mean field now. Argument is 1 for FMT hard sphere stuff. DO NOT set to 0. Plez.
+
+
+                DFT::system_out_file << "MF convergence: " << conver << endl;
+
+                export_data();
+                iter++;
+            }
+
+
         }
-    } else {
 
-        while (conver_col1 > gamma) // Do while un converged. Well durr. 
-        {
+    } else { // colloids switched on, polymers switched off
+        if (!DFT::col1_off && !DFT::col2_off) { // col1 & col2 switched on
+            while (conver_col1 > gamma) // Do while un converged. Well durr. 
+            {
 
 
 
-            if (conver_col1 == 1.0) {
-                DFT::comp_n_col1();
+                if (conver_col1 == 1.0) {
+                    DFT::comp_n_col1();
+                }
+
+                if (conver_col2 == 1) {
+                    DFT::comp_n_col2();
+                }
+
+                update_col1(); // Update the colloid density
+                update_col2();
+
+
+                DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
+                DFT::system_out_file << "Col density 2 convergence: " << conver_col2 << endl;
+                export_data();
+                iter++;
             }
 
-            if (conver_col2 == 1) {
-                DFT::comp_n_col2();
+        } else if (!DFT::col1_off && DFT::col2_off) { // col1 switched on, col2 switched off
+            while (conver_col1 > gamma) // Do while un converged. Well durr. 
+            {
+
+
+
+                if (conver_col1 == 1.0) {
+                    DFT::comp_n_col1();
+                }
+
+                update_col1(); // Update the colloid density
+
+                DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
+                export_data();
+                iter++;
             }
 
-            update_col1(); // Update the colloid density
-            update_col2();
+        } else if (DFT::col1_off && !DFT::col2_off) { // col2 switched on, col1 switched off
+            while (conver_col2 > gamma) // Do while un converged. Well durr. 
+            {
+
+                if (conver_col2 == 1) {
+                    DFT::comp_n_col2();
+                }
 
 
-            DFT::system_out_file << "Col density 1 convergence: " << conver_col1 << endl;
-            DFT::system_out_file << "Col density 2 convergence: " << conver_col2 << endl;
-            export_data();
-            iter++;
+                update_col2();
+
+                DFT::system_out_file << "Col density 2 convergence: " << conver_col2 << endl;
+                export_data();
+                iter++;
+            }
+
         }
-
-
     }
 
 
@@ -237,16 +355,16 @@ void DFT::export_data() {
     }
 
 
-    if (!polnan) {
+    if (!polnan && !DFT::polymers_off) {
         DFT::poly_dens_file.open(DFT::poly_dens_filename);
     }
-    if (!col1nan) {
+    if (!col1nan && !DFT::col1_off) {
         DFT::col1_dens_file.open(DFT::col1_dens_filename);
     }
-    if (!col2nan) {
+    if (!col2nan && !DFT::col2_off) {
         DFT::col2_dens_file.open(DFT::col2_dens_filename);
     }
-    if (!meanfieldnan) {
+    if (!meanfieldnan && !DFT::polymers_off) {
         DFT::meanfield_file.open(DFT::meanfield_filename);
     }
 
@@ -256,31 +374,31 @@ void DFT::export_data() {
 
 
 
-        if (!polnan) {
+        if (!polnan && !DFT::polymers_off) {
             DFT::poly_dens_file << (db) i * dz << "\t" << DFT::density(i) << endl;
         }
-        if (!col1nan) {
+        if (!col1nan && !DFT::col1_off) {
             DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
         }
-        if (!col2nan) {
+        if (!col2nan && !DFT::col2_off) {
             DFT::col2_dens_file << (db) i * dz << "\t" << DFT::coldensity2(i) << endl;
         }
-        if (!meanfieldnan) {
+        if (!meanfieldnan && !DFT::polymers_off) {
             DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
         }
         DFT::external_pot_file << (db) i * dz << "\t" << DFT::V(i) << endl;
     }
 
-    if (!polnan) {
+    if (!polnan && !DFT::polymers_off) {
         DFT::poly_dens_file.close();
     }
-    if (!col1nan) {
+    if (!col1nan && !DFT::col1_off) {
         DFT::col1_dens_file.close();
     }
-    if (!col2nan) {
+    if (!col2nan && !DFT::col2_off) {
         DFT::col2_dens_file.close();
     }
-    if (!meanfieldnan) {
+    if (!meanfieldnan && !DFT::polymers_off) {
         DFT::meanfield_file.close();
     }
     DFT::external_pot_file.close();
@@ -289,7 +407,7 @@ void DFT::export_data() {
 
 void DFT::update_col1() {
 
-    db ARG = 0, max = 0, diff = 0;
+    db ARG = 0, max = 0, diff = 0, norm_col1 = 0.0;
 
     comp_FMT_col1();
 
@@ -304,10 +422,15 @@ void DFT::update_col1() {
 
 
 
-        ARG = chem1 - cc(i) - Vc1(i) - DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1);
-        ARG -= DFT::comp_att_term(i, old_dens, ec1c1, rc1, rc1, lambdac1c1);
-        ARG -= DFT::comp_att_term(i, coldensity2, ec1c2, rc2, rc1, lambdac1c2);
+        ARG = chem1 - cc(i) - Vc1(i) - DFT::comp_att_term(i, old_dens, ec1c1, rc1, rc1, lambdac1c1);
 
+        if (!DFT::polymers_off) {
+            ARG -= DFT::comp_att_term(i, density, epc1, r, rc1, lambdapc1);
+        }
+
+        if (!DFT::col2_off) {
+            ARG -= DFT::comp_att_term(i, coldensity2, ec1c2, rc2, rc1, lambdac1c2);
+        }
         coldensity1(i) = (1.0 - DT) * old_dens(i) + DT * colbulk1 * exp(ARG);
 
         diff = fabs(old_dens(i) - coldensity1(i));
@@ -317,15 +440,20 @@ void DFT::update_col1() {
         if (diff > max)
             max = diff;
 
+         norm_col1 += simp(i)* DFT::coldensity1(i) * dz *A;
+        
     }
 
+    
+    DFT::system_out_file << "| [# of colloid 1 beads] = "<< norm_col1 << "\n";
+    
     conver_col1 = max;
 
 }
 
 void DFT::update_col2() {
 
-    db ARG = 0, max = 0, diff = 0;
+    db ARG = 0, max = 0, diff = 0, norm_col2 = 0.0;
 
     comp_FMT_col2();
 
@@ -338,9 +466,16 @@ void DFT::update_col2() {
     for (int i = 0; i < Nz; i++) {
 
         old_dens(i) = coldensity2(i);
-        ARG = chem2 - ccc(i) - Vc2(i) - DFT::comp_att_term(i, density, epc2, r, rc2, lambdapc2);
-        ARG -= DFT::comp_att_term(i, old_dens, ec2c2, rc2, rc2, lambdac2c2);
-        ARG -= DFT::comp_att_term(i, coldensity1, ec1c2, rc1, rc2, lambdac1c2);
+        ARG = chem2 - ccc(i) - Vc2(i) - DFT::comp_att_term(i, old_dens, ec2c2, rc2, rc2, lambdac2c2);
+
+        if (!DFT::polymers_off) {
+            ARG -= DFT::comp_att_term(i, density, epc2, r, rc2, lambdapc2);
+        }
+
+        if (!DFT::col1_off) {
+            ARG -= DFT::comp_att_term(i, coldensity1, ec1c2, rc1, rc2, lambdac1c2);
+        }
+
         coldensity2(i) = (1.0 - DT) * old_dens(i) + DT * colbulk2 * exp(ARG);
 
         diff = fabs(old_dens(i) - coldensity2(i));
@@ -350,8 +485,12 @@ void DFT::update_col2() {
         if (diff > max)
             max = diff;
 
+          norm_col2 += simp(i)* DFT::coldensity2(i) * dz *A;
+        
     }
 
+     DFT::system_out_file << "| [# of colloid 2 beads] = "<< norm_col2 << "\n";
+    
     conver_col2 = max;
 
 }
@@ -374,8 +513,14 @@ void DFT::update_mf() {
         old_mf(i) = field(i);
 
         field(i) = old_mf(i) + dt * (-old_mf(i) + c(i) + V(i) + DFT::comp_att_term(i, density, epp, r, r, lambdapp));
-        field(i) += dt * DFT::comp_att_term(i, coldensity1, epc1, r, rc1, lambdapc1);
-        field(i) += dt * DFT::comp_att_term(i, coldensity2, epc2, r, rc2, lambdapc2);
+
+        if (!DFT::col1_off) {
+            field(i) += dt * DFT::comp_att_term(i, coldensity1, epc1, r, rc1, lambdapc1);
+        }
+
+        if (!DFT::col2_off) {
+            field(i) += dt * DFT::comp_att_term(i, coldensity2, epc2, r, rc2, lambdapc2);
+        }
 
         diff = fabs(old_mf(i) - field(i));
         if (diff > max)

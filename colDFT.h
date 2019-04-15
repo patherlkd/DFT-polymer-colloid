@@ -226,12 +226,12 @@ private:
     db colbulk1; // bulk fluid density colloids
     db chem1; // excess chem potential
     db col1_init_cut; // for initialising the col1 density 
-    int Nc1; // # of colloids
+    db Nc1; // # of colloids
 
     db colbulk2; // bulk fluid density colloids
     db chem2; // excess chem potential
     db col2_init_cut; // for initialising the col1 density 
-    int Nc2; // # of colloids
+    db Nc2; // # of colloids
 
     float conver; // Convergence tracker (mean field) aka polymer
     float conver_col1; // same for colloid 1

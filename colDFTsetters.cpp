@@ -160,7 +160,7 @@ void DFT::set_chem1(db ch) {
     this->chem1 = ch;
 }
 
-void DFT::set_ncolloids1(unsigned int nc) {
+void DFT::set_ncolloids1(db nc) {
     this->Nc1 = nc;
 }
 
@@ -169,7 +169,7 @@ void DFT::set_rc1(db rc) {
 }
 
 void DFT::set_colbulk1(){
-    this->colbulk1 = (db)Nc1/(A*h);
+    this->colbulk1 = Nc1/(A*h);
 }
 
 void DFT::set_col1_init_cut(db c){
@@ -180,7 +180,7 @@ void DFT::set_chem2(db ch) {
     this->chem2 = ch;
 }
 
-void DFT::set_ncolloids2(unsigned int nc) {
+void DFT::set_ncolloids2(db nc) {
     this->Nc2 = nc;
 }
 
@@ -189,7 +189,7 @@ void DFT::set_rc2(db rc) {
 }
 
 void DFT::set_colbulk2(){
-    this->colbulk2 = (db)Nc2/(A*h);
+    this->colbulk2 = Nc2/(A*h);
 }
 
 void DFT::set_col2_init_cut(db c){
@@ -202,6 +202,14 @@ void DFT::set_poly_dens_filename(std::string s) {
 
 void DFT::set_col1_dens_filename(std::string s) {
     DFT::col1_dens_filename = s;
+}
+
+void DFT::set_pmf1_filename(std::string s) {
+    DFT::pmf1_filename = s;
+}
+
+void DFT::set_pmf2_filename(std::string s) {
+    DFT::pmf2_filename = s;
 }
 
 void DFT::set_col2_dens_filename(std::string s) {

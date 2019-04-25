@@ -30,6 +30,8 @@ int main(int argc, char *argv[]) {
     std::string poly_dens_filename = "";
     std::string col1_dens_filename = "";
     std::string col2_dens_filename = "";
+    std::string pmf1_filename = "";
+    std::string pmf2_filename = "";
     std::string meanfield_filename = "";
     std::string external_pot_filename = "";
     std::string system_out_filename = "";
@@ -65,6 +67,8 @@ int main(int argc, char *argv[]) {
     CLI::Option* opt_polydensfilename = dftapp.add_option("--poly_dens_file", poly_dens_filename, " filename for polymer density");
     CLI::Option* opt_col1densfilename = dftapp.add_option("--col1_dens_file", col1_dens_filename, " filename for colloid density 1");
     CLI::Option* opt_col2densfilename = dftapp.add_option("--col2_dens_file", col2_dens_filename, " filename for colloid density 2");
+    CLI::Option* opt_pmf1filename = dftapp.add_option("--pmf1_file", pmf1_filename, " filename for PMF 1");
+    CLI::Option* opt_pmf2filename = dftapp.add_option("--pmf2_file", pmf2_filename, " filename for PMF 2");
     CLI::Option* opt_meanfieldfilename = dftapp.add_option("--meanfield_file", meanfield_filename, " filename for meanfield");
     CLI::Option* opt_externalpotfilename = dftapp.add_option("--external_pot_file", external_pot_filename, " filename for external potential");
     CLI::Option* opt_systemoutfilename = dftapp.add_option("--system_out_file", system_out_filename, " filename for system output");
@@ -72,6 +76,8 @@ int main(int argc, char *argv[]) {
     opt_polydensfilename->group("Output files");
     opt_col1densfilename->group("Output files");
     opt_col2densfilename->group("Output files");
+    opt_pmf1filename->group("Output files");
+    opt_pmf2filename->group("Output files");
     opt_meanfieldfilename->group("Output files");
     opt_externalpotfilename->group("Output files")->required();
     opt_systemoutfilename->group("Output files")->required();
@@ -156,7 +162,7 @@ int main(int argc, char *argv[]) {
     db chem1 = 0.0;
     db col1_rad = 0.0;
     db col1_init_cut = 0.0;
-    int ncolloids1 = 0;
+    db ncolloids1 = 0.0;
 
     CLI::Option* opt_chem1 = dftapp.add_option("--chem1", chem1, "Colloid (1) excess chemical potential");
     CLI::Option* opt_ncolloids1 = dftapp.add_option("--Nc1", ncolloids1, "Colloid (1) number of colloids");
@@ -173,7 +179,7 @@ int main(int argc, char *argv[]) {
     db chem2 = 0.0;
     db col2_rad = 0.0;
     db col2_init_cut = 0.0;
-    int ncolloids2 = 0;
+    db ncolloids2 = 0.0;
 
     CLI::Option* opt_chem2 = dftapp.add_option("--chem2", chem2, "Colloid (2) excess chemical potential");
     CLI::Option* opt_ncolloids2 = dftapp.add_option("--Nc2", ncolloids2, "Colloid (2) number of colloids");
@@ -195,14 +201,14 @@ int main(int argc, char *argv[]) {
         sim.set_polymers_off();
     }
 
-    if(col1_off){
+    if (col1_off) {
         sim.set_col1_off();
     }
-    
-    if(col2_off){
+
+    if (col2_off) {
         sim.set_col2_off();
     }
-    
+
     if (topwall_off_c1) {
         sim.set_topwall_off_c1();
     }
@@ -222,6 +228,8 @@ int main(int argc, char *argv[]) {
     sim.set_poly_dens_filename(poly_dens_filename);
     sim.set_col1_dens_filename(col1_dens_filename);
     sim.set_col2_dens_filename(col2_dens_filename);
+    sim.set_pmf1_filename(pmf1_filename);
+    sim.set_pmf2_filename(pmf2_filename);
     sim.set_meanfield_filename(meanfield_filename);
     sim.set_system_out_filename(system_out_filename);
     sim.set_external_pot_filename(external_pot_filename);

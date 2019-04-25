@@ -71,6 +71,9 @@ void DFT::setup() {
     Vc1.resize(Nz);
     Vc2.resize(Nz);
 
+    PMF1.resize(Nz);
+    PMF2.resize(Nz);
+    
     density.resize(Nz);
     coldensity1.resize(Nz);
     coldensity2.resize(Nz);
@@ -110,6 +113,9 @@ void DFT::setup() {
     Zero_vec(c, Nz);
     Zero_vec(cc, Nz);
     Zero_vec(ccc, Nz);
+    
+    Zero_vec(PMF1,Nz);
+    Zero_vec(PMF2,Nz);
 
     Zero_mat(G1, Nz, Ns);
     Zero_mat(G2, Nz, Ns);
@@ -360,9 +366,11 @@ void DFT::export_data() {
     }
     if (!col1nan && !DFT::col1_off) {
         DFT::col1_dens_file.open(DFT::col1_dens_filename);
+        DFT::pmf1_file.open(DFT::pmf1_filename);
     }
     if (!col2nan && !DFT::col2_off) {
         DFT::col2_dens_file.open(DFT::col2_dens_filename);
+          DFT::pmf2_file.open(DFT::pmf2_filename);
     }
     if (!meanfieldnan && !DFT::polymers_off) {
         DFT::meanfield_file.open(DFT::meanfield_filename);
@@ -379,9 +387,11 @@ void DFT::export_data() {
         }
         if (!col1nan && !DFT::col1_off) {
             DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
+             DFT::pmf1_file << (db) i * dz << "\t" << DFT::PMF1(i) << endl;
         }
         if (!col2nan && !DFT::col2_off) {
             DFT::col2_dens_file << (db) i * dz << "\t" << DFT::coldensity2(i) << endl;
+                DFT::pmf2_file << (db) i * dz << "\t" << DFT::PMF2(i) << endl;
         }
         if (!meanfieldnan && !DFT::polymers_off) {
             DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
@@ -394,9 +404,11 @@ void DFT::export_data() {
     }
     if (!col1nan && !DFT::col1_off) {
         DFT::col1_dens_file.close();
+         DFT::pmf1_file.close();
     }
     if (!col2nan && !DFT::col2_off) {
         DFT::col2_dens_file.close();
+          DFT::pmf2_file.close();
     }
     if (!meanfieldnan && !DFT::polymers_off) {
         DFT::meanfield_file.close();
@@ -432,6 +444,8 @@ void DFT::update_col1() {
             ARG -= DFT::comp_att_term(i, coldensity2, ec1c2, rc2, rc1, lambdac1c2);
         }
         coldensity1(i) = (1.0 - DT) * old_dens(i) + DT * colbulk1 * exp(ARG);
+        
+        PMF1(i) = -ARG;
 
         diff = fabs(old_dens(i) - coldensity1(i));
 
@@ -478,6 +492,8 @@ void DFT::update_col2() {
 
         coldensity2(i) = (1.0 - DT) * old_dens(i) + DT * colbulk2 * exp(ARG);
 
+        PMF2(i) = -ARG;
+        
         diff = fabs(old_dens(i) - coldensity2(i));
 
         //        std::cout << "diff = " << diff << "\n";

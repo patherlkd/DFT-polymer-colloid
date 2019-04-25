@@ -22,6 +22,8 @@ public:
     void set_poly_dens_filename(std::string s);
     void set_col1_dens_filename(std::string s);
     void set_col2_dens_filename(std::string s);
+    void set_pmf1_filename(std::string s);
+    void set_pmf2_filename(std::string s);
     void set_meanfield_filename(std::string s);
     void set_external_pot_filename(std::string s);
     void set_system_out_filename(std::string s);
@@ -70,13 +72,13 @@ public:
 
     void set_chem1(db ch);
     void set_colbulk1();
-    void set_ncolloids1(unsigned int nc);
+    void set_ncolloids1(db nc);
     void set_rc1(db rc);
     void set_col1_init_cut(db);
 
     void set_chem2(db ch);
     void set_colbulk2();
-    void set_ncolloids2(unsigned int nc);
+    void set_ncolloids2(db nc);
     void set_rc2(db rc);
     void set_col2_init_cut(db);
 
@@ -169,6 +171,8 @@ private:
     std::string poly_dens_filename;
     std::string col1_dens_filename;
     std::string col2_dens_filename;
+    std::string pmf1_filename;
+    std::string pmf2_filename;
     std::string meanfield_filename;
     std::string external_pot_filename;
     std::string system_out_filename;
@@ -177,6 +181,8 @@ private:
     std::ofstream poly_dens_file;
     std::ofstream col1_dens_file;
     std::ofstream col2_dens_file;
+    std::ofstream pmf1_file;
+    std::ofstream pmf2_file;
     std::ofstream meanfield_file;
     std::ofstream external_pot_file;
 
@@ -252,7 +258,8 @@ private:
     vec cdphi0, cdphi1, cdphi2, cdphi3, cdphiv1, cdphiv2; // colloid 1 derivative of free energy density
     vec ccdphi0, ccdphi1, ccdphi2, ccdphi3, ccdphiv1, ccdphiv2; // colloid 1 derivative of free energy density
 
-
+    vec PMF1, PMF2; // PMF's for colloids 
+    
     vec c; // To hold the one body direct correlation function and the weights for the polymers
     vec cc; // one body... for colloid 1
     vec ccc; // one body... for colloid 2

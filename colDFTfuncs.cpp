@@ -133,7 +133,7 @@ void DFT::comp_FMT_pol() {
 
 
 
-    vec W0(Nz), W1(Nz), W2(Nz), W3(Nz), Wv1(Nz), Wv2(Nz);
+    db W0, W1, W2, W3, Wv1, Wv2;
     comp_n_pol(); // Compute the weighted densities
     // comp_n_tot(); // Compute the total weighted densities
     //RF(); (comment comp_dphi() out and uncomment this to use the previous Rosenfeld functional.) 
@@ -145,24 +145,24 @@ void DFT::comp_FMT_pol() {
 
     for (int i = 0; i < Nz; i++) // Convolution in real space because lol. 
     {
-        W0(i) = 0;
-        W1(i) = 0;
-        W2(i) = 0;
-        W3(i) = 0;
-        Wv1(i) = 0;
-        Wv2(i) = 0;
+        W0 = 0;
+        W1 = 0;
+        W2 = 0;
+        W3 = 0;
+        Wv1 = 0;
+        Wv2 = 0;
         for (int j = 0; j < Nz; j++) {
-            W0(i) += simp(j)*(dphi0(j)) * w0(r, (db) i * dz - (db) j * dz) * dz;
-            W1(i) += simp(j)*(dphi1(j)) * w1(r, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(dphi2(j)) * w2(r, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(dphi3(j)) * w3(r, (db) i * dz - (db) j * dz) * dz;
-            Wv1(i) += simp(j)*(dphiv1(j))*-wv1(r, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
-            Wv2(i) += simp(j)*(dphiv2(j))*-wv2(r, ((db) i * dz - (db) j * dz)) * dz; // also here
+            W0 += simp(j)*(dphi0(j)) * w0(r, (db) i * dz - (db) j * dz) * dz;
+            W1 += simp(j)*(dphi1(j)) * w1(r, (db) i * dz - (db) j * dz) * dz;
+            W3 += simp(j)*(dphi2(j)) * w2(r, (db) i * dz - (db) j * dz) * dz;
+            W3 += simp(j)*(dphi3(j)) * w3(r, (db) i * dz - (db) j * dz) * dz;
+            Wv1 += simp(j)*(dphiv1(j))*-wv1(r, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
+            Wv2 += simp(j)*(dphiv2(j))*-wv2(r, ((db) i * dz - (db) j * dz)) * dz; // also here
         }
-
+        c(i) = (W0 + W1 + W2 + W3 + Wv1 + Wv2); // this is the thing to put in the update of mean field
     }
 
-    c = (W0 + W1 + W2 + W3 + Wv1 + Wv2); // this is the thing to put in the update of mean field
+
 
     //   test << W2 <<endl;
 
@@ -468,7 +468,7 @@ void DFT::comp_dphi_col2_v2() {
 
 void DFT::comp_FMT_col1() {
 
-    vec W0(Nz), W1(Nz), W2(Nz), W3(Nz), Wv1(Nz), Wv2(Nz);
+    db W0, W1, W2, W3, Wv1, Wv2;
     comp_n_col1(); // Compute the weighted densities
     //comp_n_tot(); // Compute the total weighted densities
     //RF(); (comment comp_dphi() out and uncomment this to use the previous Rosenfeld functional.) 
@@ -479,24 +479,28 @@ void DFT::comp_FMT_col1() {
 
     for (int i = 0; i < Nz; i++) // Convolution in real space because lol. 
     {
-        W0(i) = 0;
-        W1(i) = 0;
-        W2(i) = 0;
-        W3(i) = 0;
-        Wv1(i) = 0;
-        Wv2(i) = 0;
+        W0 = 0;
+        W1 = 0;
+        W2 = 0;
+        W3 = 0;
+        Wv1 = 0;
+        Wv2 = 0;
         for (int j = 0; j < Nz; j++) {
-            W0(i) += simp(j)*(cdphi0(j)) * w0(rc1, (db) i * dz - (db) j * dz) * dz;
-            W1(i) += simp(j)*(cdphi1(j)) * w1(rc1, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(cdphi2(j)) * w2(rc1, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(cdphi3(j)) * w3(rc1, (db) i * dz - (db) j * dz) * dz;
-            Wv1(i) += simp(j)*(cdphiv1(j))*-wv1(rc1, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
-            Wv2(i) += simp(j)*(cdphiv2(j))*-wv2(rc1, ((db) i * dz - (db) j * dz)) * dz; // also here
+            W0 += simp(j)*(cdphi0(j)) * w0(rc1, (db) i * dz - (db) j * dz) * dz;
+            W1 += simp(j)*(cdphi1(j)) * w1(rc1, (db) i * dz - (db) j * dz) * dz;
+            W3 += simp(j)*(cdphi2(j)) * w2(rc1, (db) i * dz - (db) j * dz) * dz;
+            W3 += simp(j)*(cdphi3(j)) * w3(rc1, (db) i * dz - (db) j * dz) * dz;
+            Wv1 += simp(j)*(cdphiv1(j))*-wv1(rc1, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
+            Wv2 += simp(j)*(cdphiv2(j))*-wv2(rc1, ((db) i * dz - (db) j * dz)) * dz; // also here
         }
+
+        cc(i) = W0 + W1 + W2 + W3 + Wv1 + Wv2;
+
+       // PMF1(i) = cc(i) - chem1;
 
     }
 
-    cc = (W0 + W1 + W2 + W3 + Wv1 + Wv2); // this is the thing to put in the update of mean field
+    //cc = (W0 + W1 + W2 + W3 + Wv1 + Wv2); // this is the thing to put in the update of mean field
 
     //   test << W2 <<endl;
 
@@ -504,7 +508,7 @@ void DFT::comp_FMT_col1() {
 
 void DFT::comp_FMT_col2() {
 
-    vec W0(Nz), W1(Nz), W2(Nz), W3(Nz), Wv1(Nz), Wv2(Nz);
+    db W0, W1, W2, W3, Wv1, Wv2;
     comp_n_col2(); // Compute the weighted densities
     //comp_n_tot(); // Compute the total weighted densities
     //RF(); (comment comp_dphi() out and uncomment this to use the previous Rosenfeld functional.) 
@@ -515,24 +519,28 @@ void DFT::comp_FMT_col2() {
 
     for (int i = 0; i < Nz; i++) // Convolution in real space because lol. 
     {
-        W0(i) = 0;
-        W1(i) = 0;
-        W2(i) = 0;
-        W3(i) = 0;
-        Wv1(i) = 0;
-        Wv2(i) = 0;
+        W0 = 0;
+        W1 = 0;
+        W2 = 0;
+        W3 = 0;
+        Wv1 = 0;
+        Wv2 = 0;
         for (int j = 0; j < Nz; j++) {
-            W0(i) += simp(j)*(ccdphi0(j)) * w0(rc2, (db) i * dz - (db) j * dz) * dz;
-            W1(i) += simp(j)*(ccdphi1(j)) * w1(rc2, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(ccdphi2(j)) * w2(rc2, (db) i * dz - (db) j * dz) * dz;
-            W3(i) += simp(j)*(ccdphi3(j)) * w3(rc2, (db) i * dz - (db) j * dz) * dz;
-            Wv1(i) += simp(j)*(ccdphiv1(j))*-wv1(rc2, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
-            Wv2(i) += simp(j)*(ccdphiv2(j))*-wv2(rc2, ((db) i * dz - (db) j * dz)) * dz; // also here
+            W0 += simp(j)*(ccdphi0(j)) * w0(rc2, (db) i * dz - (db) j * dz) * dz;
+            W1 += simp(j)*(ccdphi1(j)) * w1(rc2, (db) i * dz - (db) j * dz) * dz;
+            W3 += simp(j)*(ccdphi2(j)) * w2(rc2, (db) i * dz - (db) j * dz) * dz;
+            W3 += simp(j)*(ccdphi3(j)) * w3(rc2, (db) i * dz - (db) j * dz) * dz;
+            Wv1 += simp(j)*(ccdphiv1(j))*-wv1(rc2, ((db) i * dz - (db) j * dz)) * dz; // N.B negative sign since here z - z' -> z' -z
+            Wv2 += simp(j)*(ccdphiv2(j))*-wv2(rc2, ((db) i * dz - (db) j * dz)) * dz; // also here
         }
+
+        ccc(i) = (W0 + W1 + W2 + W3 + Wv1 + Wv2); // this is the thing to put in the update of mean field
+
+      //  PMF2(i) = ccc(i) - chem2;
 
     }
 
-    ccc = (W0 + W1 + W2 + W3 + Wv1 + Wv2); // this is the thing to put in the update of mean field
+
 
     //   test << W2 <<endl;
 

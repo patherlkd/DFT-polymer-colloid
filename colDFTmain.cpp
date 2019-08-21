@@ -279,23 +279,26 @@ int main(int argc, char *argv[]) {
     sim.set_D(0.16666 * sqr_d(poly_diameter));
     sim.set_H_solver(); // VITAL for solving the polymer density
 
-    sim.test_dinos_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp, "dinos_potential_epp.txt");
-    sim.test_dinos_potential(Nz, sim.get_dz(), epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "dinos_potential_epc1.txt");
-    sim.test_dinos_potential(Nz, sim.get_dz(), ec1c1, 2.0 * col1_rad, lambdac1c1, "dinos_potential_ec1c1.txt");
+    double plot_dz = 0.01;
+    double plot_Nz = (int)(height/plot_dz);
+    
+    sim.test_dinos_potential(plot_Nz, plot_dz, epp, poly_diameter, lambdapp, "dinos_potential_epp.txt");
+    sim.test_dinos_potential(plot_Nz,  plot_dz, epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "dinos_potential_epc1.txt");
+    sim.test_dinos_potential(plot_Nz,  plot_dz, ec1c1, 2.0 * col1_rad, lambdac1c1, "dinos_potential_ec1c1.txt");
 
 
-    sim.test_dinos_potential(Nz, sim.get_dz(), epc2, poly_diameter * 0.5 + col2_rad, lambdapc2, "dinos_potential_epc2.txt");
-    sim.test_dinos_potential(Nz, sim.get_dz(), ec2c2, 2.0 * col2_rad, lambdac2c2, "dinos_potential_ec2c2.txt");
-    sim.test_dinos_potential(Nz, sim.get_dz(), ec1c2, col1_rad + col2_rad, lambdac1c2, "dinos_potential_ec1c2.txt");
+    sim.test_dinos_potential(plot_Nz,  plot_dz, epc2, poly_diameter * 0.5 + col2_rad, lambdapc2, "dinos_potential_epc2.txt");
+    sim.test_dinos_potential(plot_Nz,  plot_dz, ec2c2, 2.0 * col2_rad, lambdac2c2, "dinos_potential_ec2c2.txt");
+    sim.test_dinos_potential(plot_Nz,  plot_dz, ec1c2, col1_rad + col2_rad, lambdac1c2, "dinos_potential_ec1c2.txt");
 
-    sim.test_lukes_potential(Nz, sim.get_dz(), epp, poly_diameter, lambdapp, "lukes_potential_epp.txt");
-    sim.test_lukes_potential(Nz, sim.get_dz(), epc1, poly_diameter * 0.5 + col1_rad, lambdapc1, "lukes_potential_epc1.txt");
-    sim.test_lukes_potential(Nz, sim.get_dz(), ec1c1, 2.0 * col1_rad, lambdac1c1, "lukes_potential_ec1c1.txt");
+    sim.test_lukes_potential(plot_Nz,  plot_dz, epp, poly_diameter, lambdapp, "lukes_potential_epp.txt");
+    sim.test_lukes_potential(plot_Nz,  plot_dz, epc1, (poly_diameter*0.5) + col1_rad, lambdapc1, "lukes_potential_epc1.txt");
+    sim.test_lukes_potential(plot_Nz,  plot_dz, ec1c1, 2.0 * col1_rad, lambdac1c1, "lukes_potential_ec1c1.txt");
 
 
-    sim.test_lukes_potential(Nz, sim.get_dz(), epc2, poly_diameter * 0.5 + col2_rad, lambdapc2, "lukes_potential_epc2.txt");
-    sim.test_lukes_potential(Nz, sim.get_dz(), ec2c2, 2.0 * col2_rad, lambdac2c2, "lukes_potential_ec2c2.txt");
-    sim.test_lukes_potential(Nz, sim.get_dz(), ec1c2, col1_rad + col2_rad, lambdac1c2, "lukes_potential_ec1c2.txt");
+    sim.test_lukes_potential(plot_Nz,  plot_dz, epc2, poly_diameter * 0.5 + col2_rad, lambdapc2, "lukes_potential_epc2.txt");
+    sim.test_lukes_potential(plot_Nz,  plot_dz, ec2c2, 2.0 * col2_rad, lambdac2c2, "lukes_potential_ec2c2.txt");
+    sim.test_lukes_potential(plot_Nz,  plot_dz, ec1c2, col1_rad + col2_rad, lambdac1c2, "lukes_potential_ec1c2.txt");
 
     time_t START = time(NULL);
     sim.setup();

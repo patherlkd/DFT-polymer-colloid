@@ -73,7 +73,7 @@ void DFT::setup() {
 
     PMF1.resize(Nz);
     PMF2.resize(Nz);
-    
+
     density.resize(Nz);
     coldensity1.resize(Nz);
     coldensity2.resize(Nz);
@@ -113,9 +113,9 @@ void DFT::setup() {
     Zero_vec(c, Nz);
     Zero_vec(cc, Nz);
     Zero_vec(ccc, Nz);
-    
-    Zero_vec(PMF1,Nz);
-    Zero_vec(PMF2,Nz);
+
+    Zero_vec(PMF1, Nz);
+    Zero_vec(PMF2, Nz);
 
     Zero_mat(G1, Nz, Ns);
     Zero_mat(G2, Nz, Ns);
@@ -370,7 +370,7 @@ void DFT::export_data() {
     }
     if (!col2nan && !DFT::col2_off) {
         DFT::col2_dens_file.open(DFT::col2_dens_filename);
-          DFT::pmf2_file.open(DFT::pmf2_filename);
+        DFT::pmf2_file.open(DFT::pmf2_filename);
     }
     if (!meanfieldnan && !DFT::polymers_off) {
         DFT::meanfield_file.open(DFT::meanfield_filename);
@@ -387,11 +387,11 @@ void DFT::export_data() {
         }
         if (!col1nan && !DFT::col1_off) {
             DFT::col1_dens_file << (db) i * dz << "\t" << DFT::coldensity1(i) << endl;
-             DFT::pmf1_file << (db) i * dz << "\t" << DFT::PMF1(i) << endl;
+            DFT::pmf1_file << (db) i * dz << "\t" << DFT::PMF1(i) << endl;
         }
         if (!col2nan && !DFT::col2_off) {
             DFT::col2_dens_file << (db) i * dz << "\t" << DFT::coldensity2(i) << endl;
-                DFT::pmf2_file << (db) i * dz << "\t" << DFT::PMF2(i) << endl;
+            DFT::pmf2_file << (db) i * dz << "\t" << DFT::PMF2(i) << endl;
         }
         if (!meanfieldnan && !DFT::polymers_off) {
             DFT::meanfield_file << (db) i * dz << "\t" << DFT::field(i) << endl;
@@ -404,11 +404,11 @@ void DFT::export_data() {
     }
     if (!col1nan && !DFT::col1_off) {
         DFT::col1_dens_file.close();
-         DFT::pmf1_file.close();
+        DFT::pmf1_file.close();
     }
     if (!col2nan && !DFT::col2_off) {
         DFT::col2_dens_file.close();
-          DFT::pmf2_file.close();
+        DFT::pmf2_file.close();
     }
     if (!meanfieldnan && !DFT::polymers_off) {
         DFT::meanfield_file.close();
@@ -427,12 +427,13 @@ void DFT::update_col1() {
     vec old_dens;
 
     old_dens.resize(Nz);
-    Zero_vec(old_dens, Nz);
+    // Zero_vec(old_dens, Nz);
 
-    for (int i = 0; i < Nz; i++) {
+    for (int i = 0; i < Nz; i++)
         old_dens(i) = coldensity1(i);
 
-
+    for (int i = 0; i < Nz; i++) {
+        //        old_dens(i) = coldensity1(i);
 
         ARG = chem1 - cc(i) - Vc1(i) - DFT::comp_att_term(i, old_dens, ec1c1, rc1, rc1, lambdac1c1);
 
@@ -444,7 +445,7 @@ void DFT::update_col1() {
             ARG -= DFT::comp_att_term(i, coldensity2, ec1c2, rc2, rc1, lambdac1c2);
         }
         coldensity1(i) = (1.0 - DT) * old_dens(i) + DT * colbulk1 * exp(ARG);
-        
+
         PMF1(i) = -ARG;
 
         diff = fabs(old_dens(i) - coldensity1(i));
@@ -454,13 +455,13 @@ void DFT::update_col1() {
         if (diff > max)
             max = diff;
 
-         norm_col1 += simp(i)* DFT::coldensity1(i) * dz *A;
-        
+        norm_col1 += simp(i) * DFT::coldensity1(i) * dz *A;
+
     }
 
-    
-    DFT::system_out_file << "| [# of colloid 1 beads] = "<< norm_col1 << "\n";
-    
+
+    DFT::system_out_file << "| [# of colloid 1 beads] = " << norm_col1 << "\n";
+
     conver_col1 = max;
 
 }
@@ -475,11 +476,14 @@ void DFT::update_col2() {
     vec old_dens;
 
     old_dens.resize(Nz);
-    Zero_vec(old_dens, Nz);
+    //  Zero_vec(old_dens, Nz);
+
+    for (int i = 0; i < Nz; i++)
+        old_dens(i) = coldensity2(i);
 
     for (int i = 0; i < Nz; i++) {
 
-        old_dens(i) = coldensity2(i);
+        //      old_dens(i) = coldensity2(i);
         ARG = chem2 - ccc(i) - Vc2(i) - DFT::comp_att_term(i, old_dens, ec2c2, rc2, rc2, lambdac2c2);
 
         if (!DFT::polymers_off) {
@@ -493,7 +497,7 @@ void DFT::update_col2() {
         coldensity2(i) = (1.0 - DT) * old_dens(i) + DT * colbulk2 * exp(ARG);
 
         PMF2(i) = -ARG;
-        
+
         diff = fabs(old_dens(i) - coldensity2(i));
 
         //        std::cout << "diff = " << diff << "\n";
@@ -501,12 +505,12 @@ void DFT::update_col2() {
         if (diff > max)
             max = diff;
 
-          norm_col2 += simp(i)* DFT::coldensity2(i) * dz *A;
-        
+        norm_col2 += simp(i) * DFT::coldensity2(i) * dz *A;
+
     }
 
-     DFT::system_out_file << "| [# of colloid 2 beads] = "<< norm_col2 << "\n";
-    
+    DFT::system_out_file << "| [# of colloid 2 beads] = " << norm_col2 << "\n";
+
     conver_col2 = max;
 
 }

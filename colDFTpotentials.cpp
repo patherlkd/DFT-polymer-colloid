@@ -132,7 +132,7 @@ db DFT::comp_att_term(int zplace, vec &densityj, db eppij, db ri, db rj, db lamb
 
     } else if (potential_mode == 1) { // Lukes shorter ranged potential
 
-        pot_below_d = lukes_potential(0.0, eppij, dij, lambdaij); // compute this once
+        pot_below_d = lukes_potential(dij, eppij, dij, lambdaij); // compute this once
 
         for (int iz = 0; iz < Nz; iz++) {
 
@@ -215,9 +215,9 @@ void DFT::test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lamb
         z = (db) i * dz;
 
 
-        if (z <= dia) {
+        if (z <= dij) {
             pot = atdia;
-        } else if (z <= 2 * dia) {
+        } else if (z <= 2 * dij) {
             pot = DFT::lukes_potential(z, eppij, dij, lambdaij);
         } else {
             pot = 0.0;

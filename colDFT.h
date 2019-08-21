@@ -22,8 +22,10 @@ public:
     void set_poly_dens_filename(std::string s);
     void set_col1_dens_filename(std::string s);
     void set_col2_dens_filename(std::string s);
+    //  void set_col3_dens_filename(std::string s);
     void set_pmf1_filename(std::string s);
     void set_pmf2_filename(std::string s);
+    //  void set_pmf3_filename(std::string s);
     void set_meanfield_filename(std::string s);
     void set_external_pot_filename(std::string s);
     void set_system_out_filename(std::string s);
@@ -34,12 +36,16 @@ public:
     void set_polymers_off();
     void set_col1_off();
     void set_col2_off();
+    //  void set_col3_off();
 
     void set_topwall_off_c1();
     void set_botwall_off_c1();
 
     void set_topwall_off_c2();
     void set_botwall_off_c2();
+
+    //  void set_topwall_off_c3();
+    //  void set_botwall_off_c3();
 
     void set_wall_strength(db ws);
     void set_epp(db epp);
@@ -48,13 +54,24 @@ public:
     void set_lambdapc1(db lpc);
     void set_epc2(db epc2);
     void set_lambdapc2(db lpc);
+    //  void set_epc3(db epc3);
+    //   void set_lambdapc3(db lpc);
+
     void set_ec1c1(db);
     void set_lambdac1c1(db);
     void set_ec2c2(db);
     void set_lambdac2c2(db);
+    //  void set_ec3c3(db);
+    //  void set_lambdac3c3(db);
+
     void set_ec1c2(db);
     void set_lambdac1c2(db);
 
+    //   void set_ec1c3(db);
+    //  void set_lambdac1c3(db);
+
+    //  void set_ec2c3(db);
+    // void set_lambdac2c3(db);
 
     void set_dia(db dia);
     void set_Np(unsigned int N);
@@ -82,6 +99,12 @@ public:
     void set_rc2(db rc);
     void set_col2_init_cut(db);
 
+    //    void set_chem3(db c)h;
+    //    void set_colbulk3();
+    //    void set_ncolloids3(db nc);
+    //    void set_rc3(db rc);
+    //    void set_col3_init_cut(db);
+
     void test_dinos_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij, std::string filename);
     void test_lukes_potential(unsigned int Nz, db dz, db eppij, db dij, db lambdaij, std::string filename);
 
@@ -104,11 +127,14 @@ private:
     bool polymers_off = false;
     bool col1_off = false;
     bool col2_off = false;
+    bool col3_off = false;
 
     bool topwall_off_c1 = false;
     bool botwall_off_c1 = false;
     bool topwall_off_c2 = false;
     bool botwall_off_c2 = false;
+    bool topwall_off_c3 = false;
+    bool botwall_off_c3 = false;
 
     // pair potentials
     db dinos_potential(db Z, db eppij, db dij, db lambdaij);
@@ -118,15 +144,18 @@ private:
     void init_field(db);
     void init_coldensity1(unsigned int);
     void init_coldensity2(unsigned int);
+    void init_coldensity3(unsigned int);
 
     virtual void solveGs();
     virtual void comp_dens();
     void comp_POT();
     void comp_POT_c1();
     void comp_POT_c2();
+    void comp_POT_c3();
     void update_mf();
     void update_col1();
     void update_col2();
+    void update_col3();
 
     void norm();
     db comp_free_energy();
@@ -139,16 +168,19 @@ private:
     void comp_FMT_pol();
     void comp_FMT_col1();
     void comp_FMT_col2();
+    void comp_FMT_col3();
 
 
     void comp_n_pol();
     void comp_n_col1();
     void comp_n_col2();
+    void comp_n_col3();
 
     void comp_dphi_pol_v2();
 
     void comp_dphi_col1_v2();
     void comp_dphi_col2_v2();
+    void comp_dphi_col3_v2();
 
 
     db WBF(unsigned int);
@@ -171,8 +203,12 @@ private:
     std::string poly_dens_filename;
     std::string col1_dens_filename;
     std::string col2_dens_filename;
+    std::string col3_dens_filename;
+
     std::string pmf1_filename;
     std::string pmf2_filename;
+    std::string pmf3_filename;
+
     std::string meanfield_filename;
     std::string external_pot_filename;
     std::string system_out_filename;
@@ -181,8 +217,11 @@ private:
     std::ofstream poly_dens_file;
     std::ofstream col1_dens_file;
     std::ofstream col2_dens_file;
+    std::ofstream col3_dens_file;
+
     std::ofstream pmf1_file;
     std::ofstream pmf2_file;
+    std::ofstream pmf3_file;
     std::ofstream meanfield_file;
     std::ofstream external_pot_file;
 
@@ -200,7 +239,8 @@ private:
     db dia; // diameter of monomer
     db r; // radius of monomer
     db rc1; // radius of colloid 1
-    db rc2; // radius of colloid 2 
+    db rc2; // radius of colloid 2
+    db rc3; // radius of colloid 2
 
 
     db gamma; // convergence criterion
@@ -216,6 +256,10 @@ private:
     db epc2;
     db ec2c2;
     db ec1c2;
+    db epc3;
+    db ec3c3;
+    db ec1c3;
+    db ec2c3;
 
 
     db lambdapp; //range for gaussian attractive (polymer-polymer)
@@ -224,6 +268,11 @@ private:
     db lambdapc2;
     db lambdac2c2;
     db lambdac1c2;
+    db lambdapc3;
+    db lambdac3c3;
+    db lambdac1c3;
+    db lambdac2c3;
+
 
     db unnorm;
     db Z; //" Partition function" 
@@ -236,36 +285,47 @@ private:
 
     db colbulk2; // bulk fluid density colloids
     db chem2; // excess chem potential
-    db col2_init_cut; // for initialising the col1 density 
+    db col2_init_cut; // for initialising the col2 density 
     db Nc2; // # of colloids
+
+    db colbulk3; // bulk fluid density colloids
+    db chem3; // excess chem potential
+    db col3_init_cut; // for initialising the col3 density 
+    db Nc3; // # of colloids
 
     float conver; // Convergence tracker (mean field) aka polymer
     float conver_col1; // same for colloid 1
     float conver_col2; // same for colloid 2
+    float conver_col3; // same for colloid 2
 
     int tether; // tethering array value
 
     vec field, density; //vectors for mean field and the density profile (polymers)
     vec coldensity1; // colloid density 1
     vec coldensity2; // colloid density 2
+    vec coldensity3; // colloid density 3
     vec Gv1; // to manipulate greens function at one instance
     vec Gv2; // " "
     vec n0, n1, n2, n3, nv1, nv2; // FMT polymer weighted densities
 
     vec cn0, cn1, cn2, cn3, cnv1, cnv2; // FMT weighted densities
     vec ccn0, ccn1, ccn2, ccn3, ccnv1, ccnv2; // FMT weighted densities col 2
+    vec cccn0, cccn1, cccn2, cccn3, cccnv1, cccnv2; // FMT weighted densities col 3
     vec dphi0, dphi1, dphi2, dphi3, dphiv1, dphiv2; // derivative of free energy density
     vec cdphi0, cdphi1, cdphi2, cdphi3, cdphiv1, cdphiv2; // colloid 1 derivative of free energy density
-    vec ccdphi0, ccdphi1, ccdphi2, ccdphi3, ccdphiv1, ccdphiv2; // colloid 1 derivative of free energy density
+    vec ccdphi0, ccdphi1, ccdphi2, ccdphi3, ccdphiv1, ccdphiv2; // colloid 2 derivative of free energy density
+    vec cccdphi0, cccdphi1, cccdphi2, cccdphi3, cccdphiv1, cccdphiv2; // colloid 3 derivative of free energy density
 
-    vec PMF1, PMF2; // PMF's for colloids 
-    
+    vec PMF1, PMF2, PMF3; // PMF's for colloids 
+
     vec c; // To hold the one body direct correlation function and the weights for the polymers
     vec cc; // one body... for colloid 1
     vec ccc; // one body... for colloid 2
+    vec cccc; // one body... for colloid 3 
     vec V; //external potential 'polymers'
     vec Vc1; // external potential 'col-1'
     vec Vc2;
+    vec Vc3;
     mat G1; // these will hold all G's for all s and z
     mat G2;
 

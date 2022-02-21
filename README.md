@@ -1,5 +1,5 @@
 # DFT-polymer-colloid
-Density Functional Theory Code for a polymer film + colloids. This modelling code was used to generate the data in "Crowding-induced phase separation of nuclear transport receptors in FG nucleoporin assemblies" available here https://www.biorxiv.org/content/10.1101/2021.07.24.453634v1.
+Density Functional Theory Code for a polymer film + colloids. This modelling code was used to generate the data in "Crowding-induced phase separation of nuclear transport receptors in FG nucleoporin assemblies" that is published in eLife available here https://elifesciences.org/articles/72627.
 
 Any questions please send an email to luke.davis.16@ucl.ac.uk.
 
